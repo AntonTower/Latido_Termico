@@ -1,240 +1,39 @@
-# 🌡️ LATIDO_TERMICO
+# 🐾 LATIDO Web Admin - Ecosistema RescueNet
 
-> **Contenedor global del ecosistema web**
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![NodeJS](https://img.shields.io/badge/API_Backend-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 
-## 🏗️ Arquitectura General
-
-```text
-LATIDO_TERMICO/
-│
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml
-│
-├── backend/
-├── frontend/
-├── docs/
-├── scripts/
-│
-├── docker-compose.yml
-├── .gitignore
-└── README.md
-```
+**LATIDO** es el panel web administrativo para el ecosistema **RescueNet**. Operando como una Single Page Application (SPA) construida en Angular, este cliente web se comunica exclusivamente con la API centralizada en Node.js. Esto garantiza una única fuente de verdad tanto para la aplicación móvil como para la gestión web.
 
 ---
 
-# 📂 Estructura del Proyecto
+## 🏗️ Arquitectura de Carpetas
 
-## ⚙️ `.github/workflows/ci-cd.yml`
+El proyecto utiliza una estructura plana, modular y orientada a roles. Todo el código fuente reside en `frontend/src/app/`.
 
-### Integración y Despliegue Continuo (CI/CD)
-
-Automatiza la validación del sistema cada vez que se realiza un cambio en GitHub.
-
-### Funciones principales
-
-✅ Ejecuta pruebas automatizadas del Frontend  
-✅ Ejecuta pruebas automatizadas del Backend  
-✅ Detecta errores antes de llegar a producción  
-✅ Mantiene la calidad y estabilidad del código
-
-> **Objetivo:** Evitar que código defectuoso sea desplegado en ambientes productivos.
+| Módulo | Propósito y Contenido | Reglas de Uso |
+| :--- | :--- | :--- |
+| 🔐 **`auth/`** | **Seguridad y Accesos.** Contiene la vista de `login`, el servicio de conexión y los `guards` (guardianes) que protegen las rutas según el rol. | Único lugar donde se gestiona el JWT y la sesión del usuario. |
+| 🛡️ **`interceptors/`** | **Manipulación de Peticiones.** Contiene `jwt.interceptor.ts`. | Se encarga de inyectar automáticamente el Token en la cabecera de todas las peticiones hacia el backend. |
+| 🖼️ **`layouts/`** | **Contenedores Estructurales.** Esqueletos visuales: `admin-layout` (con menús de control), `operator-layout`, `public-layout` y `auth-layout` (lienzo limpio). | Solo renderizan el marco visual y el `<router-outlet>`. No contienen lógica pesada. |
+| 🚀 **`pages/`** | **Vistas y Pantallas.** Agrupadas por rol de usuario (`admin`, `operator`, `public`). | Son el contenido dinámico. Solo deben llamar a los archivos de `services/` para obtener datos. |
+| ⚙️ **`services/`** | **Llamadas a la API.** Archivos dedicados a la comunicación con Node.js (ej. `reportes.service.ts`, `usuarios.service.ts`). | Centralizan todos los métodos HTTP (`GET`, `POST`, `PUT`, `DELETE`). |
 
 ---
 
-## 🧠 `/backend`
+## 🚀 Guía de Inicio Rápido (Onboarding)
 
-### Núcleo del Sistema
+Sigue estos pasos para configurar el proyecto en tu máquina local. Gracias a la contenerización, no necesitas instalar dependencias de Angular globalmente.
 
-Contiene toda la lógica de negocio y procesamiento de datos.
+### 1. Prerrequisitos
+* Tener instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+* Tener instalado [Git](https://git-scm.com/downloads).
+* Visual Studio Code.
 
-### Responsabilidades
-
-- 🔐 Sistema de autenticación (JWT)
-- 🗄️ Gestión de Base de Datos PostgreSQL
-- 📦 Modelos y entidades
-- 🎯 Reglas de negocio
-- 🔄 Exposición de API REST o GraphQL
-
-### Importante
-
-El backend **no genera interfaces visuales**.
-
-Su única función es procesar solicitudes y responder datos estructurados (JSON).
-
-```mermaid
-graph LR
-A[Frontend] --> B[Backend]
-B --> C[(PostgreSQL)]
-```
-
----
-
-## 🎨 `/frontend`
-
-### Cliente Web (SPA)
-
-Aplicación encargada exclusivamente de la experiencia del usuario.
-
-### Responsabilidades
-
-- 🖥️ Renderizar la interfaz gráfica
-- 🖱️ Capturar acciones del usuario
-- 📡 Consumir servicios del Backend
-- 🔄 Actualizar información en tiempo real
-
-### Importante
-
-El frontend **nunca accede directamente a la base de datos**.
-
-
----
-
-## 📚 `/docs`
-
-### Centro de Documentación
-
-Sirve como punto de referencia técnico para todos los equipos involucrados.
-
-### Contenido
-
-- 📄 Especificaciones OpenAPI / Swagger
-- 🏛️ Diagramas de arquitectura
-- 📘 Manuales técnicos
-- 🔌 Contratos de API
-
-### Beneficio
-
-Facilita la colaboración entre:
-
-- Equipo Web
-- Equipo Móvil
-- Equipo DevOps
-- Equipo QA
-
----
-
-## 🤖 `/scripts`
-
-### Automatización Operativa
-
-Contiene herramientas para reducir tareas manuales repetitivas.
-
-### Ejemplos
-
-- 🐍 Scripts Python
-- 🐚 Scripts Bash
-- 💾 Respaldos automáticos
-- 🔄 Migraciones rápidas
-- 🧹 Limpieza de datos
-- 📊 Generación de reportes
-
----
-
-## 🚫 `.gitignore`
-
-### Control de Archivos Excluidos
-
-Define qué archivos NO deben enviarse al repositorio.
-
-### Ejemplos comunes
-
-```gitignore
-node_modules/
-.env
-dist/
-build/
-__pycache__/
-venv/
-```
-
-### Beneficios
-
-✅ Protege información sensible  
-✅ Reduce el tamaño del repositorio  
-✅ Evita conflictos innecesarios
-
----
-
-## 🐳 `docker-compose.yml`
-
-### Entorno de Desarrollo Unificado
-
-Permite iniciar toda la infraestructura local con un solo comando.
-
+### 2. Descarga y Configuración Local
+Clona el repositorio en tu computadora y entra a la carpeta del proyecto:
 ```bash
-docker compose up -d
-```
-
-### Servicios levantados
-
-- ⚙️ Backend
-- 🗄️ PostgreSQL
-- 🎨 Frontend
-
-### Ventaja
-
-> "Funciona igual en mi computadora y en la tuya."
-
-Reduce diferencias entre entornos de desarrollo.
-
----
-
-## 📖 `README.md`
-
-### Punto de Entrada para Desarrolladores
-
-Documento principal del proyecto.
-
-### Debe incluir
-
-- 🚀 Introducción al sistema
-- 📥 Cómo clonar el repositorio
-- 🔧 Instalación de dependencias
-- ▶️ Ejecución local
-- 🧪 Ejecución de pruebas
-- 🐳 Uso de Docker
-- 🤝 Guías de contribución
-
-### Objetivo
-
-Permitir que cualquier desarrollador pueda levantar el proyecto en pocos minutos.
-
----
-
-# 🔄 Flujo General de la Plataforma
-
-```mermaid
-flowchart LR
-
-A[👤 Usuario]
-B[🎨 Frontend SPA]
-C[🧠 Backend API]
-D[(🗄️ PostgreSQL)]
-
-A --> B
-B --> C
-C --> D
-D --> C
-C --> B
-B --> A
-```
-
----
-
-# 🎯 Filosofía de la Arquitectura
-
-| Componente | Responsabilidad |
-|------------|----------------|
-| 🎨 Frontend | Presentación e interacción |
-| 🧠 Backend | Procesamiento y reglas de negocio |
-| 🗄️ PostgreSQL | Persistencia de datos |
-| 📚 Docs | Comunicación técnica |
-| 🤖 Scripts | Automatización |
-| ⚙️ CI/CD | Calidad y despliegue continuo |
-| 🐳 Docker | Entorno consistente |
-| 📖 README | Onboarding de desarrolladores |
-
----
-
-> **LATIDO_TERMICO** busca una arquitectura desacoplada, escalable y mantenible, donde cada componente tenga una responsabilidad clara y bien definida.
+git clone [https://github.com/TU_USUARIO/Latido_Termico.git](https://github.com/TU_USUARIO/Latido_Termico.git)
+cd Latido_Termico

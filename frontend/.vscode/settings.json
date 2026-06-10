@@ -1,0 +1,12 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "app.ts": "app.*.ts, app.css, app.html",
+    "app.component.ts": "app.component.*",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json",
+    "main.ts": "styles.css, index.html",
+    "angular.json": ".editorconfig, .gitignore, .prettierrc, README.md"
+  }
+}
