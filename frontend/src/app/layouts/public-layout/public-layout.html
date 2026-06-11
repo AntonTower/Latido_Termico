@@ -1,1 +1,137 @@
-<p>public-layout works!</p>
+<nav id="main-nav">
+  <div class="nav-left">
+    <button class="menu-btn" [class.open]="isMenuOpen" (click)="toggleMenu()" aria-label="Abrir menú">
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="btn-text">Menú</span>
+    </button>
+  </div>
+
+  <div class="nav-center">
+    <a routerLink="/" class="logo">
+      <span class="logo-icon">LATIDO TÉRMICO</span>
+      <span class="logo-text">LATIDO TÉRMICO</span>
+    </a>
+  </div>
+
+  <div class="nav-right">
+    <ng-container *ngIf="!isLoggedIn">
+      <a class="btn-login" (click)="openModal()">
+        <span class="btn-icon" style="display: none;">👤</span>
+        <span class="btn-text">Iniciar sesión</span>
+      </a>
+      <a class="btn-publish">
+        <span class="btn-text">+ Publicar</span>
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn">
+      <button class="user-btn" [class.active]="isUserMenuOpen" (click)="toggleUserMenu()">👤</button>
+    </ng-container>
+  </div>
+</nav>
+
+<div class="dropdown main-menu" [class.open]="isMenuOpen">
+  <div class="dropdown-section">
+    <p class="dropdown-label">Explorar</p>
+    <a><span class="icon icon-red">🔍</span> Buscar mascota</a>
+    <a><span class="icon icon-amber">⚡</span> Casos urgentes</a>
+    <a><span class="icon icon-green">🏠</span> Adopción</a>
+  </div>
+  <div class="dropdown-section">
+    <p class="dropdown-label">Publicar</p>
+    <a><span class="icon icon-red">📢</span> Reportar pérdida</a>
+    <a><span class="icon icon-coral">📍</span> Mascota encontrada</a>
+  </div>
+</div>
+
+<div class="dropdown user-dropdown" [class.open]="isUserMenuOpen">
+  <div class="dropdown-section">
+    <p class="dropdown-label">Operaciones</p>
+    <a routerLink="/cliente-basico/mis-datos" (click)="toggleUserMenu()"><span class="icon icon-amber">⚙️</span> Mis datos</a>
+    <a><span class="icon icon-coral">📋</span> Mis reportes</a>
+  </div>
+  <div class="dropdown-section">
+    <a (click)="doLogout()"><span class="icon icon-red">🚪</span> Cerrar Sesión</a>
+  </div>
+</div>
+
+<main class="layout-content">
+  <router-outlet></router-outlet>
+</main>
+
+<div class="modal-overlay animate-fade-in" *ngIf="isModalOpen" (click)="closeModal()">
+  
+  <div class="modal-content animate-slide-up" 
+       [ngClass]="{'mode-login': isLoginMode, 'mode-register': !isLoginMode}" 
+       (click)="$event.stopPropagation()">
+    
+    <button class="modal-close" (click)="closeModal()">✖</button>
+    
+    <h2 style="font-family: 'DM Serif Display', serif; color: var(--red); margin-bottom: 8px; transition: color 0.3s;">
+      {{ isLoginMode ? 'Bienvenido a LATIDO' : 'Únete a LATIDO' }}
+    </h2>
+    <p style="color: var(--charcoal); margin-bottom: 24px; font-size: 14px;">
+      {{ isLoginMode ? 'Ingresa tus credenciales para acceder al centro de operaciones.' : 'Registra tus datos para unirte a la red de operadores.' }}
+    </p>
+
+    <div class="form-ui">
+      <ng-container *ngIf="!isLoginMode">
+        <div class="input-group animate-fade-in">
+          <label>Nombre Completo</label>
+          <input type="text" [(ngModel)]="registerData.nombre_completo" placeholder="Ej. Juan Pérez">
+        </div>
+
+        <div class="animate-fade-in" style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <div class="input-group" style="flex: 1; min-width: 140px;">
+            <label>Teléfono</label>
+            <input type="text" [(ngModel)]="registerData.telefono" placeholder="10 dígitos">
+          </div>
+          
+          <div class="input-group" style="flex: 1; min-width: 140px;">
+            <label>Rol de Usuario</label>
+            <select [(ngModel)]="registerData.rol_id" class="input-field select-field">
+              <option value="2">Operador</option>
+              <option value="1">Administrador</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="input-group">
+        <label>Correo Electrónico</label>
+        <input *ngIf="isLoginMode" type="email" [(ngModel)]="loginData.email" placeholder="usuario@rescuenet.com" (keyup.enter)="doLogin()">
+        <input *ngIf="!isLoginMode" type="email" [(ngModel)]="registerData.email" placeholder="usuario@rescuenet.com" (keyup.enter)="doRegister()">
+      </div>
+      
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input *ngIf="isLoginMode" type="password" [(ngModel)]="loginData.password" placeholder="••••••••" (keyup.enter)="doLogin()">
+        <input *ngIf="!isLoginMode" type="password" [(ngModel)]="registerData.password" placeholder="••••••••" (keyup.enter)="doRegister()">
+      </div>
+
+      <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="success-msg" *ngIf="successMessage">{{ successMessage }}</p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+        <button class="btn-publish" style="width: 100%; justify-content: center; padding: 12px;" 
+                (click)="isLoginMode ? doLogin() : doRegister()" [disabled]="isLoading">
+          {{ isLoading ? 'Procesando...' : (isLoginMode ? 'Acceder al Sistema' : 'Crear Cuenta') }}
+        </button>
+
+        <button class="btn-login" style="width: 100%; justify-content: center; padding: 12px;" 
+                (click)="toggleMode()">
+          {{ isLoginMode ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-logo">🐾 Huellas</p>
+  <p>Red de búsqueda y rescate de mascotas · México<br>
+  <a>Contacto</a> · <a>Aviso de privacidad</a> · <a>Voluntarios</a></p>
+</footer>

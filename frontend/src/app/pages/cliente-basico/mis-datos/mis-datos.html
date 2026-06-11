@@ -1,0 +1,49 @@
+<section class="mis-datos-section animate-fade-in">
+  <div class="header-container">
+    <p class="eyebrow">Panel de Control</p>
+    <h1 class="main-title">Tu Información<br><span class="highlight">Personal</span></h1>
+    <p class="subtitle">Gestiona tus datos de contacto y mantén tu perfil actualizado para facilitar el ecosistema de adopción y rescate.</p>
+  </div>
+
+  <div class="data-card animate-slide-up">
+    <div class="data-grid">
+      
+      <div class="data-item">
+        <span class="data-label">Nombre Completo</span>
+        <p class="data-value">{{ userData.nombre_completo }}</p>
+      </div>
+      
+      <div class="data-item">
+        <span class="data-label">Correo Electrónico</span>
+        <p class="data-value">{{ userData.email }}</p>
+      </div>
+      
+      <div class="data-item">
+        <span class="data-label">Teléfono</span>
+        <p class="data-value">{{ userData.telefono }}</p>
+      </div>
+      
+      <div class="data-item">
+        <span class="data-label">CURP</span>
+        <p class="data-value">{{ userData.curp || 'No registrado' }}</p>
+      </div>
+      
+      <div class="data-item">
+        <span class="data-label">Rol en LATIDO</span>
+        <p class="data-value">
+          <span class="badge">{{ userData.rol }}</span>
+        </p>
+      </div>
+      
+      <div class="data-item">
+        <span class="data-label">Miembro desde</span>
+        <p class="data-value">{{ userData.fecha_registro }}</p>
+      </div>
+
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-secondary">✏️ Editar información</button>
+    </div>
+  </div>
+</section>

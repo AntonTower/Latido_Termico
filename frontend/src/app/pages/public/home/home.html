@@ -1,10 +1,137 @@
-<div style="font-family: sans-serif; text-align: center; margin-top: 100px; color: #334155;">
-  <h1 style="color: #1e3a8a; font-size: 3rem; margin-bottom: 10px;">🚀 ¡Despegue Exitoso!</h1>
-  <h2>Sistema LATIDO corriendo en local (Sin Docker)</h2>
-  <p style="font-size: 1.2rem; margin-top: 20px;">
-    La estructura de Angular está perfectamente configurada y lista para conectarse a Node.js.
-  </p>
-  <div style="margin-top: 40px; padding: 20px; background-color: #f1f5f9; display: inline-block; border-radius: 8px;">
-    <strong>Ruta actual:</strong> /pages/public/home
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Red de búsqueda y rescate</p>
+    <h1 class="hero-title">Cada mascota<br>merece<br><span style="color: var(--red);">volver a casa.</span></h1>
+    <p class="hero-desc">Conectamos a familias con sus compañeros perdidos. Reporta, busca y adopta con el apoyo de una comunidad que cuida.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">🔍 Buscar mascota</button>
+      <button class="btn-secondary">Reportar pérdida</button>
+    </div>
   </div>
-</div>
+
+  <div class="hero-card">
+    <div class="pet-img">🐶</div>
+    <span class="card-badge urgent">⚡ Urgente · 8 horas</span>
+    <p class="card-pet-name">Max, Labrador dorado</p>
+    <p class="card-meta">Macho · 3 años · Collar azul</p>
+    <div class="card-footer">
+      <span class="card-location">📍 Col. Roma Norte</span>
+      <button class="card-cta">Ver aviso</button>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat">
+    <span class="stat-number">4,820</span>
+    <span class="stat-label">Mascotas reunidas</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">12,300</span>
+    <span class="stat-label">Familias registradas</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">87%</span>
+    <span class="stat-label">Tasa de reencuentro</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number">230</span>
+    <span class="stat-label">Voluntarios activos</span>
+  </div>
+</section>
+
+<section class="search-section">
+  <h2>¿Buscas a alguien?</h2>
+  <div class="search-bar">
+    <input type="text" placeholder="Especie, raza, color, zona...">
+    <button class="btn-primary">Buscar</button>
+  </div>
+</section>
+
+<section class="grid-section">
+  <div class="section-header">
+    <h2 class="section-title">Avisos recientes</h2>
+    <a class="section-link">Ver todos →</a>
+  </div>
+  
+  <div class="pet-grid">
+    <div class="pet-card">
+      <div class="pet-card-img bg-coral">🐱</div>
+      <div class="pet-card-body">
+        <span class="pet-tag tag-urgent">⚡ Urgente</span>
+        <p class="pet-card-name">Luna</p>
+        <p class="pet-card-info">Gata persa · Blanca · 2 años</p>
+        <div class="pet-card-footer">
+          <span class="pet-card-loc">📍 Condesa</span>
+          <button class="btn-sm">Ver</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pet-card">
+      <div class="pet-card-img bg-peach">🐕</div>
+      <div class="pet-card-body">
+        <span class="pet-tag tag-lost">Perdido</span>
+        <p class="pet-card-name">Coco</p>
+        <p class="pet-card-info">Beagle · Tricolor · 5 años</p>
+        <div class="pet-card-footer">
+          <span class="pet-card-loc">📍 Coyoacán</span>
+          <button class="btn-sm">Ver</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pet-card">
+      <div class="pet-card-img bg-green">🐇</div>
+      <div class="pet-card-body">
+        <span class="pet-tag tag-found">Encontrado</span>
+        <p class="pet-card-name">Sin nombre</p>
+        <p class="pet-card-info">Conejo · Blanco y gris · Joven</p>
+        <div class="pet-card-footer">
+          <span class="pet-card-loc">📍 Tlalpan</span>
+          <button class="btn-sm-green">Info</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pet-card">
+      <div class="pet-card-img bg-amber">🐶</div>
+      <div class="pet-card-body">
+        <span class="pet-tag tag-lost">Perdido</span>
+        <p class="pet-card-name">Rocky</p>
+        <p class="pet-card-info">Bulldog inglés · Atigrado · 4 años</p>
+        <div class="pet-card-footer">
+          <span class="pet-card-loc">📍 Narvarte</span>
+          <button class="btn-sm">Ver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section">
+  <h2>¿Cómo funciona?</h2>
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-icon">📢</div>
+      <h3>1. Publica el aviso</h3>
+      <p>Sube una foto, describe a tu mascota y comparte la ubicación donde fue vista por última vez.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-icon">🔔</div>
+      <h3>2. La comunidad actúa</h3>
+      <p>Voluntarios y vecinos cercanos reciben una alerta y ayudan a buscar en la zona.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-icon">🤝</div>
+      <h3>3. Reencuentro</h3>
+      <p>Te contactamos en cuanto alguien la encuentre. La mayoría regresa en menos de 48 horas.</p>
+    </div>
+  </div>
+</section>
+
+<section class="success-banner">
+  <h2>¿La encontraste?</h2>
+  <p>Cierra tu aviso y cuéntanos cómo fue el reencuentro. Tu historia inspira a otros.</p>
+  <button class="btn-white">Marcar como encontrada 🎉</button>
+</section>

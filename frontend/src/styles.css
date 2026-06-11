@@ -1,1 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.css o src/styles.scss */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 🔒 CANDADO DE RESPONSIVIDAD ESTRICTA */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* Elimina de tajo cualquier scroll horizontal */
+}
+
+/* Regla de oro para evitar que las imágenes rompan el layout */
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+:root {
+  --red:      #C0392B;
+  --coral:    #E8735A;
+  --peach:    #F4A77E;
+  --cream:    #FDE8D8;
+  --bg:       #F7F2ED;
+  --green:    #3A7D5C;
+  --amber:    #F5A623;
+  --charcoal: #4A4A4A;
+  --white:    #FFFFFF;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--charcoal);
+  font-size: 16px;
+  line-height: 1.6;
+}

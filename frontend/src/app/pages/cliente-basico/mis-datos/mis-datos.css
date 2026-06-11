@@ -1,0 +1,166 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
+.mis-datos-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 64px) 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* =========================================
+   CABECERA INMENSA
+   ========================================= */
+.header-container {
+  max-width: 800px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 12px;
+}
+
+.main-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.8rem, 6vw, 4.5rem); /* Título Inmenso Responsivo */
+  line-height: 1.1;
+  color: var(--charcoal);
+  margin-bottom: 16px;
+  word-break: break-word;
+}
+
+.main-title .highlight {
+  color: var(--red);
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: #6b5e56;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* =========================================
+   TARJETA DE DATOS (CARD)
+   ========================================= */
+.data-card {
+  background: var(--white);
+  border: 1px solid var(--cream);
+  border-radius: 20px;
+  padding: clamp(24px, 4vw, 48px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.04);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🌟 CANDADO DE RESPONSIVIDAD: min(100%, 250px) */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.data-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--coral);
+}
+
+.data-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin: 0;
+  word-break: break-word;
+}
+
+.badge {
+  display: inline-block;
+  background-color: var(--cream);
+  color: var(--red);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* =========================================
+   BOTONES Y ACCIONES
+   ========================================= */
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-top: 1px solid var(--cream);
+  padding-top: 24px;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  background: transparent;
+  color: var(--charcoal);
+  border: 1.5px solid var(--peach);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--coral);
+  background: var(--cream);
+}
+
+/* =========================================
+   ✨ ANIMACIONES SUAVES
+   ========================================= */
+.animate-fade-in { opacity: 0; animation: fadeIn 0.4s ease-out forwards; }
+.animate-slide-up { opacity: 0; transform: translateY(20px); animation: slideUp 0.5s ease-out forwards 0.1s; }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   📱 MEDIA QUERIES OBLIGATORIOS (MOBILE)
+   ========================================= */
+@media (max-width: 480px) {
+  .mis-datos-section {
+    padding: 32px 1rem;
+    gap: 24px;
+  }
+  
+  .data-card {
+    padding: 24px 16px;
+  }
+
+  .data-grid {
+    gap: 24px; /* Menor separación en móvil */
+  }
+  
+  /* El botón ocupa el 100% de la tarjeta para ser "Touch-friendly" */
+  .card-actions .btn-secondary {
+    width: 100%;
+  }
+}
