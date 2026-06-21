@@ -5,45 +5,84 @@
     <p class="subtitle">Gestiona tus datos de contacto y mantén tu perfil actualizado para facilitar el ecosistema de adopción y rescate.</p>
   </div>
 
-  <div class="data-card animate-slide-up">
-    <div class="data-grid">
-      
-      <div class="data-item">
-        <span class="data-label">Nombre Completo</span>
-        <p class="data-value">{{ userData.nombre_completo }}</p>
-      </div>
-      
-      <div class="data-item">
-        <span class="data-label">Correo Electrónico</span>
-        <p class="data-value">{{ userData.email }}</p>
-      </div>
-      
-      <div class="data-item">
-        <span class="data-label">Teléfono</span>
-        <p class="data-value">{{ userData.telefono }}</p>
-      </div>
-      
-      <div class="data-item">
-        <span class="data-label">CURP</span>
-        <p class="data-value">{{ userData.curp || 'No registrado' }}</p>
-      </div>
-      
-      <div class="data-item">
-        <span class="data-label">Rol en LATIDO</span>
-        <p class="data-value">
-          <span class="badge">{{ userData.rol }}</span>
-        </p>
-      </div>
-      
-      <div class="data-item">
-        <span class="data-label">Miembro desde</span>
-        <p class="data-value">{{ userData.fecha_registro }}</p>
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Cargando información del servidor...</p>
+  </div>
+
+  <div *ngIf="!isLoading && userData" class="data-card animate-slide-up">
+    
+    <ng-container *ngIf="!isEditing">
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">Nombre Completo</span>
+          <p class="data-value">{{ userData.nombre_completo }}</p>
+        </div>
+        
+        <div class="data-item">
+          <span class="data-label">Correo Electrónico</span>
+          <p class="data-value">{{ userData.email }}</p>
+        </div>
+        
+        <div class="data-item">
+          <span class="data-label">Teléfono</span>
+          <p class="data-value">{{ userData.telefono || 'Sin registrar' }}</p>
+        </div>
+        
+        <div class="data-item">
+          <span class="data-label">CURP</span>
+          <p class="data-value">{{ userData.curp || 'No registrado' }}</p>
+        </div>
+        
+        <div class="data-item">
+          <span class="data-label">Rol en LATIDO</span>
+          <p class="data-value">
+            <span class="badge">{{ userData.nombre_rol || (userData.rol_id === 1 ? 'Administrador' : 'Operador') }}</span>
+          </p>
+        </div>
+        
+        <div class="data-item">
+          <span class="data-label">Miembro desde</span>
+          <p class="data-value">{{ (userData.created_at | date:'longDate') || 'Reciente' }}</p>
+        </div>
       </div>
 
-    </div>
+      <div class="card-actions">
+        <button class="btn-secondary" (click)="toggleEdit()">✏️ Editar información</button>
+      </div>
+    </ng-container>
 
-    <div class="card-actions">
-      <button class="btn-secondary">✏️ Editar información</button>
-    </div>
+    <ng-container *ngIf="isEditing">
+      <div class="form-ui">
+        <div class="alert-box info">
+          <p><strong>Nota:</strong> Solo puedes actualizar tu teléfono y solicitar un cambio de rol operativo. Para modificar tu nombre, correo o CURP, contacta a soporte.</p>
+        </div>
+
+        <div class="data-grid">
+          <div class="input-group">
+            <label>Nuevo Teléfono</label>
+            <input type="text" [(ngModel)]="editData.telefono" placeholder="10 dígitos">
+          </div>
+          
+          <div class="input-group">
+            <label>Solicitud de Rol</label>
+            <select [(ngModel)]="editData.role" class="select-field">
+              <option value="2">Operador</option>
+              <option value="1">Administrador</option>
+            </select>
+          </div>
+        </div>
+
+        <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <p class="success-msg" *ngIf="successMessage">{{ successMessage }}</p>
+
+        <div class="card-actions">
+          <button class="btn-primary" (click)="saveProfile()" [disabled]="isSaving">
+            {{ isSaving ? 'Guardando...' : '💾 Guardar Cambios' }}
+          </button>
+          <button class="btn-secondary" (click)="toggleEdit()" [disabled]="isSaving">❌ Cancelar</button>
+        </div>
+      </div>
+    </ng-container>
+
   </div>
 </section>

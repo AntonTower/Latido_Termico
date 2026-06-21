@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// 👇 Importamos HttpHeaders
+import { HttpClient, HttpHeaders } from '@angular/common/http'; 
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -11,6 +12,16 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  // Generador de cabeceras seguras
+  private getAuthHeaders(): HttpHeaders {
+    let token = '';
+    if (typeof window !== 'undefined' && localStorage) {
+      token = localStorage.getItem('token') || '';
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  // --- MÉTODOS EXISTENTES ---
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(respuesta => {
@@ -24,13 +35,23 @@ export class AuthService {
     );
   }
 
-  // NUEVO MÉTODO DE REGISTRO
   register(userData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, userData);
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('rol_id');
+    if (typeof window !== 'undefined' && localStorage) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('rol_id');
+    }
+  }
+
+  // 🌟 NUEVOS MÉTODOS PARA EL PERFIL 🌟
+  getPerfil(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/perfil`, { headers: this.getAuthHeaders() });
+  }
+
+  updatePerfil(data: { telefono?: string, role?: number }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/perfil`, data, { headers: this.getAuthHeaders() });
   }
 }

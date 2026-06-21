@@ -103,6 +103,75 @@
 }
 
 /* =========================================
+   ESTILOS PARA MODO EDICIÓN Y ESTADOS
+   ========================================= */
+.loading-state {
+  padding: 40px;
+  text-align: center;
+  color: var(--charcoal);
+  font-weight: 600;
+  background: var(--cream);
+  border-radius: 12px;
+}
+
+.form-ui {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.alert-box.info {
+  background-color: #eef5ff;
+  border-left: 4px solid #3b82f6;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.alert-box.info p {
+  margin: 0;
+  font-size: 13px;
+  color: #1e3a8a;
+  line-height: 1.5;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.input-group input, .select-field {
+  padding: 14px 16px;
+  border: 1.5px solid #d8cdc5;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  background-color: #faf8f5;
+  color: var(--charcoal);
+  outline: none;
+  transition: all 0.25s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-group input:focus, .select-field:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(232, 115, 90, 0.12);
+  background-color: var(--white);
+}
+
+.error-msg { color: var(--red); font-size: 13px; font-weight: 600; margin: 0; }
+.success-msg { color: var(--green); font-size: 13px; font-weight: 600; margin: 0; }
+
+/* =========================================
    BOTONES Y ACCIONES
    ========================================= */
 .card-actions {
@@ -111,6 +180,33 @@
   gap: 16px;
   border-top: 1px solid var(--cream);
   padding-top: 24px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #a0302a;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  background: #d88982;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-secondary {
@@ -160,6 +256,10 @@
   }
   
   /* El botón ocupa el 100% de la tarjeta para ser "Touch-friendly" */
+  .card-actions {
+    flex-direction: column;
+  }
+  .card-actions .btn-primary, 
   .card-actions .btn-secondary {
     width: 100%;
   }

@@ -20,7 +20,7 @@
         <span class="btn-icon">👤</span>
         <span class="btn-text">Iniciar sesión</span>
       </a>
-      <a class="btn-publish">
+      <a class="btn-publish" routerLink="/registro">
         <span class="btn-text">+ Publicar</span>
       </a>
     </ng-container>
@@ -42,15 +42,16 @@
   </div>
   <div class="dropdown-section">
     <p class="dropdown-label">Publicar</p>
-    <a><span class="icon icon-red">📢</span> Reportar pérdida</a>
-    <a><span class="icon icon-coral">📍</span> Mascota encontrada</a>
+    <a routerLink="/registro"><span class="icon icon-red">📢</span> Reportar pérdida</a>
+    <a routerLink="/registro"><span class="icon icon-coral">📍</span> Mascota encontrada</a>
   </div>
 </div>
 
 <div class="dropdown user-dropdown" [class.open]="isUserMenuOpen">
   <div class="dropdown-section">
     <p class="dropdown-label">Operaciones</p>
-    <a routerLink="/cliente-basico/mis-datos" (click)="toggleUserMenu()"><span class="icon icon-amber">⚙️</span> Mis datos</a>
+    <a routerLink="/operaciones" (click)="toggleUserMenu()"><span class="icon icon-green">🚀</span> Página Operativa</a>
+    <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu()"><span class="icon icon-amber">⚙️</span> Mis datos</a>
     <a><span class="icon icon-coral">📋</span> Mis reportes</a>
   </div>
   <div class="dropdown-section">
@@ -66,7 +67,7 @@
   <div class="modal-content animate-slide-up mode-login" (click)="$event.stopPropagation()">
     <button class="modal-close" (click)="closeModal()">✖</button>
     
-    <h2 style="font-family: 'DM Serif Display', serif; color: var(--red); margin-bottom: 8px;">Bienvenido a LATIDO</h2>
+    <h2 style="font-family: 'DM Serif Display', serif; color: var(--red); margin-bottom: 8px;">LATIDO Térmico</h2>
     <p style="color: var(--charcoal); margin-bottom: 24px; font-size: 14px;">Ingresa tus credenciales para acceder al centro de operaciones.</p>
 
     <div class="form-ui">

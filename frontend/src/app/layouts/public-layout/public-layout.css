@@ -100,13 +100,17 @@ footer a { color: var(--peach); text-decoration: none; cursor: pointer; }
 }
 
 @media (max-width: 480px) {
-  /* Ocultamos los textos estáticos laterales de acción para evitar colapsos */
-  .menu-btn .btn-text, .btn-login .btn-text, .btn-publish { display: none !important; }
-  .menu-btn { padding: 10px; border: none; }
+  /* 🌟 CORRECCIÓN CRÍTICA: Se añade 'nav' al inicio para que el CSS SOLO oculte los elementos 
+     que están en el header, y respete totalmente los botones idénticos del modal */
+  nav .menu-btn .btn-text, 
+  nav .btn-login .btn-text, 
+  nav .btn-publish { display: none !important; }
+  
+  nav .menu-btn { padding: 10px; border: none; }
   
   /* Habilitamos el ícono amigable flotante a la derecha para iniciar sesión en móviles */
-  .btn-login .btn-icon { display: inline-block !important; font-size: 1.45rem; padding: 4px; color: var(--charcoal); }
-  .btn-login { border: none; padding: 4px; }
+  nav .btn-login .btn-icon { display: inline-block !important; font-size: 1.45rem; padding: 4px; color: var(--charcoal); }
+  nav .btn-login { border: none; padding: 4px; }
   
   /* Ajustamos las cajas flex para asegurar el centrado perfecto del título */
   .nav-left, .nav-right { flex: 0 0 auto; }

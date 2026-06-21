@@ -87,6 +87,9 @@ export class PublicLayoutComponent implements OnInit {
         this.isLoading = false;
         this.isLoggedIn = true;
         this.closeModal();
+        
+        // 🌟 REDIRECCIÓN AL NUEVO ENTORNO PRIVADO
+        window.location.href = '/operaciones';
       },
       error: (err: any) => {
         this.isLoading = false;

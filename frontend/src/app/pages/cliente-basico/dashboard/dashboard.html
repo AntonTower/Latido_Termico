@@ -1,5 +1,5 @@
 <div class="dashboard-wrapper animate-fade-in">
-  
+
   <div class="hero-dashboard-banner">
     <div class="banner-overlay"></div>
     <div class="banner-content">
@@ -9,62 +9,120 @@
   </div>
 
   <div class="dashboard-grid">
-    
+
     <div class="main-workspace-side">
-      
+
       <div class="workspace-card">
         <h3 class="card-title-section"><span class="indicator-dot orange"></span> Reportes Tomados (En Rescate)</h3>
-        <div class="table-container">
-          <table class="op-table">
-            <thead>
-              <tr>
-                <th>Mascota</th>
-                <th>Especie</th>
-                <th>Zona de Avistamiento</th>
-                <th>Estado</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let rep of reportesTomados">
-                <td class="icon-td">{{ rep.foto }}</td>
-                <td><strong>{{ rep.especie }}</strong></td>
-                <td>📍 {{ rep.zona }}</td>
-                <td><span class="badge-status process">{{ rep.estado }}</span></td>
-                <td><button class="btn-action-sm">Actualizar</button></td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="reportes-grid">
+          <div class="report-card" *ngFor="let rep of reportesTomados">
+
+            <div class="report-photo">
+              <img *ngIf="rep.fotoUrl; else fotoFallbackTomados" [src]="rep.fotoUrl" [alt]="rep.especie" loading="lazy" />
+              <ng-template #fotoFallbackTomados>
+                <div class="photo-fallback">{{ getEspecieIcon(rep.especie) }}</div>
+              </ng-template>
+              <span class="badge-status" [ngClass]="getEstadoClass(rep.estado)">{{ rep.estado | titlecase }}</span>
+              <span class="agresividad-flag" *ngIf="rep.agresividad >= 4" title="Agresividad alta">⚠️</span>
+            </div>
+
+            <div class="report-body">
+              <div class="report-heading">
+                <h4>{{ rep.especie }} <span class="raza-tag" *ngIf="rep.raza_aprox">· {{ rep.raza_aprox }}</span></h4>
+                <span class="report-id">#{{ rep.id }}</span>
+              </div>
+
+              <div class="report-chips">
+                <span class="chip">🎨 {{ rep.color_dominante }}</span>
+                <span class="chip">⚧ {{ rep.sexo }}</span>
+                <span class="chip">📏 {{ rep.tamano }}</span>
+                <span class="chip">🎂 {{ rep.edad_aprox }}</span>
+              </div>
+
+              <p class="report-notes" *ngIf="rep.caracteristicas_especiales">{{ rep.caracteristicas_especiales }}</p>
+
+              <div class="agresividad-meter">
+                <span class="meter-label">Agresividad</span>
+                <div class="meter-dots">
+                  <span class="dot" *ngFor="let d of [1,2,3,4,5]"
+                        [class.filled]="d <= rep.agresividad"
+                        [ngClass]="d <= rep.agresividad ? getAgresividadColor(rep.agresividad) : ''"></span>
+                </div>
+              </div>
+
+              <div class="report-map-preview">
+                <iframe [src]="rep.lat | mapEmbed:rep.lng" loading="lazy" title="Ubicación del reporte"></iframe>
+              </div>
+              <div class="report-address">
+                <span class="address-icon">📍</span>
+                <span class="address-text">{{ rep.direccion || rep.referencias || (rep.lat + ', ' + rep.lng) }}</span>
+              </div>
+
+              <div class="report-footer">
+                <span class="report-time">🕒 {{ rep.hora_avistamiento | date:'d MMM, HH:mm' }}</span>
+                <button class="btn-action-sm">Actualizar</button>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
       <div class="workspace-card">
         <h3 class="card-title-section"><span class="indicator-dot red"></span> Mis Alertas Emitidas</h3>
-        <div class="table-container">
-          <table class="op-table">
-            <thead>
-              <tr>
-                <th>Mascota</th>
-                <th>Especie</th>
-                <th>Zona</th>
-                <th>Estado</th>
-                <th>Monitoreo</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let rep of reportesRealizados">
-                <td class="icon-td">{{ rep.foto }}</td>
-                <td><strong>{{ rep.especie }}</strong></td>
-                <td>📍 {{ rep.zona }}</td>
-                <td>
-                  <span class="badge-status" [ngClass]="rep.estado === 'Resuelto' ? 'success' : 'new'">
-                    {{ rep.estado }}
-                  </span>
-                </td>
-                <td><button class="btn-action-sm secondary">Ver Alerta</button></td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="reportes-grid">
+          <div class="report-card" *ngFor="let rep of reportesRealizados">
+
+            <div class="report-photo">
+              <img *ngIf="rep.fotoUrl; else fotoFallbackAlertas" [src]="rep.fotoUrl" [alt]="rep.especie" loading="lazy" />
+              <ng-template #fotoFallbackAlertas>
+                <div class="photo-fallback">{{ getEspecieIcon(rep.especie) }}</div>
+              </ng-template>
+              <span class="badge-status" [ngClass]="getEstadoClass(rep.estado)">{{ rep.estado | titlecase }}</span>
+              <span class="agresividad-flag" *ngIf="rep.agresividad >= 4" title="Agresividad alta">⚠️</span>
+            </div>
+
+            <div class="report-body">
+              <div class="report-heading">
+                <h4>{{ rep.especie }} <span class="raza-tag" *ngIf="rep.raza_aprox">· {{ rep.raza_aprox }}</span></h4>
+                <span class="report-id">#{{ rep.id }}</span>
+              </div>
+
+              <div class="report-chips">
+                <span class="chip">🎨 {{ rep.color_dominante }}</span>
+                <span class="chip">⚧ {{ rep.sexo }}</span>
+                <span class="chip">📏 {{ rep.tamano }}</span>
+                <span class="chip">🎂 {{ rep.edad_aprox }}</span>
+              </div>
+
+              <p class="report-notes" *ngIf="rep.caracteristicas_especiales">{{ rep.caracteristicas_especiales }}</p>
+
+              <div class="agresividad-meter">
+                <span class="meter-label">Agresividad</span>
+                <div class="meter-dots">
+                  <span class="dot" *ngFor="let d of [1,2,3,4,5]"
+                        [class.filled]="d <= rep.agresividad"
+                        [ngClass]="d <= rep.agresividad ? getAgresividadColor(rep.agresividad) : ''"></span>
+                </div>
+              </div>
+
+              <div class="report-map-preview">
+                <iframe [src]="rep.lat | mapEmbed:rep.lng" loading="lazy" title="Ubicación del reporte"></iframe>
+              </div>
+              <div class="report-address">
+                <span class="address-icon">📍</span>
+                <span class="address-text">{{ rep.direccion || rep.referencias || (rep.lat + ', ' + rep.lng) }}</span>
+              </div>
+
+              <div class="report-footer">
+                <span class="report-time">🕒 {{ rep.hora_avistamiento | date:'d MMM, HH:mm' }}</span>
+                <button class="btn-action-sm secondary">Ver Alerta</button>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -73,13 +131,13 @@
     <div class="sidebar-stats-side">
       <div class="stats-sticky-card">
         <h3 class="stats-card-title">Tu Impacto Operativo</h3>
-        
+
         <div class="stat-box-container">
           <div class="stat-mini-box">
             <span class="stat-box-num text-red">{{ stats.reportes_realizados }}</span>
             <span class="stat-box-lbl">Alertas Creadas</span>
           </div>
-          
+
           <div class="stat-mini-box">
             <span class="stat-box-num text-green">{{ stats.reportes_resueltos }}</span>
             <span class="stat-box-lbl">Casos Cerrados</span>
