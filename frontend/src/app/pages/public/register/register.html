@@ -1,0 +1,72 @@
+<section class="auth-page-container animate-fade-in">
+  <div class="mobile-overlay"></div>
+
+  <div class="auth-split">
+    
+    <div class="form-side">
+      <div class="form-wrapper animate-slide-up">
+        
+        <h1 class="auth-title">
+          {{ isLoginMode ? 'Bienvenido de vuelta' : 'Únete a LATIDO' }}
+        </h1>
+        <p class="auth-subtitle">
+          {{ isLoginMode ? 'Accede al centro de operaciones para gestionar reportes.' : 'Crea tu cuenta de acceso para colaborar en las operaciones.' }}
+        </p>
+        
+        <div class="form-ui">
+          
+          <ng-container *ngIf="!isLoginMode">
+            <div class="input-group">
+              <label>Nombre Completo</label>
+              <input type="text" [(ngModel)]="registerData.nombre_completo" placeholder="Ej. Juan Pérez García">
+            </div>
+
+            <div class="input-row">
+              <div class="input-group flex-1">
+                <label>Teléfono</label>
+                <input type="text" [(ngModel)]="registerData.telefono" placeholder="10 dígitos">
+              </div>
+              
+              <div class="input-group flex-1">
+                <label>Rol solicitado</label>
+                <select [(ngModel)]="registerData.rol_id" class="input-field select-field">
+                  <option value="2">Operador</option>
+                  <option value="1">Administrador</option>
+                </select>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="input-group">
+            <label>Correo Electrónico</label>
+            <input *ngIf="isLoginMode" type="email" [(ngModel)]="loginData.email" placeholder="usuario@rescuenet.com" (keyup.enter)="doLogin()">
+            <input *ngIf="!isLoginMode" type="email" [(ngModel)]="registerData.email" placeholder="usuario@rescuenet.com" (keyup.enter)="doRegister()">
+          </div>
+          
+          <div class="input-group">
+            <label>Contraseña</label>
+            <input *ngIf="isLoginMode" type="password" [(ngModel)]="loginData.password" placeholder="••••••••" (keyup.enter)="doLogin()">
+            <input *ngIf="!isLoginMode" type="password" [(ngModel)]="registerData.password" placeholder="••••••••" (keyup.enter)="doRegister()">
+          </div>
+
+          <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+          <p class="success-msg" *ngIf="successMessage">{{ successMessage }}</p>
+
+          <div class="actions-stack">
+            <button class="btn-publish override-btn" (click)="isLoginMode ? doLogin() : doRegister()" [disabled]="isLoading">
+              {{ isLoading ? 'Procesando...' : (isLoginMode ? 'Iniciar sesión' : 'Crear Cuenta Operativa') }}
+            </button>
+            
+            <button class="btn-login override-btn-secondary" (click)="toggleMode()">
+              {{ isLoginMode ? '¿No tienes cuenta? Regístrate gratis' : '¿Ya tienes cuenta? Inicia sesión' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="image-side animate-fade-in"></div>
+
+  </div>
+</section>

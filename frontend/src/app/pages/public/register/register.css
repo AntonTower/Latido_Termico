@@ -1,0 +1,193 @@
+/* =========================================
+   CONTENEDOR A PANTALLA COMPLETA (EDGE-TO-EDGE)
+   ========================================= */
+.auth-page-container {
+  position: relative;
+  width: 100%;
+  /* Ocupa el espacio restante exacto para matar el scroll */
+  height: calc(100vh - 64px); 
+  min-height: 540px; 
+  display: flex;
+  background-color: var(--white);
+  overflow: hidden;
+  padding: 0; /* 🌟 Cero márgenes para que la división toque los bordes */
+  box-sizing: border-box;
+}
+
+.mobile-overlay {
+  display: none;
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(40, 35, 33, 0.7);
+  z-index: 1;
+}
+
+.auth-split {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: stretch; /* Ambos lados se estiran de arriba a abajo */
+  z-index: 2;
+}
+
+/* =========================================
+   LADO IZQUIERDO: FORMULARIO COMPACTO
+   ========================================= */
+.form-side {
+  flex: 1 1 50%;
+  background-color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem clamp(1.5rem, 5vw, 4rem);
+  box-sizing: border-box;
+  overflow-y: auto; /* Solo por seguridad si la pantalla es microscópica */
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Tipografía Minimizada para Laptops */
+.auth-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  color: var(--red);
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.auth-subtitle {
+  color: var(--charcoal);
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+/* UI Compacta (Cero Scroll) */
+.form-ui { display: flex; flex-direction: column; gap: 8px; }
+.input-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.flex-1 { flex: 1 1 min(100%, 140px); }
+
+.input-group { display: flex; flex-direction: column; gap: 4px; }
+.input-group label { font-size: 12px; font-weight: 600; color: var(--charcoal); }
+
+.input-group input, .select-field {
+  padding: 9px 14px; /* 🌟 Inputs delgados */
+  border: 1.5px solid #d8cdc5;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: all 0.25s ease;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--white);
+  color: var(--charcoal);
+}
+.input-group input:focus, .select-field:focus {
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px rgba(232, 115, 90, 0.12);
+}
+
+.error-msg, .success-msg { font-size: 12px; font-weight: 600; text-align: center; margin: 0; }
+.error-msg { color: var(--red); }
+.success-msg { color: var(--green); }
+
+/* Botones Minimizados */
+.actions-stack { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+
+.override-btn {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.override-btn:hover { background: #a0302a; transform: translateY(-1px); }
+.override-btn:disabled { background: #d88982; cursor: not-allowed; transform: none; }
+
+.override-btn-secondary {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  background: transparent;
+  color: var(--charcoal);
+  border: 1.5px solid var(--peach);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.override-btn-secondary:hover { border-color: var(--coral); background-color: var(--white); }
+
+/* =========================================
+   LADO DERECHO: FONDO DE SECCIÓN (4:5)
+   ========================================= */
+.image-side {
+  flex: 1 1 50%;
+  /* 🌟 LA IMAGEN SE CONVIERTE EN EL FONDO DEL DIV */
+  background-image: url('/fondo_registro.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-left: 1px solid #e8e0d8;
+  /* Cero bordes redondeados, sangrado total hasta el límite derecho */
+}
+
+/* =========================================
+   ✨ ANIMACIONES SUAVES
+   ========================================= */
+.animate-fade-in { opacity: 0; animation: fadeIn 0.4s ease-out forwards; }
+.animate-slide-up { opacity: 0; transform: translateY(10px); animation: slideUp 0.3s ease-out forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   📱 RESPONSIVIDAD: MÓVILES (FONDO INMERSIVO)
+   ========================================= */
+@media (max-width: 900px) {
+  /* Habilitamos la imagen como fondo global */
+  .auth-page-container {
+    background-image: url('/fondo_registro.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: auto;
+    min-height: calc(100vh - 64px); 
+    padding: 2rem 1rem;
+  }
+  
+  /* Encendemos el filtro oscuro global */
+  .mobile-overlay { display: block; }
+  
+  /* Apagamos el lado derecho para que no estorbe */
+  .image-side { display: none; }
+
+  /* El lado izquierdo (formulario) se vuelve transparente */
+  .form-side {
+    flex: 1 1 100%;
+    background-color: transparent;
+    padding: 0;
+  }
+
+  /* La tarjeta del formulario obtiene el efecto Glassmorphism */
+  .form-wrapper {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 28px 24px;
+    border-radius: 20px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    margin: 0 auto;
+  }
+}

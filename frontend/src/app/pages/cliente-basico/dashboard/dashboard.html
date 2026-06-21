@@ -1,0 +1,96 @@
+<div class="dashboard-wrapper animate-fade-in">
+  
+  <div class="hero-dashboard-banner">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <h2 class="welcome-msg">Centro de Operaciones</h2>
+      <p class="inspiring-quote">"El latido de cada mascota rescatada es el motor que mueve nuestra red. Gracias por ser el héroe que los trae de vuelta a casa."</p>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    
+    <div class="main-workspace-side">
+      
+      <div class="workspace-card">
+        <h3 class="card-title-section"><span class="indicator-dot orange"></span> Reportes Tomados (En Rescate)</h3>
+        <div class="table-container">
+          <table class="op-table">
+            <thead>
+              <tr>
+                <th>Mascota</th>
+                <th>Especie</th>
+                <th>Zona de Avistamiento</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rep of reportesTomados">
+                <td class="icon-td">{{ rep.foto }}</td>
+                <td><strong>{{ rep.especie }}</strong></td>
+                <td>📍 {{ rep.zona }}</td>
+                <td><span class="badge-status process">{{ rep.estado }}</span></td>
+                <td><button class="btn-action-sm">Actualizar</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="workspace-card">
+        <h3 class="card-title-section"><span class="indicator-dot red"></span> Mis Alertas Emitidas</h3>
+        <div class="table-container">
+          <table class="op-table">
+            <thead>
+              <tr>
+                <th>Mascota</th>
+                <th>Especie</th>
+                <th>Zona</th>
+                <th>Estado</th>
+                <th>Monitoreo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let rep of reportesRealizados">
+                <td class="icon-td">{{ rep.foto }}</td>
+                <td><strong>{{ rep.especie }}</strong></td>
+                <td>📍 {{ rep.zona }}</td>
+                <td>
+                  <span class="badge-status" [ngClass]="rep.estado === 'Resuelto' ? 'success' : 'new'">
+                    {{ rep.estado }}
+                  </span>
+                </td>
+                <td><button class="btn-action-sm secondary">Ver Alerta</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sidebar-stats-side">
+      <div class="stats-sticky-card">
+        <h3 class="stats-card-title">Tu Impacto Operativo</h3>
+        
+        <div class="stat-box-container">
+          <div class="stat-mini-box">
+            <span class="stat-box-num text-red">{{ stats.reportes_realizados }}</span>
+            <span class="stat-box-lbl">Alertas Creadas</span>
+          </div>
+          
+          <div class="stat-mini-box">
+            <span class="stat-box-num text-green">{{ stats.reportes_resueltos }}</span>
+            <span class="stat-box-lbl">Casos Cerrados</span>
+          </div>
+        </div>
+
+        <div class="achievement-message">
+          <p>Has completado el <strong>75%</strong> de tus misiones de búsqueda con éxito este mes. ¡Sigue salvando vidas!</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

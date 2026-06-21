@@ -1,0 +1,27 @@
+<nav class="member-nav animate-fade-in">
+  <div class="nav-left">
+    <a routerLink="/operaciones" class="member-logo">🐾 LATIDO <span>OPERACIONES</span></a>
+  </div>
+  
+  <div class="nav-right">
+    <a routerLink="/operaciones" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" class="nav-item-link">Centro de Control</a>
+    <a routerLink="/operaciones/mis-datos" routerLinkActive="active-link" class="nav-item-link">Mi Perfil</a>
+    
+    <button class="member-avatar-btn" (click)="toggleUserMenu()">
+      <div class="avatar-circle">LT</div>
+    </button>
+  </div>
+</nav>
+
+<div class="member-dropdown" [class.open]="isUserMenuOpen">
+  <div class="dropdown-info">
+    <p class="user-role">Operador Conectado</p>
+  </div>
+  <div class="dropdown-divider"></div>
+  <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu()">⚙️ Configurar Perfil</a>
+  <a (click)="doLogout()" class="logout-action">🚪 Cerrar Módulo</a>
+</div>
+
+<div class="member-container">
+  <router-outlet></router-outlet>
+</div>
