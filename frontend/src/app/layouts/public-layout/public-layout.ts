@@ -20,6 +20,9 @@ export class PublicLayoutComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
 
+  // Estado para la visibilidad de la contraseña
+  showPassword: boolean = false;
+
   loginData = { email: '', password: '' };
 
   constructor(
@@ -65,12 +68,19 @@ export class PublicLayoutComponent implements OnInit {
   openModal(): void {
     this.isModalOpen = true;
     this.errorMessage = '';
+    this.showPassword = false; // Ocultar contraseña al abrir
   }
 
   closeModal(): void {
     this.isModalOpen = false;
     this.loginData = { email: '', password: '' };
     this.errorMessage = '';
+    this.showPassword = false; // Ocultar contraseña al cerrar
+  }
+
+  // Alternar vista de contraseña
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   doLogin(): void {
@@ -88,7 +98,6 @@ export class PublicLayoutComponent implements OnInit {
         this.isLoggedIn = true;
         this.closeModal();
         
-        // 🌟 REDIRECCIÓN AL NUEVO ENTORNO PRIVADO
         window.location.href = '/operaciones';
       },
       error: (err: any) => {
