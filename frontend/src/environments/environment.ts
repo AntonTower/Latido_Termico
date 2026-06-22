@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   /*    ENLACE LOCAL
   apiUrl: 'http://localhost:3000/api'
   */
