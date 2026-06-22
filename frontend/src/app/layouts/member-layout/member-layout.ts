@@ -40,24 +40,41 @@ export class MemberLayoutComponent implements OnInit {
     }
   }
 
-  // 🌟 EXTRAE NOMBRE, INICIALES Y ROL DEL TOKEN JWT — sin placeholders fijos
+  // 🌟 EXTRAE NOMBRE, INICIALES Y ROL CON SOPORTE UTF-8 Y RED DE SEGURIDAD
   extractUserData(token: string): void {
     try {
       const payloadBase64 = token.split('.')[1];
-      const payload = JSON.parse(atob(payloadBase64));
+      
+      // Decodificación segura para caracteres latinos (UTF-8)
+      const base64Decoded = atob(payloadBase64);
+      const safePayload = decodeURIComponent(
+        base64Decoded.split('').map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+      );
+      const payload = JSON.parse(safePayload);
 
-      if (payload.nombre_completo) {
-        this.userName = payload.nombre_completo;
-      } else if (payload.email) {
-        this.userName = payload.email.split('@')[0];
+      // 1. Extraer el Nombre
+      if (payload.usuario && payload.usuario.nombre_completo) {
+        this.userName = payload.usuario.nombre_completo;
+      } else {
+        this.userName = localStorage.getItem('nombre_usuario') || 'Usuario';
       }
 
-      const rolCrudo: string = (payload.rol || payload.role || '').toString().toUpperCase();
-      if (rolCrudo in this.roleConfig) {
-        this.userRole = rolCrudo as RolUsuario;
+      // 2. Extraer el Rol (El backend manda rol_id: 1=Reportante, 2=Voluntario)
+      let rolName: RolUsuario = 'REPORTANTE'; // Por defecto
+      const rolId = payload.usuario?.rol_id;
+
+      if (rolId === 1) rolName = 'REPORTANTE';
+      else if (rolId === 2) rolName = 'VOLUNTARIO';
+      else if (rolId === 3) rolName = 'PATROCINADOR';
+      else if (rolId === 4) rolName = 'SUPERADMIN';
+
+      if (rolName in this.roleConfig) {
+        this.userRole = rolName;
       }
+      
     } catch (e) {
-      console.error('No se pudo decodificar el usuario del token.');
+      console.error('Error al decodificar el token, usando memoria local.');
+      this.userName = localStorage.getItem('nombre_usuario') || 'Usuario';
     }
 
     this.userInitials = this.getInitials(this.userName);
@@ -84,7 +101,6 @@ export class MemberLayoutComponent implements OnInit {
     this.isSidebarOpen = false; // 🌟 sólo un panel abierto a la vez
   }
 
-  // 🌟 El menú lateral ahora se comporta exactamente como el dropdown de usuario
   toggleSidebar(event: Event): void {
     event.stopPropagation();
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -114,6 +130,7 @@ export class MemberLayoutComponent implements OnInit {
 
   doLogout(): void {
     this.authService.logout();
+    localStorage.removeItem('nombre_usuario'); // 🧹 Limpiamos la red de seguridad al salir
     window.location.href = '/';
   }
 }

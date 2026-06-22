@@ -36,22 +36,33 @@ export class PublicLayoutComponent implements OnInit {
       const token = localStorage.getItem('token');
       if (token) {
         this.isLoggedIn = true;
-        this.extractUserData(token); // 🌟 Extrae el nombre directamente del token
+        this.extractUserData(token); 
       }
     }
   }
 
-  // 🌟 Decodificador del JWT
+  // 🌟 EXTRAE EL NOMBRE CON SOPORTE PARA ACENTOS Y RED DE SEGURIDAD
   extractUserData(token: string): void {
     try {
       const payloadBase64 = token.split('.')[1];
-      const payload = JSON.parse(atob(payloadBase64));
+      
+      // Decodificación segura para caracteres latinos (UTF-8)
+      const base64Decoded = atob(payloadBase64);
+      const safePayload = decodeURIComponent(
+        base64Decoded.split('').map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+      );
+      const payload = JSON.parse(safePayload);
 
       if (payload.usuario && payload.usuario.nombre_completo) {
+        // Opción 1: Lo sacamos del Token (Backend actualizado)
         this.userName = payload.usuario.nombre_completo;
+      } else {
+        // Opción 2: El backend no se actualizó, lo sacamos de la memoria de seguridad
+        this.userName = localStorage.getItem('nombre_usuario') || 'Usuario';
       }
     } catch (e) {
-      console.error('No se pudo decodificar el usuario del token.');
+      console.error('Error al decodificar el token, usando memoria local.');
+      this.userName = localStorage.getItem('nombre_usuario') || 'Usuario';
     }
     this.userInitials = this.getInitials(this.userName);
   }
@@ -88,6 +99,7 @@ export class PublicLayoutComponent implements OnInit {
 
   doLogout(): void {
     this.authService.logout();
+    localStorage.removeItem('nombre_usuario'); // Limpiamos la red de seguridad
     this.isLoggedIn = false;
     this.isUserMenuOpen = false;
     this.router.navigate(['/']);
@@ -123,8 +135,14 @@ export class PublicLayoutComponent implements OnInit {
       next: (res: any) => {
         this.isLoading = false;
         this.isLoggedIn = true;
+        
+        // 🛡️ RED DE SEGURIDAD: Guardamos el nombre del JSON de respuesta
+        if (res.usuario && res.usuario.nombre) {
+          localStorage.setItem('nombre_usuario', res.usuario.nombre);
+        }
+
         this.closeModal();
-        window.location.href = '/operaciones';
+        window.location.href = '/operaciones'; // Recarga la app fresca
       },
       error: (err: any) => {
         this.isLoading = false;
