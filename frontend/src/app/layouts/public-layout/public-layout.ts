@@ -19,11 +19,11 @@ export class PublicLayoutComponent implements OnInit {
   isModalOpen: boolean = false;
   isLoading: boolean = false;
   errorMessage: string = '';
-
-  // Estado para la visibilidad de la contraseña
   showPassword: boolean = false;
-
   loginData = { email: '', password: '' };
+
+  userName: string = 'Usuario';
+  userInitials: string = 'US';
 
   constructor(
     private eRef: ElementRef,
@@ -33,16 +33,44 @@ export class PublicLayoutComponent implements OnInit {
 
   ngOnInit() {
     if (typeof window !== 'undefined' && localStorage) {
-      this.isLoggedIn = !!localStorage.getItem('token');
+      const token = localStorage.getItem('token');
+      if (token) {
+        this.isLoggedIn = true;
+        this.extractUserData(token); // 🌟 Extrae el nombre directamente del token
+      }
     }
   }
 
-  toggleMenu(): void {
+  // 🌟 Decodificador del JWT
+  extractUserData(token: string): void {
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const payload = JSON.parse(atob(payloadBase64));
+
+      if (payload.usuario && payload.usuario.nombre_completo) {
+        this.userName = payload.usuario.nombre_completo;
+      }
+    } catch (e) {
+      console.error('No se pudo decodificar el usuario del token.');
+    }
+    this.userInitials = this.getInitials(this.userName);
+  }
+
+  getInitials(name: string): string {
+    const parts = name.trim().split(' ').filter(p => p.length > 0);
+    if (parts.length === 0) return 'US';
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
+  toggleMenu(event?: Event): void {
+    if (event) event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
     if (this.isMenuOpen) this.isUserMenuOpen = false;
   }
 
-  toggleUserMenu(): void {
+  toggleUserMenu(event?: Event): void {
+    if (event) event.stopPropagation();
     this.isUserMenuOpen = !this.isUserMenuOpen;
     if (this.isUserMenuOpen) this.isMenuOpen = false;
   }
@@ -50,10 +78,10 @@ export class PublicLayoutComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     const target = event.target as HTMLElement;
-    if (!target.closest('.menu-btn') && !target.closest('.dropdown.main-menu')) {
+    if (!target.closest('.hamburger-btn') && !target.closest('.dropdown.main-menu')) {
       this.isMenuOpen = false;
     }
-    if (!target.closest('.user-btn') && !target.closest('.dropdown.user-dropdown')) {
+    if (!target.closest('.quick-profile-btn') && !target.closest('.dropdown.user-dropdown')) {
       this.isUserMenuOpen = false;
     }
   }
@@ -68,17 +96,16 @@ export class PublicLayoutComponent implements OnInit {
   openModal(): void {
     this.isModalOpen = true;
     this.errorMessage = '';
-    this.showPassword = false; // Ocultar contraseña al abrir
+    this.showPassword = false;
   }
 
   closeModal(): void {
     this.isModalOpen = false;
     this.loginData = { email: '', password: '' };
     this.errorMessage = '';
-    this.showPassword = false; // Ocultar contraseña al cerrar
+    this.showPassword = false;
   }
 
-  // Alternar vista de contraseña
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
@@ -97,7 +124,6 @@ export class PublicLayoutComponent implements OnInit {
         this.isLoading = false;
         this.isLoggedIn = true;
         this.closeModal();
-        
         window.location.href = '/operaciones';
       },
       error: (err: any) => {

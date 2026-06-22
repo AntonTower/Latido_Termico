@@ -1,61 +1,63 @@
-<nav id="main-nav">
+<nav class="public-nav">
   <div class="nav-left">
-    <button class="menu-btn" [class.open]="isMenuOpen" (click)="toggleMenu()" aria-label="Abrir menú">
-      <div class="hamburger">
-        <span></span><span></span><span></span>
-      </div>
-      <span class="btn-text">Menú</span>
+    <button class="hamburger-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
     </button>
   </div>
 
   <div class="nav-center">
-    <a routerLink="/" class="logo">
-      <span class="logo-text">LATIDO TÉRMICO</span>
+    <a routerLink="/" class="brand-title">
+      <span class="brand-text">Latido Térmico</span>
+      <svg class="heartbeat-svg" viewBox="0 0 120 28" preserveAspectRatio="none" aria-hidden="true">
+        <polyline class="heartbeat-line" points="0,14 28,14 34,4 40,24 46,14 54,14 58,8 62,20 66,14 120,14" />
+        <circle class="heartbeat-dot" cx="120" cy="14" r="2.4" />
+      </svg>
     </a>
   </div>
 
   <div class="nav-right">
     <ng-container *ngIf="!isLoggedIn">
-      <a class="btn-login" (click)="openModal()">
+      <button class="btn-login" (click)="openModal()">
+        <span class="login-icon">👤</span>
         <span class="btn-text">Iniciar sesión</span>
-      </a>
-      <a class="btn-publish" routerLink="/registro">
-        <span class="btn-text">+ Publicar</span>
-      </a>
+      </button>
     </ng-container>
 
     <ng-container *ngIf="isLoggedIn">
-      <button class="user-btn" [class.active]="isUserMenuOpen" (click)="toggleUserMenu()" aria-label="Menú de usuario">
-        <div class="user-avatar-badge">LT</div>
+      <button class="quick-profile-btn" (click)="toggleUserMenu($event)">
+        <div class="avatar-circle">
+          {{ userInitials }}
+          <span class="status-dot" title="En línea"></span>
+        </div>
+        <div class="quick-profile-info">
+          <span class="qp-name">{{ userName }}</span>
+        </div>
+        <span class="qp-chevron">▾</span>
       </button>
     </ng-container>
   </div>
 </nav>
 
-<div class="dropdown main-menu" [class.open]="isMenuOpen">
+<div class="dropdown main-menu" [class.open]="isMenuOpen" (click)="$event.stopPropagation()">
   <div class="dropdown-section">
     <p class="dropdown-label">Explorar</p>
-    <a><span class="link-text">Buscar mascota</span></a>
-    <a><span class="link-text">Casos urgentes</span></a>
-    <a><span class="link-text">Adopción</span></a>
-  </div>
-  <div class="dropdown-section">
-    <p class="dropdown-label">Publicar</p>
-    <a routerLink="/registro"><span class="link-text">Reportar pérdida</span></a>
-    <a routerLink="/registro"><span class="link-text">Mascota encontrada</span></a>
+    <a><span class="dropdown-icon">🔍</span> <span class="link-text">Buscar mascota</span></a>
+    <a><span class="dropdown-icon">🚨</span> <span class="link-text">Casos urgentes</span></a>
+    <a><span class="dropdown-icon">🏡</span> <span class="link-text">Adopción</span></a>
   </div>
 </div>
 
-<div class="dropdown user-dropdown" [class.open]="isUserMenuOpen">
-  <div class="dropdown-section">
-    <p class="dropdown-label">Operaciones</p>
-    <a routerLink="/operaciones" (click)="toggleUserMenu()"><span class="link-text">Página Operativa</span></a>
-    <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu()"><span class="link-text">Mis datos</span></a>
-    <a><span class="link-text">Mis reportes</span></a>
+<div class="dropdown user-dropdown" [class.open]="isUserMenuOpen" (click)="$event.stopPropagation()">
+  <div class="dropdown-header">
+    <div class="dropdown-avatar">{{ userInitials }}</div>
+    <div class="dropdown-user-details">
+      <p class="user-name">{{ userName }}</p>
+    </div>
   </div>
-  <div class="dropdown-section">
-    <a (click)="doLogout()"><span class="link-text">Cerrar Sesión</span></a>
-  </div>
+  <div class="dropdown-divider"></div>
+  <a routerLink="/operaciones" (click)="toggleUserMenu()"><span class="dropdown-icon">📊</span> Panel Operativo</a>
+  <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu()"><span class="dropdown-icon">⚙️</span> Mis datos</a>
+  <a (click)="doLogout()" class="logout-action"><span class="dropdown-icon">🚪</span> Cerrar Sesión</a>
 </div>
 
 <main class="layout-content">
@@ -71,7 +73,7 @@
       </svg>
     </button>
     
-    <h2 style="font-family: 'DM Serif Display', serif; color: var(--red); margin-bottom: 8px;">LATIDO Térmico</h2>
+    <h2 style="font-family: 'DM Serif Display', serif; color: var(--red); margin-bottom: 8px;">🐾 LATIDO Térmico</h2>
     <p style="color: var(--charcoal); margin-bottom: 24px; font-size: 14px;">Ingresa tus credenciales para acceder al centro de operaciones.</p>
 
     <div class="form-ui">
@@ -100,7 +102,7 @@
       <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
 
       <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
-        <button class="btn-publish" style="width: 100%; justify-content: center; padding: 12px;" (click)="doLogin()" [disabled]="isLoading">
+        <button class="btn-publish-style" style="width: 100%; justify-content: center; padding: 12px; border: none; border-radius: 9px; background: var(--red); color: white; font-weight: 600; cursor: pointer; transition: 0.2s;" (click)="doLogin()" [disabled]="isLoading">
           {{ isLoading ? 'Conectando...' : 'Iniciar sesión' }}
         </button>
 
@@ -113,7 +115,7 @@
 </div>
 
 <footer>
-  <p class="footer-logo">Huellas</p>
+  <p class="footer-logo">Latido Térmico</p>
   <p>Red de búsqueda y rescate de mascotas · México<br>
   <a>Contacto</a> · <a>Aviso de privacidad</a> · <a>Voluntarios</a></p>
 </footer>
