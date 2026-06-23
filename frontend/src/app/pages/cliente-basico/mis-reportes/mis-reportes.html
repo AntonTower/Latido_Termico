@@ -1,0 +1,37 @@
+<div class="page-wrapper animate-fade-in">
+  <div class="page-header">
+    <h2>📄 Mis Reportes Emitidos</h2>
+    <p>Historial completo de las alertas de emergencia que has publicado.</p>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">Cargando reportes...</div>
+
+  <div class="empty-state" *ngIf="!isLoading && reportes.length === 0">
+    <span class="empty-icon">📭</span>
+    <p>Aún no has emitido ninguna alerta.</p>
+  </div>
+
+  <div class="reportes-grid" *ngIf="!isLoading && reportes.length > 0">
+    <div class="report-card" *ngFor="let rep of reportes">
+      <div class="report-photo">
+        <img *ngIf="rep.foto_url; else fotoFallback" [src]="rep.foto_url" [alt]="rep.especie" loading="lazy" />
+        <ng-template #fotoFallback>
+          <div class="photo-fallback">{{ getEspecieIcon(rep.especie) }}</div>
+        </ng-template>
+        <span class="badge-status" [ngClass]="getEstadoClass(rep.estado)">{{ rep.estado | titlecase }}</span>
+      </div>
+
+      <div class="report-body">
+        <h4>{{ rep.especie }} <span class="raza-tag" *ngIf="rep.raza_aprox">· {{ rep.raza_aprox }}</span></h4>
+        <span class="report-id">#{{ rep.id }}</span>
+        
+        <p class="report-notes" *ngIf="rep.caracteristicas_especiales">{{ rep.caracteristicas_especiales }}</p>
+        
+        <div class="report-footer mt-auto">
+          <span class="report-time">🕒 {{ (rep.hora_avistamiento | date:'d MMM, HH:mm') || 'Reciente' }}</span>
+          <button class="btn-action-sm secondary">Administrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

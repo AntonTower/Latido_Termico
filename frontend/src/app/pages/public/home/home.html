@@ -1,7 +1,7 @@
 <section class="hero">
-  <div class="hero-text">
+  <div class="hero-text animate-up delay-1">
     <p class="hero-eyebrow">Red de búsqueda y rescate</p>
-    <h1 class="hero-title">Cada mascota<br>merece<br><span style="color: var(--red);">volver a casa.</span></h1>
+    <h1 class="hero-title">Cada mascota<br>merece<br><span class="hero-highlight">volver a casa.</span></h1>
     <p class="hero-desc">Conectamos a familias con sus compañeros perdidos. Reporta, busca y adopta con el apoyo de una comunidad que cuida.</p>
     <div class="hero-actions">
       <button class="btn-primary">🔍 Buscar mascota</button>
@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="hero-card">
+  <div class="hero-card animate-up delay-2">
     <div class="pet-img">🐶</div>
     <span class="card-badge urgent">⚡ Urgente · 8 horas</span>
     <p class="card-pet-name">Max, Labrador dorado</p>
@@ -21,21 +21,21 @@
   </div>
 </section>
 
-<section class="stats">
-  <div class="stat">
-    <span class="stat-number">4,820</span>
+<section class="stats" #statsSection>
+  <div class="stat animate-up delay-1">
+    <span class="stat-number">{{ stats.mascotas | number:'1.0-0' }}</span>
     <span class="stat-label">Mascotas reunidas</span>
   </div>
-  <div class="stat">
-    <span class="stat-number">12,300</span>
+  <div class="stat animate-up delay-2">
+    <span class="stat-number">{{ stats.familias | number:'1.0-0' }}</span>
     <span class="stat-label">Familias registradas</span>
   </div>
-  <div class="stat">
-    <span class="stat-number">87%</span>
+  <div class="stat animate-up delay-3">
+    <span class="stat-number">{{ stats.tasa }}%</span>
     <span class="stat-label">Tasa de reencuentro</span>
   </div>
-  <div class="stat">
-    <span class="stat-number">230</span>
+  <div class="stat animate-up delay-4">
+    <span class="stat-number">{{ stats.voluntarios }}</span>
     <span class="stat-label">Voluntarios activos</span>
   </div>
 </section>
@@ -55,7 +55,7 @@
   </div>
   
   <div class="pet-grid">
-    <div class="pet-card">
+    <div class="pet-card animate-up delay-1">
       <div class="pet-card-img bg-coral">🐱</div>
       <div class="pet-card-body">
         <span class="pet-tag tag-urgent">⚡ Urgente</span>
@@ -68,7 +68,7 @@
       </div>
     </div>
     
-    <div class="pet-card">
+    <div class="pet-card animate-up delay-2">
       <div class="pet-card-img bg-peach">🐕</div>
       <div class="pet-card-body">
         <span class="pet-tag tag-lost">Perdido</span>
@@ -81,7 +81,7 @@
       </div>
     </div>
     
-    <div class="pet-card">
+    <div class="pet-card animate-up delay-3">
       <div class="pet-card-img bg-green">🐇</div>
       <div class="pet-card-body">
         <span class="pet-tag tag-found">Encontrado</span>
@@ -94,7 +94,7 @@
       </div>
     </div>
     
-    <div class="pet-card">
+    <div class="pet-card animate-up delay-4">
       <div class="pet-card-img bg-amber">🐶</div>
       <div class="pet-card-body">
         <span class="pet-tag tag-lost">Perdido</span>
@@ -112,17 +112,17 @@
 <section class="how-section">
   <h2>¿Cómo funciona?</h2>
   <div class="how-grid">
-    <div class="how-step">
+    <div class="how-step animate-up delay-1">
       <div class="how-icon">📢</div>
       <h3>1. Publica el aviso</h3>
       <p>Sube una foto, describe a tu mascota y comparte la ubicación donde fue vista por última vez.</p>
     </div>
-    <div class="how-step">
+    <div class="how-step animate-up delay-2">
       <div class="how-icon">🔔</div>
       <h3>2. La comunidad actúa</h3>
       <p>Voluntarios y vecinos cercanos reciben una alerta y ayudan a buscar en la zona.</p>
     </div>
-    <div class="how-step">
+    <div class="how-step animate-up delay-3">
       <div class="how-icon">🤝</div>
       <h3>3. Reencuentro</h3>
       <p>Te contactamos en cuanto alguien la encuentre. La mayoría regresa en menos de 48 horas.</p>
@@ -130,7 +130,7 @@
   </div>
 </section>
 
-<section class="success-banner">
+<section class="success-banner animate-up delay-1">
   <h2>¿La encontraste?</h2>
   <p>Cierra tu aviso y cuéntanos cómo fue el reencuentro. Tu historia inspira a otros.</p>
   <button class="btn-white">Marcar como encontrada 🎉</button>

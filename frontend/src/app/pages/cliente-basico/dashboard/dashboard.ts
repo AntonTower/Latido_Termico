@@ -1,6 +1,7 @@
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ReporteService } from '../../../auth/services/reporte.service';
 
 export interface ReporteMascota {
   id: number;
@@ -15,11 +16,11 @@ export interface ReporteMascota {
   caracteristicas_especiales?: string;
   notas_adicionales?: string;
   referencias?: string;
-  direccion?: string; // si el backend hace reverse-geocoding
-  lat: number;
-  lng: number;
-  hora_avistamiento: string;
-  fotoUrl?: string;
+  direccion?: string; 
+  latitud: number; // 🌟 Cambiado a latitud (Base de Datos)
+  longitud: number; // 🌟 Cambiado a longitud (Base de Datos)
+  hora_avistamiento?: string; 
+  foto_url?: string; // 🌟 Cambiado a foto_url (Base de Datos)
 }
 
 // 🌟 Pipe puro: arma la URL del mapa embebido (OSM, sin API key) y la sanitiza
@@ -27,11 +28,11 @@ export interface ReporteMascota {
 export class MapEmbedPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
-  transform(lat: number, lng: number): SafeResourceUrl | null {
-    if (lat == null || lng == null) return null;
+  transform(latitud: number, longitud: number): SafeResourceUrl | null {
+    if (latitud == null || longitud == null) return null;
     const delta = 0.006; // ~600m de radio visible
-    const bbox = `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`;
-    const url = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
+    const bbox = `${longitud - delta},${latitud - delta},${longitud + delta},${latitud + delta}`;
+    const url = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${latitud},${longitud}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }
@@ -44,43 +45,31 @@ export class MapEmbedPipe implements PipeTransform {
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
-  stats = { reportes_realizados: 12, reportes_resueltos: 9 };
+  stats = { reportes_realizados: 0, reportes_resueltos: 0 };
 
-  reportesTomados: ReporteMascota[] = [
-    {
-      id: 104, especie: 'Perro', raza_aprox: 'Mestizo', color_dominante: 'Café y blanco',
-      sexo: 'Macho', edad_aprox: 'Adulto', tamano: 'Mediano', estado: 'En_Proceso',
-      agresividad: 2, caracteristicas_especiales: 'Cojea de la pata trasera derecha, collar rojo sin placa.',
-      referencias: 'Frente al parque, cerca de la fuente',
-      direccion: 'Av. Álvaro Obregón 145, Roma Norte, CDMX',
-      lat: 19.4189, lng: -99.1660,
-      hora_avistamiento: '2026-06-20T18:24:00',
-      fotoUrl: 'https://res.cloudinary.com/dhwtj9kku/image/upload/v1780773883/rescuenet_reportes/je00qm0tj7iuqccr8mit.jpg'
-    }
-  ];
+  // 🌟 Arreglos vacíos listos para recibir datos de PostgreSQL
+  reportesTomados: ReporteMascota[] = []; 
+  reportesRealizados: ReporteMascota[] = [];
 
-  reportesRealizados: ReporteMascota[] = [
-    {
-      id: 201, especie: 'Gato', raza_aprox: 'Persa', color_dominante: 'Negro',
-      sexo: 'Desconocido', edad_aprox: 'Desconocido', tamano: 'Desconocido', estado: 'Resuelto',
-      agresividad: 1, caracteristicas_especiales: 'Pelaje largo, muy dócil, se dejó cargar sin problema.',
-      direccion: 'Av. Yucatán 32, Condesa, CDMX',
-      lat: 19.4123, lng: -99.1716,
-      hora_avistamiento: '2026-06-06T19:24:45',
-      fotoUrl: 'https://res.cloudinary.com/dhwtj9kku/image/upload/v1780774200/rescuenet_reportes/itrv8zlsfgpwrb1rnjt2.jpg'
-    },
-    {
-      id: 205, especie: 'Perro', raza_aprox: 'Beagle', color_dominante: 'Tricolor',
-      sexo: 'Hembra', edad_aprox: 'Cachorro', tamano: 'Pequeño', estado: 'Nuevo',
-      agresividad: 4, caracteristicas_especiales: 'Ladra a desconocidos, no se deja acercar fácilmente.',
-      referencias: 'Salida del mercado sobre Av. Universidad',
-      lat: 19.3467, lng: -99.1618,
-      hora_avistamiento: '2026-06-19T09:10:00',
-      fotoUrl: undefined
-    }
-  ];
+  constructor(private reporteService: ReporteService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.cargarMisAlertasEmitidas();
+  }
+
+  cargarMisAlertasEmitidas(): void {
+    this.reporteService.getMisReportes().subscribe({
+      next: (data: ReporteMascota[]) => {
+        this.reportesRealizados = data;
+        
+        this.stats.reportes_realizados = data.length;
+        this.stats.reportes_resueltos = data.filter(r => r.estado === 'Resuelto' || r.estado === 'Completado').length;
+      },
+      error: (err: any) => { // 🌟 AQUÍ ESTÁ LA CORRECCIÓN
+        console.error('Error al cargar mis reportes:', err);
+      }
+    });
+  }
 
   getEspecieIcon(especie: string): string {
     const map: Record<string, string> = { Perro: '🐶', Gato: '🐱' };

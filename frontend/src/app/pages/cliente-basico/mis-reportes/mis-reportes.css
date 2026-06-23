@@ -1,0 +1,228 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
+.page-wrapper {
+  padding: 32px max(1.5rem, 3vw);
+  max-width: 1300px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-bottom: 32px;
+  border-bottom: 2px solid var(--cream);
+  padding-bottom: 16px;
+}
+
+.page-header h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem;
+  color: var(--charcoal);
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-header p {
+  color: #8a7060;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* =========================================
+   ESTADOS (CARGANDO / VACÍO)
+   ========================================= */
+.loading-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background-color: var(--white);
+  border-radius: 16px;
+  border: 1px dashed var(--cream);
+  color: #8a7060;
+  font-size: 15px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+
+/* =========================================
+   GRID DE REPORTES
+   ========================================= */
+.reportes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* Tarjeta principal */
+.report-card {
+  background-color: var(--white);
+  border: 1px solid var(--cream);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 16px rgba(74,57,43,0.04);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  height: 100%; /* Para que todas las tarjetas midan lo mismo */
+}
+
+.report-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(74,57,43,0.1);
+  border-color: #e5d9d0;
+}
+
+/* Área de Fotografía */
+.report-photo {
+  position: relative;
+  height: 200px;
+  background: linear-gradient(135deg, var(--bg), var(--cream));
+}
+
+.report-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.report-card:hover .report-photo img {
+  transform: scale(1.05); /* Efecto zoom suave */
+}
+
+.photo-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+}
+
+/* Etiquetas sobre la foto */
+.badge-status {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  backdrop-filter: blur(4px);
+}
+.badge-status.new { background-color: rgba(253, 232, 216, 0.9); color: var(--red); }
+.badge-status.process { background-color: rgba(255, 243, 205, 0.9); color: #7a4f00; }
+.badge-status.success { background-color: rgba(212, 237, 218, 0.9); color: #1a5c30; }
+
+/* Cuerpo de la Tarjeta */
+.report-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Empuja el footer hacia abajo */
+  gap: 12px;
+}
+
+.report-body h4 {
+  margin: 0 0 4px 0;
+  font-size: 1.15rem;
+  color: var(--charcoal);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.raza-tag {
+  font-weight: 400;
+  color: #8a7060;
+  font-size: 14px;
+}
+
+.report-id {
+  font-size: 12px;
+  color: #bbb;
+  font-weight: 600;
+  background: var(--bg);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.report-notes {
+  font-size: 13.5px;
+  color: #6b5e56;
+  line-height: 1.6;
+  margin: 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Footer de la Tarjeta */
+.mt-auto { margin-top: auto; } /* Forzar footer al fondo */
+
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--cream);
+}
+
+.report-time {
+  font-size: 12px;
+  color: #a59b95;
+  font-weight: 500;
+}
+
+.btn-action-sm {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-action-sm.secondary {
+  background-color: var(--bg);
+  color: var(--charcoal);
+  border: 1px solid #d8cdc5;
+}
+.btn-action-sm.secondary:hover {
+  background-color: var(--peach);
+  border-color: var(--coral);
+  color: var(--white);
+}
+
+/* Animación de entrada */
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   📱 RESPONSIVIDAD
+   ========================================= */
+@media (max-width: 768px) {
+  .page-header h2 { font-size: 1.6rem; }
+  .reportes-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .report-photo { height: 180px; }
+}
+
+@media (max-width: 480px) {
+  .page-wrapper { padding: 20px 16px; }
+  .reportes-grid { grid-template-columns: 1fr; gap: 16px; }
+  .report-body h4 { font-size: 1.05rem; }
+}

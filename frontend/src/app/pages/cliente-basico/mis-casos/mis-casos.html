@@ -1,0 +1,36 @@
+<div class="page-wrapper animate-fade-in">
+  <div class="page-header">
+    <h2>🗂️ Mis Casos Activos</h2>
+    <p>Mascotas que has decidido rescatar y están bajo tu seguimiento.</p>
+  </div>
+
+  <div class="loading-state" *ngIf="isLoading">Cargando casos...</div>
+
+  <div class="empty-state" *ngIf="!isLoading && casos.length === 0">
+    <span class="empty-icon">🙌</span>
+    <p>Actualmente no tienes rescates en proceso.</p>
+  </div>
+
+  <div class="reportes-grid" *ngIf="!isLoading && casos.length > 0">
+    <div class="report-card" *ngFor="let rep of casos">
+      <div class="report-photo">
+        <img *ngIf="rep.foto_url; else fotoFallback" [src]="rep.foto_url" [alt]="rep.especie" loading="lazy" />
+        <ng-template #fotoFallback>
+          <div class="photo-fallback">{{ getEspecieIcon(rep.especie) }}</div>
+        </ng-template>
+        <span class="badge-status" [ngClass]="getEstadoClass(rep.estado)">{{ rep.estado | titlecase }}</span>
+      </div>
+
+      <div class="report-body">
+        <h4>{{ rep.especie }} <span class="raza-tag" *ngIf="rep.raza_aprox">· {{ rep.raza_aprox }}</span></h4>
+        <span class="report-id">#{{ rep.id }}</span>
+        
+        <p class="report-notes" *ngIf="rep.caracteristicas_especiales">{{ rep.caracteristicas_especiales }}</p>
+        
+        <div class="report-footer mt-auto">
+          <button class="btn-action-sm">Actualizar Estado</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

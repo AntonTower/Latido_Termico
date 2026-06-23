@@ -19,7 +19,7 @@
           <div class="report-card" *ngFor="let rep of reportesTomados">
 
             <div class="report-photo">
-              <img *ngIf="rep.fotoUrl; else fotoFallbackTomados" [src]="rep.fotoUrl" [alt]="rep.especie" loading="lazy" />
+              <img *ngIf="rep.foto_url; else fotoFallbackTomados" [src]="rep.foto_url" [alt]="rep.especie" loading="lazy" />
               <ng-template #fotoFallbackTomados>
                 <div class="photo-fallback">{{ getEspecieIcon(rep.especie) }}</div>
               </ng-template>
@@ -52,20 +52,22 @@
               </div>
 
               <div class="report-map-preview">
-                <iframe [src]="rep.lat | mapEmbed:rep.lng" loading="lazy" title="Ubicación del reporte"></iframe>
+                <iframe [src]="rep.latitud | mapEmbed:rep.longitud" loading="lazy" title="Ubicación del reporte"></iframe>
               </div>
               <div class="report-address">
                 <span class="address-icon">📍</span>
-                <span class="address-text">{{ rep.direccion || rep.referencias || (rep.lat + ', ' + rep.lng) }}</span>
+                <span class="address-text">{{ rep.direccion || rep.referencias || (rep.latitud | number:'1.4-4') + ', ' + (rep.longitud | number:'1.4-4') }}</span>
               </div>
 
               <div class="report-footer">
-                <span class="report-time">🕒 {{ rep.hora_avistamiento | date:'d MMM, HH:mm' }}</span>
+                <span class="report-time">🕒 {{ (rep.hora_avistamiento | date:'d MMM, HH:mm') || 'Reciente' }}</span>
                 <button class="btn-action-sm">Actualizar</button>
               </div>
             </div>
 
           </div>
+          
+          <p *ngIf="reportesTomados.length === 0" style="color: #bbb; font-size: 13px; grid-column: 1 / -1; text-align: center; padding: 20px;">No tienes rescates en proceso.</p>
         </div>
       </div>
 
@@ -76,7 +78,7 @@
           <div class="report-card" *ngFor="let rep of reportesRealizados">
 
             <div class="report-photo">
-              <img *ngIf="rep.fotoUrl; else fotoFallbackAlertas" [src]="rep.fotoUrl" [alt]="rep.especie" loading="lazy" />
+              <img *ngIf="rep.foto_url; else fotoFallbackAlertas" [src]="rep.foto_url" [alt]="rep.especie" loading="lazy" />
               <ng-template #fotoFallbackAlertas>
                 <div class="photo-fallback">{{ getEspecieIcon(rep.especie) }}</div>
               </ng-template>
@@ -109,20 +111,22 @@
               </div>
 
               <div class="report-map-preview">
-                <iframe [src]="rep.lat | mapEmbed:rep.lng" loading="lazy" title="Ubicación del reporte"></iframe>
+                <iframe [src]="rep.latitud | mapEmbed:rep.longitud" loading="lazy" title="Ubicación del reporte"></iframe>
               </div>
               <div class="report-address">
                 <span class="address-icon">📍</span>
-                <span class="address-text">{{ rep.direccion || rep.referencias || (rep.lat + ', ' + rep.lng) }}</span>
+                <span class="address-text">{{ rep.direccion || rep.referencias || (rep.latitud | number:'1.4-4') + ', ' + (rep.longitud | number:'1.4-4') }}</span>
               </div>
 
               <div class="report-footer">
-                <span class="report-time">🕒 {{ rep.hora_avistamiento | date:'d MMM, HH:mm' }}</span>
+                <span class="report-time">🕒 {{ (rep.hora_avistamiento | date:'d MMM, HH:mm') || 'Reciente' }}</span>
                 <button class="btn-action-sm secondary">Ver Alerta</button>
               </div>
             </div>
 
           </div>
+          
+          <p *ngIf="reportesRealizados.length === 0" style="color: #bbb; font-size: 13px; grid-column: 1 / -1; text-align: center; padding: 20px;">Aún no has emitido ninguna alerta.</p>
         </div>
       </div>
 
