@@ -1,0 +1,161 @@
+<div class="dashboard-wrapper animate-fade-in">
+
+  <nav class="sub-nav">
+    <button [class.active]="currentView === 'dashboard'" (click)="changeView('dashboard')">Dashboard</button>
+    <button [class.active]="currentView === 'configuracion'" (click)="changeView('configuracion')">Configuración</button>
+    <button [class.active]="currentView === 'catalogo'" (click)="changeView('catalogo')">Mi Catálogo</button>
+  </nav>
+
+  <div *ngIf="currentView === 'dashboard'">
+
+    <div class="hero-dashboard-banner">
+      <div class="banner-overlay"></div>
+      <div class="banner-content">
+        <h2 class="welcome-msg">¡Bienvenido al Panel de Recursos, Patrocinador!</h2>
+        <p class="inspiring-quote">"El apoyo constante es el motor que permite a nuestra red actuar de inmediato. Gracias por ser el soporte logístico de cada rescate."</p>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+
+      <div class="main-workspace-side">
+
+        <div class="workspace-card">
+          <h3 class="card-title-section"><span class="indicator-dot vino"></span> 🍲 Alimento para Animales</h3>
+
+          <div class="table-responsive">
+            <table class="resource-table">
+              <thead>
+                <tr>
+                  <th>Tipo de Alimento</th>
+                  <th>Marcas de Referencia</th>
+                  <th style="text-align: right;">Cantidad Disponible</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of alimentos">
+                  <td><strong>{{ item.tipo }}</strong></td>
+                  <td class="text-muted">{{ item.marcaSugerida || 'Cualquiera' }}</td>
+                  <td style="text-align: right;">
+                    <span class="quantity-badge">{{ item.cantidadKg }}</span>
+                    <span class="unit-label">KG</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="workspace-card">
+          <h3 class="card-title-section"><span class="indicator-dot orange"></span> 🛠️ Materiales y Equipamiento de Rescate</h3>
+
+          <div class="table-responsive">
+            <table class="resource-table">
+              <thead>
+                <tr>
+                  <th>Recurso</th>
+                  <th>Categoría</th>
+                  <th>Especificaciones / Tamaños</th>
+                  <th style="text-align: right;">Disponibles</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let mat of materiales">
+                  <td><strong>{{ mat.nombre }}</strong></td>
+                  <td>
+                    <span class="badge-category" [ngClass]="mat.categoria.toLowerCase()">{{ mat.categoria }}</span>
+                  </td>
+                  <td class="text-muted">{{ mat.detalles }}</td>
+                  <td style="text-align: right;">
+                    <span class="quantity-badge">{{ mat.cantidad }}</span>
+                    <span class="unit-label">UDS</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sidebar-stats-side">
+        <div class="stats-sticky-card">
+          <h3 class="stats-card-title">Resumen de Apoyo</h3>
+
+          <div class="stat-box-container">
+            <div class="stat-mini-box">
+              <span class="stat-box-num text-vino">{{ totalAlimento }}</span>
+              <span class="stat-box-lbl">Kilos Totales</span>
+            </div>
+            <div class="stat-mini-box">
+              <span class="stat-box-num text-amber">{{ totalMateriales }}</span>
+              <span class="stat-box-lbl">Materiales</span>
+            </div>
+          </div>
+
+          <div class="achievement-message">
+            <strong>Logística de Rescate:</strong> Este inventario abastece activamente a los voluntarios autorizados de la zona para asegurar rescates seguros y traslados óptimos.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="currentView === 'configuracion'">
+    <div class="workspace-card">
+      <h3 class="card-title-section"><span class="indicator-dot vino"></span> ⚙️ Configuración de los Datos del Negocio</h3>
+      <p class="section-desc">Actualiza la información comercial que aparecerá visible para los rescatistas y voluntarios de la red.</p>
+
+      <form class="config-form" (ngSubmit)="guardarConfiguracion()">
+        <div class="form-field">
+          <label for="nombreNegocio">Nombre del Emprendimiento / Local</label>
+          <input id="nombreNegocio" type="text" [(ngModel)]="negocio.nombre" name="nombreNegocio" />
+        </div>
+        <div class="form-field">
+          <label for="direccionNegocio">Ubicación Física (Dirección)</label>
+          <input id="direccionNegocio" type="text" [(ngModel)]="negocio.direccion" name="direccionNegocio" />
+        </div>
+        <div class="form-field">
+          <label for="telefonoNegocio">Teléfono de Contacto</label>
+          <input id="telefonoNegocio" type="text" [(ngModel)]="negocio.telefono" name="telefonoNegocio" />
+        </div>
+        <button type="submit" class="btn-action">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="currentView === 'catalogo'">
+    <div class="workspace-card">
+      <div class="card-header-row">
+        <h3 class="card-title-section"><span class="indicator-dot orange"></span> 📦 Gestión de Mi Catálogo de Servicios</h3>
+        <button class="btn-action-sm">+ Añadir Nuevo Ítem</button>
+      </div>
+      <p class="section-desc">Administra los productos y servicios específicos que ofreces como patrocinador activo en la plataforma.</p>
+
+      <div class="table-responsive">
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th>Servicio / Producto</th>
+              <th>Categoría</th>
+              <th>Precio / Valor Referencia</th>
+              <th style="text-align: right;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of catalogo">
+              <td><strong>{{ item.nombre }}</strong></td>
+              <td><span class="badge-category" [ngClass]="item.tipo.toLowerCase()">{{ item.tipo }}</span></td>
+              <td class="text-muted">{{ item.precio | currency:'MXN' }}</td>
+              <td style="text-align: right;">
+                <button class="btn-link">Editar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

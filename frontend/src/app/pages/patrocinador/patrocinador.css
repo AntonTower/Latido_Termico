@@ -1,0 +1,235 @@
+.dashboard-wrapper {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 24px max(1rem, 3vw);
+  box-sizing: border-box;
+}
+
+/* HERO BANNER */
+.hero-dashboard-banner {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  background-image: url('/fondo_usuario.jpg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.banner-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(74,74,74,0.85) 0%, rgba(192,57,43,0.4) 100%);
+}
+.banner-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 750px;
+}
+.welcome-msg {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.2rem;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.inspiring-quote {
+  color: var(--cream);
+  font-size: 14.5px;
+  line-height: 1.5;
+  font-style: italic;
+  margin: 0;
+}
+
+/* GRID PRINCIPAL */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+.main-workspace-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.workspace-card {
+  background-color: var(--white);
+  border: 1px solid var(--cream);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(74,57,43,0.02);
+}
+.card-title-section {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.indicator-dot { width: 8px; height: 8px; border-radius: 50%; }
+.indicator-dot.orange { background-color: var(--amber); }
+.indicator-dot.red { background-color: var(--red); }
+.indicator-dot.vino { background-color: #9a6c0c; }
+
+.btn-action-sm {
+  padding: 6px 14px; border: none; border-radius: 6px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  background-color: var(--red); color: var(--white);
+  transition: background 0.2s;
+}
+.btn-action-sm:hover { background-color: #a0302a; }
+
+/* SIDEBAR ESTADÍSTICAS */
+.sidebar-stats-side { position: sticky; top: 88px; }
+.stats-sticky-card { background-color: var(--white); border: 2px solid var(--peach); border-radius: 14px; padding: 24px; text-align: center; }
+.stats-card-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--charcoal); margin-bottom: 20px; }
+.stat-box-container { display: flex; gap: 12px; margin-bottom: 20px; }
+.stat-mini-box { flex: 1; background-color: var(--bg); padding: 14px 8px; border-radius: 10px; display: flex; flex-direction: column; gap: 2px; border: 1px solid var(--cream); }
+.stat-box-num { font-family: 'DM Serif Display', serif; font-size: 1.8rem; font-weight: 600; }
+.stat-box-num.text-vino { color: #9a6c0c; }
+.stat-box-num.text-amber { color: var(--amber); }
+.stat-box-lbl { font-size: 11px; font-weight: 600; color: #8a7060; }
+.achievement-message { font-size: 12.5px; color: #6b5e56; line-height: 1.5; background-color: #fef8f5; padding: 12px; border-radius: 8px; }
+
+.text-vino { color: #9a6c0c; }
+
+.sub-nav {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--cream);
+}
+.sub-nav button {
+  background: none;
+  border: none;
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: #a59b95;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.25s ease;
+}
+.sub-nav button.active { color: var(--charcoal); border-bottom-color: #9a6c0c; }
+.sub-nav button:hover { color: var(--charcoal); }
+
+.table-responsive { overflow-x: auto; }
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8a7060;
+  border-bottom: 2px solid var(--bg);
+}
+.resource-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--bg);
+  font-size: 14px;
+  color: var(--charcoal);
+}
+.text-muted { color: #8a7060; font-size: 13px; }
+
+.quantity-badge { font-weight: 700; color: var(--charcoal); }
+.unit-label { font-size: 11px; color: #a59b95; margin-left: 3px; }
+
+.badge-category {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.badge-category.control     { background: #fef3c7; color: #b45309; }
+.badge-category.transporte  { background: #e2e8f0; color: #475569; }
+.badge-category.abrigo      { background: #e0f2fe; color: #0369a1; }
+.badge-category.protección,
+.badge-category.proteccion  { background: #fde8e8; color: var(--red); }
+.badge-category.servicio    { background: #eaf6ef; color: #1c7a4d; }
+.badge-category.medicamento { background: #fbf3e0; color: #9a6c0c; }
+
+.section-desc { color: #8a7060; font-size: 13.5px; margin-bottom: 20px; }
+
+.config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+}
+.form-field label {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--charcoal);
+}
+.form-field input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--cream);
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.form-field input[type="text"]:focus {
+  outline: none;
+  border-color: #9a6c0c;
+}
+
+.btn-action {
+  background-color: #9a6c0c;
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  width: fit-content;
+  transition: background 0.2s;
+}
+.btn-action:hover { background-color: #7d5709; }
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.btn-link {
+  background: none;
+  border: none;
+  color: #9a6c0c;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn-link:hover { text-decoration: underline; }
+
+/* RESPONSIVIDAD */
+@media (max-width: 960px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .sidebar-stats-side { position: static; }
+  .welcome-msg { font-size: 1.8rem; }
+}
+@media (max-width: 768px) {
+  .sub-nav { gap: 20px; overflow-x: auto; }
+  .config-form { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .hero-dashboard-banner { height: auto; min-height: 160px; padding: 20px 0; }
+  .banner-content { padding: 0 16px; }
+  .inspiring-quote { font-size: 13px; }
+}
