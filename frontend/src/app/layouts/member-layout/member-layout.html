@@ -45,19 +45,34 @@
         <span class="icon">📊</span> <span class="link-text">Dashboard Operativo</span>
       </a>
 
+      <!-- Sección exclusiva para el rol Patrocinador -->
+      <ng-container *ngIf="roleClass === 'role-patrocinador'">
+        <p class="sidebar-label mt-3">Patrocinio</p>
+        <a routerLink="/operaciones/patrocinador" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="closeSidebar()">
+          <span class="icon">📦</span> <span class="link-text">Panel de Patrocinio</span>
+        </a>
+        <a routerLink="/operaciones/patrocinador/historial" routerLinkActive="active-link" (click)="closeSidebar()">
+          <span class="icon">🤝</span> <span class="link-text">Mis Donaciones</span>
+        </a>
+      </ng-container>
+
       <p class="sidebar-label mt-3">Mi Actividad</p>
       <a routerLink="/operaciones/mis-datos" routerLinkActive="active-link" (click)="closeSidebar()">
         <span class="icon">🧾</span> <span class="link-text">Mi Información</span>
       </a>
-      <a routerLink="/operaciones/mis-reportes" routerLinkActive="active-link" (click)="closeSidebar()">
-        <span class="icon">📄</span> <span class="link-text">Mis Reportes</span>
-      </a>
-      <a routerLink="/operaciones/mis-casos" routerLinkActive="active-link" (click)="closeSidebar()">
-        <span class="icon">🗂️</span> <span class="link-text">Mis Casos</span>
-      </a>
+
+      <!-- Estos solo aplican a Reportante/Voluntario -->
+      <ng-container *ngIf="roleClass !== 'role-patrocinador'">
+        <a routerLink="/operaciones/mis-reportes" routerLinkActive="active-link" (click)="closeSidebar()">
+          <span class="icon">📄</span> <span class="link-text">Mis Reportes</span>
+        </a>
+        <a routerLink="/operaciones/mis-casos" routerLinkActive="active-link" (click)="closeSidebar()">
+          <span class="icon">🗂️</span> <span class="link-text">Mis Casos</span>
+        </a>
+      </ng-container>
 
       <p class="sidebar-label mt-3">Operaciones</p>
-      <a class="disabled-link" title="Próximamente">
+      <a routerLink="/mapa" routerLinkActive="active-link" (click)="closeSidebar()">
         <span class="icon">🗺️</span> <span class="link-text">Mapa de Rescates</span>
       </a>
       <a class="disabled-link" title="Próximamente">
