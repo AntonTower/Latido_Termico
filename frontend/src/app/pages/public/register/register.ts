@@ -42,8 +42,28 @@ export class RegisterComponent {
     this.authService.login(this.loginData.email, this.loginData.password).subscribe({
       next: (res: any) => {
         this.isLoading = false;
-        // 🌟 Redirección corregida al nuevo módulo de operaciones privadas
-        window.location.href = '/operaciones'; 
+
+        // 
+        alert("Respuesta del servidor: " + JSON.stringify(res));
+
+        let rolId: number | null = null;
+
+        if (res) {
+          if (res.rol_id) rolId = Number(res.rol_id);
+          else if (res.id_rol) rolId = Number(res.id_rol);
+          else if (res.usuario && res.usuario.rol_id) rolId = Number(res.usuario.rol_id);
+          else if (res.usuario && res.usuario.id_rol) rolId = Number(res.usuario.id_rol);
+          else if (res.user && res.user.rol_id) rolId = Number(res.user.rol_id);
+        }
+
+        // Alerta secundaria para ver qué rol procesó Angular
+        alert("Rol detectado por Angular: " + rolId);
+
+        if (rolId === 3) {
+          window.location.href = '/patrocinador';
+        } else {
+          window.location.href = '/operaciones';
+        }
       },
       error: (err: any) => {
         this.isLoading = false;
@@ -51,7 +71,6 @@ export class RegisterComponent {
       }
     });
   }
-
   doRegister(): void {
     if (!this.registerData.nombre_completo || !this.registerData.telefono || !this.registerData.email || !this.registerData.password) {
       this.errorMessage = 'Todos los campos son obligatorios.';
