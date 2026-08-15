@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PatrocinadorService } from '../../auth/services/patrocinador.service';
 
 interface AlimentoRecurso {
   tipo: string;
@@ -16,8 +17,9 @@ interface MaterialRecurso {
 }
 
 interface CatalogoItem {
+  id?: number;
   nombre: string;
-  tipo: 'Servicio' | 'Medicamento';
+  tipo: 'Servicio' | 'Medicamento' | 'Alimento' | 'Material' | string;
   precio: number;
 }
 
@@ -37,15 +39,17 @@ interface NegocioInfo {
 export class PatrocinadorComponent implements OnInit {
 
   currentView: 'dashboard' | 'configuracion' | 'catalogo' = 'dashboard';
+  cargando: boolean = false;
 
   changeView(view: 'dashboard' | 'configuracion' | 'catalogo'): void {
     this.currentView = view;
   }
 
+  // Se inicializa vacío para reemplazar los datos fijos/genéricos
   negocio: NegocioInfo = {
-    nombre: 'Veterinaria San Francisco',
-    direccion: 'Av. Juárez #405, Centro',
-    telefono: '222 123 4567'
+    nombre: '',
+    direccion: '',
+    telefono: ''
   };
 
   alimentos: AlimentoRecurso[] = [
@@ -64,16 +68,25 @@ export class PatrocinadorComponent implements OnInit {
     { nombre: 'Protecciones corporales', categoria: 'Protección', detalles: 'Pecheras de seguridad y mangas', cantidad: 6 }
   ];
 
-  catalogo: CatalogoItem[] = [
-    { nombre: 'Consulta Veterinaria General', tipo: 'Servicio', precio: 250 },
-    { nombre: 'Desparasitación Interna', tipo: 'Medicamento', precio: 120 }
-  ];
+// ✅ AHORA:
+  catalogo: CatalogoItem[] = [];
+
+  mostrarModal: boolean = false;
+  editando: boolean = false;
+  nuevoItem: CatalogoItem = {
+    nombre: '',
+    tipo: '',
+    precio: 0
+  };
 
   totalAlimento = 0;
   totalMateriales = 0;
 
+  constructor(private patrocinadorService: PatrocinadorService) {}
+
   ngOnInit(): void {
     this.calcularTotales();
+    this.cargarDatosNegocio();
   }
 
   calcularTotales(): void {
@@ -81,8 +94,59 @@ export class PatrocinadorComponent implements OnInit {
     this.totalMateriales = this.materiales.reduce((sum, item) => sum + item.cantidad, 0);
   }
 
+  // Carga los datos reales desde la base de datos
+  cargarDatosNegocio(): void {
+    this.cargando = true;
+    this.patrocinadorService.getDatosNegocio().subscribe({
+      next: (data) => {
+        if (data) {
+          this.negocio = data;
+        }
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener datos del negocio:', err);
+        this.cargando = false;
+      }
+    });
+  }
+
+  // Envía los cambios al backend
   guardarConfiguracion(): void {
-    // TODO: conectar con ReporteService/PatrocinadorService cuando esté el endpoint
-    console.log('Guardando configuración:', this.negocio);
+    this.cargando = true;
+    this.patrocinadorService.guardarDatosNegocio(this.negocio).subscribe({
+      next: (res) => {
+        this.cargando = false;
+        alert('¡Configuración guardada correctamente!');
+      },
+      error: (err) => {
+        console.error('Error al guardar configuración:', err);
+        this.cargando = false;
+        alert('Ocurrió un error al intentar guardar los datos.');
+      }
+    });
+  }
+
+  abrirModalCrear(): void {
+    this.editando = false;
+    this.nuevoItem = { nombre: '', tipo: '', precio: 0 };
+    this.mostrarModal = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
+  guardarItemCatalogo(): void {
+    if (!this.nuevoItem.nombre || !this.nuevoItem.tipo) return;
+
+    this.cargando = true;
+
+    // Simulación local para probar la interfaz
+    setTimeout(() => {
+      this.catalogo.push({ ...this.nuevoItem, id: Date.now() });
+      this.cargando = false;
+      this.cerrarModal();
+    }, 500);
   }
 }
