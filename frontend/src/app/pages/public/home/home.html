@@ -1,22 +1,84 @@
 <section class="hero">
   <div class="hero-text animate-up delay-1">
-    <p class="hero-eyebrow">Red de búsqueda y rescate</p>
-    <h1 class="hero-title">Cada mascota<br>merece<br><span class="hero-highlight">volver a casa.</span></h1>
-    <p class="hero-desc">Conectamos a familias con sus compañeros perdidos. Reporta, busca y adopta con el apoyo de una comunidad que cuida.</p>
-    <div class="hero-actions">
-      <button class="btn-primary">🔍 Buscar mascota</button>
-      <button class="btn-secondary">Reportar pérdida</button>
-    </div>
+    <p class="hero-eyebrow">Red de rescate</p>
+    <h1 class="hero-title">Cada mascota<br>merece<br><span class="hero-highlight">una vida digna.</span></h1>
   </div>
 
-  <div class="hero-card animate-up delay-2">
-    <div class="pet-img">🐶</div>
-    <span class="card-badge urgent">⚡ Urgente · 8 horas</span>
-    <p class="card-pet-name">Max, Labrador dorado</p>
-    <p class="card-meta">Macho · 3 años · Collar azul</p>
-    <div class="card-footer">
-      <span class="card-location">📍 Col. Roma Norte</span>
-      <button class="card-cta">Ver aviso</button>
+  <div class="hero-card animate-up delay-2" id="rescueCard">
+    <div class="card-view" [class.active]="currentStep === 'intro'">
+      <div class="pet-img">🤝</div>
+      <span class="card-badge">Únete a la comunidad</span>
+      <p class="card-pet-name">Comunidad RescueNet</p>
+      <p class="card-meta">Salva vidas reportando animales callejeros o apoyando a refugios.</p>
+      <div class="card-footer">
+        <button class="card-cta" type="button" (click)="showStep('roles')">Forma parte de RescueNet</button>
+      </div>
+    </div>
+
+    <div class="card-view" [class.active]="currentStep === 'roles'">
+      <span class="card-badge">Elige tu rol</span>
+      <p class="card-pet-name">¿Cómo deseas ayudar?</p>
+
+      <div class="role-options">
+        <button class="role-btn" type="button" (click)="showStep('rescuer')">
+          <span class="role-icon">🚨</span>
+          <div>
+            <strong>Rescatista / Reportero</strong>
+            <small>Reporta y ayuda en rescates activos</small>
+          </div>
+        </button>
+
+        <button class="role-btn" type="button" (click)="showStep('sponsor')">
+          <span class="role-icon">💛</span>
+          <div>
+            <strong>Patrocinador</strong>
+            <small>Refugios y aliados independientes</small>
+          </div>
+        </button>
+      </div>
+
+      <button class="btn-back" type="button" (click)="showStep('intro')">← Volver</button>
+    </div>
+
+    <div class="card-view" [class.active]="currentStep === 'rescuer'">
+      <span class="card-badge urgent">⚡ Acceso Rescatistas</span>
+      <p class="card-pet-name">Escanea el código QR</p>
+      <p class="card-meta">Únete al canal oficial de alertas inmediatas en tu zona.</p>
+
+      <div class="qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=RescueNet" alt="Código QR RescueNet" class="qr-img">
+      </div>
+
+      <button class="btn-back" type="button" (click)="showStep('roles')">← Cambiar de opción</button>
+    </div>
+
+    <div class="card-view" [class.active]="currentStep === 'sponsor'">
+      <span class="card-badge">Registro de Aliado</span>
+      <p class="card-pet-name">Únete como Patrocinador</p>
+
+      <form class="sponsor-form" (ngSubmit)="submitSponsor()">
+        <div class="form-group">
+          <label>Tipo de patrocinio</label>
+          <select name="tipoPatrocinio" [(ngModel)]="sponsorData.tipoPatrocinio" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="refugio">Refugio de perros / AC</option>
+            <option value="independiente">Patrocinador independiente</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre / Refugio</label>
+          <input type="text" name="nombre" [(ngModel)]="sponsorData.nombre" placeholder="Ej. Refugio Huellitas o Juan Pérez" required>
+        </div>
+
+        <div class="form-group">
+          <label>Correo o Teléfono</label>
+          <input type="text" name="contacto" [(ngModel)]="sponsorData.contacto" placeholder="contacto@ejemplo.com" required>
+        </div>
+
+        <button type="submit" class="card-cta submit-btn">Enviar solicitud</button>
+        <button type="button" class="btn-back" (click)="showStep('roles')">← Cambiar de opción</button>
+      </form>
     </div>
   </div>
 </section>
@@ -24,15 +86,15 @@
 <section class="stats" #statsSection>
   <div class="stat animate-up delay-1">
     <span class="stat-number">{{ stats.mascotas | number:'1.0-0' }}</span>
-    <span class="stat-label">Mascotas reunidas</span>
+    <span class="stat-label">Mascotas reportadas</span>
   </div>
   <div class="stat animate-up delay-2">
-    <span class="stat-number">{{ stats.familias | number:'1.0-0' }}</span>
-    <span class="stat-label">Familias registradas</span>
+    <span class="stat-number">{{ stats.rescates | number:'1.0-0' }}</span>
+    <span class="stat-label">Mascotas Rescatadas</span>
   </div>
   <div class="stat animate-up delay-3">
     <span class="stat-number">{{ stats.tasa }}%</span>
-    <span class="stat-label">Tasa de reencuentro</span>
+    <span class="stat-label">Tasa de rescates</span>
   </div>
   <div class="stat animate-up delay-4">
     <span class="stat-number">{{ stats.voluntarios }}</span>
@@ -40,74 +102,9 @@
   </div>
 </section>
 
-<section class="search-section">
-  <h2>¿Buscas a alguien?</h2>
-  <div class="search-bar">
-    <input type="text" placeholder="Especie, raza, color, zona...">
-    <button class="btn-primary">Buscar</button>
-  </div>
-</section>
 
-<section class="grid-section">
-  <div class="section-header">
-    <h2 class="section-title">Avisos recientes</h2>
-    <a class="section-link">Ver todos →</a>
-  </div>
-  
-  <div class="pet-grid">
-    <div class="pet-card animate-up delay-1">
-      <div class="pet-card-img bg-coral">🐱</div>
-      <div class="pet-card-body">
-        <span class="pet-tag tag-urgent">⚡ Urgente</span>
-        <p class="pet-card-name">Luna</p>
-        <p class="pet-card-info">Gata persa · Blanca · 2 años</p>
-        <div class="pet-card-footer">
-          <span class="pet-card-loc">📍 Condesa</span>
-          <button class="btn-sm">Ver</button>
-        </div>
-      </div>
-    </div>
-    
-    <div class="pet-card animate-up delay-2">
-      <div class="pet-card-img bg-peach">🐕</div>
-      <div class="pet-card-body">
-        <span class="pet-tag tag-lost">Perdido</span>
-        <p class="pet-card-name">Coco</p>
-        <p class="pet-card-info">Beagle · Tricolor · 5 años</p>
-        <div class="pet-card-footer">
-          <span class="pet-card-loc">📍 Coyoacán</span>
-          <button class="btn-sm">Ver</button>
-        </div>
-      </div>
-    </div>
-    
-    <div class="pet-card animate-up delay-3">
-      <div class="pet-card-img bg-green">🐇</div>
-      <div class="pet-card-body">
-        <span class="pet-tag tag-found">Encontrado</span>
-        <p class="pet-card-name">Sin nombre</p>
-        <p class="pet-card-info">Conejo · Blanco y gris · Joven</p>
-        <div class="pet-card-footer">
-          <span class="pet-card-loc">📍 Tlalpan</span>
-          <button class="btn-sm-green">Info</button>
-        </div>
-      </div>
-    </div>
-    
-    <div class="pet-card animate-up delay-4">
-      <div class="pet-card-img bg-amber">🐶</div>
-      <div class="pet-card-body">
-        <span class="pet-tag tag-lost">Perdido</span>
-        <p class="pet-card-name">Rocky</p>
-        <p class="pet-card-info">Bulldog inglés · Atigrado · 4 años</p>
-        <div class="pet-card-footer">
-          <span class="pet-card-loc">📍 Narvarte</span>
-          <button class="btn-sm">Ver</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
+
 
 <section class="how-section">
   <h2>¿Cómo funciona?</h2>
@@ -115,23 +112,50 @@
     <div class="how-step animate-up delay-1">
       <div class="how-icon">📢</div>
       <h3>1. Publica el aviso</h3>
-      <p>Sube una foto, describe a tu mascota y comparte la ubicación donde fue vista por última vez.</p>
+      <p>Sube una foto desde nuestra app, llena el formulario, y espera.</p>
     </div>
     <div class="how-step animate-up delay-2">
       <div class="how-icon">🔔</div>
       <h3>2. La comunidad actúa</h3>
-      <p>Voluntarios y vecinos cercanos reciben una alerta y ayudan a buscar en la zona.</p>
+      <p>Los rescatistas voluntarios harán lo posible para hacer el rescate</p>
     </div>
     <div class="how-step animate-up delay-3">
       <div class="how-icon">🤝</div>
-      <h3>3. Reencuentro</h3>
-      <p>Te contactamos en cuanto alguien la encuentre. La mayoría regresa en menos de 48 horas.</p>
+      <h3>3. Vida Feliz</h3>
+      <p>Los rescatistas llevaran los perros a refugios para que tengan una vida digna</p>
     </div>
   </div>
 </section>
 
-<section class="success-banner animate-up delay-1">
-  <h2>¿La encontraste?</h2>
-  <p>Cierra tu aviso y cuéntanos cómo fue el reencuentro. Tu historia inspira a otros.</p>
-  <button class="btn-white">Marcar como encontrada 🎉</button>
+
+<section class="mision-vision-section">
+  <div class="mision animate-up delay-1">
+    <h2>Misión</h2>
+    <p>RescueNet es una red de rescate que conecta a personas y organizaciones para salvar la vida de mascotas callejeras, promoviendo su bienestar.</p>
+  </div>
+  <div class="vision animate-up delay-2">
+    <h2>Visión</h2>
+    <p>Ser la plataforma líder en rescate y protección animal, fomentando una comunidad comprometida con el bienestar de las mascotas y la concienciación sobre la tenencia responsable.</p>
+  </div>
+</section>
+
+<section class="us-section">
+  <h2>Sobre nosotros</h2>
+  <div class="us-grid">
+    <div class="us-card animate-up delay-1">
+      <div class="us-icon">💡</div>
+      <h3>Innovación</h3>
+      <p>Implementamos soluciones tecnológicas para agilizar el rescate de nuestros animales en riesgo.</p>
+    </div>
+    <div class="us-card animate-up delay-2">
+      <div class="us-icon">🤝</div>
+      <h3>Colaboración</h3>
+      <p>Trabajamos en conjunto con refugios, voluntarios y patrocinadores para maximizar nuestro impacto.</p>
+    </div>
+    <div class="us-card animate-up delay-3">
+      <div class="us-icon">💖</div>
+      <h3>Compromiso</h3>
+      <p>Nos dedicamos a mejorar la vida de las mascotas y a crear conciencia sobre la tenencia responsable.</p>
+    </div>
+  </div>
 </section>
