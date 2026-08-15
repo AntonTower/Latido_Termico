@@ -176,15 +176,23 @@
   margin-bottom: 6px;
   color: var(--charcoal);
 }
-.form-field input[type="text"] {
+
+.form-field input[type="text"],
+.form-field input[type="number"],
+.form-field select {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--cream);
   border-radius: 8px;
   font-size: 14px;
   box-sizing: border-box;
+  background-color: var(--white);
+  color: var(--charcoal);
 }
-.form-field input[type="text"]:focus {
+
+.form-field input[type="text"]:focus,
+.form-field input[type="number"]:focus,
+.form-field select:focus {
   outline: none;
   border-color: #9a6c0c;
 }
@@ -202,6 +210,29 @@
 }
 .btn-action:hover { background-color: #7d5709; }
 
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #8a7060;
+  border: 1px solid var(--cream);
+  padding: 12px 20px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg);
+  color: var(--charcoal);
+}
+
 .card-header-row {
   display: flex;
   justify-content: space-between;
@@ -218,6 +249,36 @@
 }
 .btn-link:hover { text-decoration: underline; }
 
+/*  ESTILOS PARA MI CATÁLOGO & ESTADO VACÍO */
+.empty-state-box {
+  text-align: center;
+  padding: 48px 24px;
+  background-color: var(--bg, #fef8f5);
+  border: 2px dashed var(--cream, #e2d8d0);
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.empty-state-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.empty-state-desc {
+  color: #8a7060;
+  font-size: 13.5px;
+  max-width: 480px;
+  margin: 0 auto 20px auto;
+  line-height: 1.5;
+}
+
 /* RESPONSIVIDAD */
 @media (max-width: 960px) {
   .dashboard-grid { grid-template-columns: 1fr; }
@@ -232,4 +293,72 @@
   .hero-dashboard-banner { height: auto; min-height: 160px; padding: 20px 0; }
   .banner-content { padding: 0 16px; }
   .inspiring-quote { font-size: 13px; }
+}
+
+/* Backdrop: Fondo oscuro semitransparente que cubre toda la pantalla */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+/* Tarjeta principal del Modal */
+.modal-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  box-sizing: border-box;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+/* Encabezado del modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  color: #000;
+}
+
+/* Animación de entrada suave */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
