@@ -110,44 +110,82 @@
       <form class="config-form" (ngSubmit)="guardarConfiguracion()">
         <div class="form-field">
           <label for="nombreNegocio">Nombre del Emprendimiento / Local</label>
-          <input id="nombreNegocio" type="text" [(ngModel)]="negocio.nombre" name="nombreNegocio" />
+          <input 
+            id="nombreNegocio" 
+            type="text" 
+            [(ngModel)]="negocio.nombre" 
+            name="nombreNegocio" 
+            placeholder="Ej. Veterinaria San Francisco" 
+          />
         </div>
         <div class="form-field">
           <label for="direccionNegocio">Ubicación Física (Dirección)</label>
-          <input id="direccionNegocio" type="text" [(ngModel)]="negocio.direccion" name="direccionNegocio" />
+          <input 
+            id="direccionNegocio" 
+            type="text" 
+            [(ngModel)]="negocio.direccion" 
+            name="direccionNegocio" 
+            placeholder="Ej. Av. Juárez #405, Centro" 
+          />
         </div>
         <div class="form-field">
           <label for="telefonoNegocio">Teléfono de Contacto</label>
-          <input id="telefonoNegocio" type="text" [(ngModel)]="negocio.telefono" name="telefonoNegocio" />
+          <input 
+            id="telefonoNegocio" 
+            type="text" 
+            [(ngModel)]="negocio.telefono" 
+            name="telefonoNegocio" 
+            placeholder="10 dígitos" 
+          />
         </div>
-        <button type="submit" class="btn-action">Guardar Cambios</button>
+
+        <button type="submit" class="btn-action" [disabled]="cargando">
+          {{ cargando ? 'Guardando...' : 'Guardar Cambios' }}
+        </button>
       </form>
     </div>
   </div>
 
   <div *ngIf="currentView === 'catalogo'">
     <div class="workspace-card">
+      
+      <!-- Encabezado con Botón -->
       <div class="card-header-row">
-        <h3 class="card-title-section"><span class="indicator-dot orange"></span> 📦 Gestión de Mi Catálogo de Servicios</h3>
-        <button class="btn-action-sm">+ Añadir Nuevo Ítem</button>
+        <div>
+          <h3 class="card-title-section mb-1">
+            <span class="indicator-dot vino"></span> 📦 Gestión de Mi Catálogo de Servicios
+          </h3>
+          <p class="section-desc mb-0">
+            Administra los productos y servicios específicos que ofreces como patrocinador activo en la plataforma.
+          </p>
+        </div>
+        
+        <!-- Botón para añadir cuando SÍ hay ítems -->
+        <button *ngIf="catalogo.length > 0" class="btn-action" (click)="abrirModalCrear()">
+          + Añadir Nuevo Ítem
+        </button>
       </div>
-      <p class="section-desc">Administra los productos y servicios específicos que ofreces como patrocinador activo en la plataforma.</p>
 
-      <div class="table-responsive">
+      <!-- CASO 1: Si SÍ hay items en el catálogo -->
+      <div *ngIf="catalogo.length > 0; else estadoVacio" class="table-responsive">
         <table class="resource-table">
           <thead>
             <tr>
-              <th>Servicio / Producto</th>
-              <th>Categoría</th>
-              <th>Precio / Valor Referencia</th>
-              <th style="text-align: right;">Acciones</th>
+              <th>SERVICIO / PRODUCTO</th>
+              <th>CATEGORÍA</th>
+              <th>PRECIO / VALOR REFERENCIA</th>
+              <th style="text-align: right;">ACCIONES</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of catalogo">
               <td><strong>{{ item.nombre }}</strong></td>
-              <td><span class="badge-category" [ngClass]="item.tipo.toLowerCase()">{{ item.tipo }}</span></td>
-              <td class="text-muted">{{ item.precio | currency:'MXN' }}</td>
+              <td>
+                <span class="badge-category" [ngClass]="item.tipo.toLowerCase()">
+                  {{ item.tipo }}
+                </span>
+              </td>
+              <td><strong>MX${{ item.precio | number:'1.2-2' }}</strong></td>
               <td style="text-align: right;">
                 <button class="btn-link">Editar</button>
               </td>
@@ -155,7 +193,78 @@
           </tbody>
         </table>
       </div>
+
+      <!-- CASO 2: Estado Vacío (Empty State) -->
+      <ng-template #estadoVacio>
+        <div class="empty-state-box">
+          <div class="empty-state-icon">📦</div>
+          <h4 class="empty-state-title">Aún no has agregado nada a tu catálogo</h4>
+          <p class="empty-state-desc">
+            Empieza publicando los servicios o productos que tu emprendimiento ofrece a la comunidad.
+          </p>
+          <button class="btn-action" (click)="abrirModalCrear()">
+            + Añadir mi primer ítem
+          </button>
+        </div>
+      </ng-template>
+
     </div>
   </div>
 
+</div>
+
+<!-- MODAL PARA CREAR / EDITAR ÍTEM DEL CATÁLOGO -->
+<div class="modal-backdrop" *ngIf="mostrarModal">
+  <div class="modal-card animate-fade-in">
+    <div class="modal-header">
+      <h3>📦 {{ editando ? 'Editar Ítem' : 'Añadir Nuevo Ítem al Catálogo' }}</h3>
+      <button class="btn-close" (click)="cerrarModal()">&times;</button>
+    </div>
+
+    <form (ngSubmit)="guardarItemCatalogo()" #formCatalogo="ngForm">
+      <div class="form-field">
+        <label for="nombreItem">Nombre del Producto / Servicio</label>
+        <input 
+          id="nombreItem" 
+          type="text" 
+          [(ngModel)]="nuevoItem.nombre" 
+          name="nombreItem" 
+          placeholder="Ej. Bulto de alimento 15kg, Consulta general..." 
+          required 
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="tipoItem">Categoría / Tipo</label>
+        <select id="tipoItem" [(ngModel)]="nuevoItem.tipo" name="tipoItem" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="Alimento">Alimento</option>
+          <option value="Medicamento">Medicamento</option>
+          <option value="Servicio">Servicio</option>
+          <option value="Material">Material / Accesorio</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="precioItem">Precio / Valor de Referencia ($ MXN)</label>
+        <input 
+          id="precioItem" 
+          type="number" 
+          min="0" 
+          step="0.01" 
+          [(ngModel)]="nuevoItem.precio" 
+          name="precioItem" 
+          placeholder="0.00" 
+          required 
+        />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" class="btn-action" [disabled]="formCatalogo.invalid || cargando">
+          {{ cargando ? 'Guardando...' : (editando ? 'Actualizar' : 'Guardar Ítem') }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
