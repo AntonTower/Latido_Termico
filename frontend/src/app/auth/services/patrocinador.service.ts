@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment'; 
 
 export interface NegocioConfig {
   nombre: string;
@@ -19,27 +20,39 @@ export interface CatalogoItem {
   providedIn: 'root'
 })
 export class PatrocinadorService {
-  // Ajusta a la URL base de tu backend / API REST
-  private apiUrl = 'http://localhost:3000/api/patrocinador'; 
+  private apiUrl = `${environment.apiUrl}/patrocinador`;
 
   constructor(private http: HttpClient) {}
 
-  // Obtiene los datos reales del negocio desde la DB
-  getDatosNegocio(): Observable<NegocioConfig> {
-    return this.http.get<NegocioConfig>(`${this.apiUrl}/configuracion`);
+  private getAuthHeaders(): HttpHeaders {
+    let token = '';
+    if (typeof window !== 'undefined' && localStorage) {
+      token = localStorage.getItem('token') || '';
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  // Guarda o actualiza los datos ingresados
+  getDatosNegocio(): Observable<NegocioConfig> {
+    return this.http.get<NegocioConfig>(`${this.apiUrl}/configuracion`, { headers: this.getAuthHeaders() });
+  }
+
   guardarDatosNegocio(datos: NegocioConfig): Observable<any> {
-    return this.http.put(`${this.apiUrl}/configuracion`, datos);
+    return this.http.put(`${this.apiUrl}/configuracion`, datos, { headers: this.getAuthHeaders() });
   }
 
   getCatalogo(): Observable<CatalogoItem[]> {
-    return this.http.get<CatalogoItem[]>(`${this.apiUrl}/catalogo`);
+    return this.http.get<CatalogoItem[]>(`${this.apiUrl}/catalogo`, { headers: this.getAuthHeaders() });
   }
 
-  // Insertar un nuevo ítem en la BD
   guardarItemCatalogo(item: CatalogoItem): Observable<CatalogoItem> {
-    return this.http.post<CatalogoItem>(`${this.apiUrl}/catalogo`, item);
+    return this.http.post<CatalogoItem>(`${this.apiUrl}/catalogo`, item, { headers: this.getAuthHeaders() });
+  }
+
+  actualizarItemCatalogo(id: number, item: CatalogoItem): Observable<CatalogoItem> {
+    return this.http.put<CatalogoItem>(`${this.apiUrl}/catalogo/${id}`, item, { headers: this.getAuthHeaders() });
+  }
+
+  eliminarItemCatalogo(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/catalogo/${id}`, { headers: this.getAuthHeaders() });
   }
 }
