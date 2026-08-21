@@ -73,7 +73,7 @@ export class PatrocinadorComponent implements OnInit {
       next: (itemGuardado: CatalogoItem) => {
         this.catalogoItems.push(itemGuardado);
         this.cerrarModal();
-        console.log('Ítem guardado exitosamente en BD:', itemGuardado);
+        console.log('Producto guardado exitosamente en BD:', itemGuardado);
       },
       error: (err: any) => {
         console.error('Error al guardar en la base de datos:', err);
