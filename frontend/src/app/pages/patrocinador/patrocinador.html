@@ -1,11 +1,5 @@
 <div class="dashboard-wrapper animate-fade-in">
 
-  <nav class="sub-nav">
-    <button [class.active]="currentView === 'dashboard'" (click)="changeView('dashboard')">Dashboard</button>
-    <button [class.active]="currentView === 'configuracion'" (click)="changeView('configuracion')">Configuración</button>
-    <button [class.active]="currentView === 'catalogo'" (click)="changeView('catalogo')">Mi Catálogo</button>
-  </nav>
-
   <div *ngIf="currentView === 'dashboard'">
 
     <div class="hero-dashboard-banner">
@@ -161,8 +155,8 @@
         </div>
         
         <!-- Botón para añadir cuando SÍ hay ítems -->
-        <button *ngIf="catalogo.length > 0" class="btn-action" (click)="abrirModalCrear()">
-          + Añadir Nuevo Ítem
+        <button *ngIf="catalogo.length > 0" class="btn-action" [disabled]="cargando" (click)="abrirModalCrear()">
+          + Añadir Nuevo Producto
         </button>
       </div>
 
@@ -187,7 +181,8 @@
               </td>
               <td><strong>MX${{ item.precio | number:'1.2-2' }}</strong></td>
               <td style="text-align: right;">
-                <button class="btn-link">Editar</button>
+                <button class="btn-link" [disabled]="cargando" (click)="editarItem(item)">Editar</button>
+                <button class="btn-link text-danger" [disabled]="cargando" (click)="eliminarItem(item)">Eliminar</button>
               </td>
             </tr>
           </tbody>
@@ -203,7 +198,7 @@
             Empieza publicando los servicios o productos que tu emprendimiento ofrece a la comunidad.
           </p>
           <button class="btn-action" (click)="abrirModalCrear()">
-            + Añadir mi primer ítem
+            + Añadir mi primer Producto
           </button>
         </div>
       </ng-template>
