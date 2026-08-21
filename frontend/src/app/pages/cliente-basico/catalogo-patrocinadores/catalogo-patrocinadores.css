@@ -1,0 +1,221 @@
+.dashboard-wrapper {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 24px max(1rem, 3vw);
+  box-sizing: border-box;
+}
+
+.workspace-card {
+  background-color: var(--white);
+  border: 1px solid var(--cream);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(74,57,43,0.02);
+}
+
+.card-title-section {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.indicator-dot { width: 8px; height: 8px; border-radius: 50%; }
+.indicator-dot.vino { background-color: #9a6c0c; }
+
+.section-desc { color: #8a7060; font-size: 13.5px; margin-bottom: 20px; }
+
+.empty-msg {
+  color: #a59b95;
+  font-size: 13.5px;
+  text-align: center;
+  padding: 24px;
+}
+
+/* GRID DE TARJETAS DE PATROCINADOR */
+.patrocinadores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.patrocinador-card {
+  background-color: var(--white);
+  border: 1px solid var(--cream);
+  border-radius: 14px;
+  padding: 18px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.patrocinador-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(74,57,43,0.12);
+  border-color: #9a6c0c;
+}
+
+.patrocinador-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9a6c0c, #c9922a);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.patrocinador-info h4 {
+  margin: 4px 0 2px 0;
+  font-size: 15px;
+  color: var(--charcoal);
+  font-weight: 700;
+}
+.patrocinador-direccion,
+.patrocinador-telefono {
+  margin: 0;
+  font-size: 12.5px;
+  color: #8a7060;
+  line-height: 1.4;
+}
+
+.ver-catalogo-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #9a6c0c;
+}
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  box-sizing: border-box;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+.modal-header h3 { margin: 0; color: #333; font-size: 1.15rem; }
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+}
+.btn-close:hover { color: #000; }
+
+.contacto-box {
+  background-color: #fef8f5;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.contacto-box p { margin: 4px 0; font-size: 13.5px; color: var(--charcoal); }
+.contacto-box a { color: #9a6c0c; font-weight: 700; text-decoration: none; }
+.contacto-box a:hover { text-decoration: underline; }
+.text-muted { color: #a59b95; font-style: italic; }
+
+.catalogo-subtitulo {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8a7060;
+  margin: 0 0 10px 0;
+}
+
+.table-responsive { overflow-x: auto; }
+.resource-table { width: 100%; border-collapse: collapse; }
+.resource-table th {
+  padding: 10px 8px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8a7060;
+  border-bottom: 2px solid var(--bg);
+}
+.resource-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--bg);
+  font-size: 13.5px;
+  color: var(--charcoal);
+}
+
+.badge-category {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.badge-category.servicio    { background: #eaf6ef; color: #1c7a4d; }
+.badge-category.medicamento { background: #fbf3e0; color: #9a6c0c; }
+.badge-category.alimento    { background: #fde8d8; color: #b45309; }
+.badge-category.material    { background: #e0f2fe; color: #0369a1; }
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #8a7060;
+  border: 1px solid var(--cream);
+  padding: 10px 20px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { background-color: var(--bg); color: var(--charcoal); }
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .patrocinadores-grid { grid-template-columns: 1fr; }
+}
