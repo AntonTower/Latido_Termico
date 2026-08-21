@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { PatrocinadorService } from '../../auth/services/patrocinador.service';
 
 interface AlimentoRecurso {
@@ -68,7 +69,6 @@ export class PatrocinadorComponent implements OnInit {
     { nombre: 'Protecciones corporales', categoria: 'Protección', detalles: 'Pecheras de seguridad y mangas', cantidad: 6 }
   ];
 
-// ✅ AHORA:
   catalogo: CatalogoItem[] = [];
 
   mostrarModal: boolean = false;
@@ -82,11 +82,32 @@ export class PatrocinadorComponent implements OnInit {
   totalAlimento = 0;
   totalMateriales = 0;
 
-  constructor(private patrocinadorService: PatrocinadorService) {}
+  constructor(
+    private patrocinadorService: PatrocinadorService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this.currentView = (this.route.snapshot.data['view'] as 'dashboard' | 'configuracion' | 'catalogo') ?? 'dashboard';
+
     this.calcularTotales();
     this.cargarDatosNegocio();
+    this.cargarCatalogo();
+  }
+
+  // Trae el catálogo real desde la base de datos (Neon)
+  cargarCatalogo(): void {
+    this.cargando = true;
+    this.patrocinadorService.getCatalogo().subscribe({
+      next: (data) => {
+        this.catalogo = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener catálogo:', err);
+        this.cargando = false;
+      }
+    });
   }
 
   calcularTotales(): void {
@@ -127,9 +148,18 @@ export class PatrocinadorComponent implements OnInit {
     });
   }
 
+  // Abre el modal en blanco, listo para crear un item nuevo
   abrirModalCrear(): void {
     this.editando = false;
     this.nuevoItem = { nombre: '', tipo: '', precio: 0 };
+    this.mostrarModal = true;
+  }
+
+  // Abre el modal precargado con los datos del item que se va a editar
+  editarItem(item: CatalogoItem): void {
+    this.editando = true;
+    // copia aparte, para no mutar la fila de la tabla mientras se edita en el modal
+    this.nuevoItem = { ...item };
     this.mostrarModal = true;
   }
 
@@ -137,16 +167,62 @@ export class PatrocinadorComponent implements OnInit {
     this.mostrarModal = false;
   }
 
+  // Un solo método para el submit del modal: decide si crea o actualiza
   guardarItemCatalogo(): void {
     if (!this.nuevoItem.nombre || !this.nuevoItem.tipo) return;
 
     this.cargando = true;
 
-    // Simulación local para probar la interfaz
-    setTimeout(() => {
-      this.catalogo.push({ ...this.nuevoItem, id: Date.now() });
-      this.cargando = false;
-      this.cerrarModal();
-    }, 500);
+    if (this.editando && this.nuevoItem.id) {
+      this.patrocinadorService.actualizarItemCatalogo(this.nuevoItem.id, this.nuevoItem).subscribe({
+        next: (itemActualizado) => {
+          const index = this.catalogo.findIndex(i => i.id === itemActualizado.id);
+          if (index !== -1) {
+            this.catalogo[index] = itemActualizado;
+          }
+          this.cargando = false;
+          this.cerrarModal();
+        },
+        error: (err) => {
+          console.error('Error al actualizar item:', err);
+          this.cargando = false;
+          alert('Ocurrió un error al actualizar el item.');
+        }
+      });
+    } else {
+      this.patrocinadorService.guardarItemCatalogo(this.nuevoItem).subscribe({
+        next: (itemCreado) => {
+          this.catalogo.push(itemCreado);
+          this.cargando = false;
+          this.cerrarModal();
+        },
+        error: (err) => {
+          console.error('Error al guardar item:', err);
+          this.cargando = false;
+          alert('Ocurrió un error al guardar el item.');
+        }
+      });
+    }
+  }
+
+  // Pide confirmación y elimina el item, tanto de la BD como de la tabla en pantalla
+  eliminarItem(item: CatalogoItem): void {
+    if (!item.id) return;
+
+    const confirmado = confirm(`¿Seguro que quieres eliminar "${item.nombre}" del catálogo? Esta acción no se puede deshacer.`);
+    if (!confirmado) return;
+
+    this.cargando = true;
+    this.patrocinadorService.eliminarItemCatalogo(item.id).subscribe({
+      next: () => {
+        this.catalogo = this.catalogo.filter(i => i.id !== item.id);
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al eliminar item:', err);
+        this.cargando = false;
+        alert('Ocurrió un error al eliminar el item.');
+      }
+    });
   }
 }
