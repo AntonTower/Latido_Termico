@@ -48,11 +48,17 @@
       <!-- Sección exclusiva para el rol Patrocinador -->
       <ng-container *ngIf="roleClass === 'role-patrocinador'">
         <p class="sidebar-label mt-3">Patrocinio</p>
-        <a routerLink="/operaciones/patrocinador" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="closeSidebar()">
-          <span class="icon">📦</span> <span class="link-text">Panel de Patrocinio</span>
+        
+        <a routerLink="/operaciones/patrocinador/dashboard" routerLinkActive="active-link" (click)="closeSidebar()">
+          <span class="icon"></span> <span class="link-text">Dashboard</span>
         </a>
-        <a routerLink="/operaciones/patrocinador/historial" routerLinkActive="active-link" (click)="closeSidebar()">
-          <span class="icon">🤝</span> <span class="link-text">Mis Donaciones</span>
+        
+        <a routerLink="/operaciones/patrocinador/catalogo" routerLinkActive="active-link" (click)="closeSidebar()">
+          <span class="icon"></span> <span class="link-text">Mi Catálogo</span>
+        </a>
+
+        <a routerLink="/operaciones/patrocinador/configuracion" routerLinkActive="active-link" (click)="closeSidebar()">
+          <span class="icon"></span> <span class="link-text">Configuración</span>
         </a>
       </ng-container>
 
@@ -68,6 +74,11 @@
         </a>
         <a routerLink="/operaciones/mis-casos" routerLinkActive="active-link" (click)="closeSidebar()">
           <span class="icon">🗂️</span> <span class="link-text">Mis Casos</span>
+        </a>
+
+        <p class="sidebar-label mt-3">Comunidad</p>
+        <a routerLink="/operaciones/catalogo-patrocinadores" routerLinkActive="active-link" (click)="closeSidebar()">
+          <span class="icon">🤝</span> <span class="link-text">Patrocinadores</span>
         </a>
       </ng-container>
 
