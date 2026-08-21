@@ -52,11 +52,11 @@
     <section class="card catalogo-card">
       <div class="catalogo-header">
         <div>
-          <h2>Catálogo de Beneficios / Productos</h2>
-          <p class="section-desc">Agrega o administra los ítems que ofreces a la comunidad.</p>
+          <h2>Catálogo de Productos</h2>
+          <p class="section-desc">Administra los productos que ofreces a la comunidad.</p>
         </div>
         <button class="btn-action" (click)="abrirModalCrear()">
-          + Agregar Nuevo Ítem
+          + Agregar Nuevo Producto
         </button>
       </div>
 
@@ -80,7 +80,7 @@
             </tr>
             <tr *ngIf="catalogoItems.length === 0">
               <td colspan="4" class="empty-state">
-                No hay ítems registrados en el catálogo aún. ¡Agrega el primero!
+                No hay productos registrados en el catálogo aún. ¡Agrega el primero!
               </td>
             </tr>
           </tbody>
@@ -135,7 +135,7 @@
 
       <div class="modal-footer">
         <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
-        <button class="btn-action" (click)="guardarItemCatalogo()">Guardar Ítem</button>
+        <button class="btn-action" (click)="guardarItemCatalogo()">Guardar Producto</button>
       </div>
     </div>
   </div>
