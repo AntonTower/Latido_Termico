@@ -1,13 +1,13 @@
 <div class="page-wrapper animate-fade-in">
   <div class="page-header">
-    <h2>🗂️ Mis Casos Activos</h2>
+    <h2><span class="material-symbols-outlined">folder</span> Mis Casos Activos</h2>
     <p>Mascotas que has decidido rescatar y están bajo tu seguimiento.</p>
   </div>
 
   <div class="loading-state" *ngIf="isLoading">Cargando casos...</div>
 
   <div class="empty-state" *ngIf="!isLoading && casos.length === 0">
-    <span class="empty-icon">🙌</span>
+    <span class="material-symbols-outlined empty-icon">celebration</span>
     <p>Actualmente no tienes rescates en proceso.</p>
   </div>
 

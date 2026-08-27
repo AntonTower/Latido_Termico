@@ -1,13 +1,13 @@
 <div class="page-wrapper animate-fade-in">
   <div class="page-header">
-    <h2>📄 Mis Reportes Emitidos</h2>
+    <h2><span class="material-symbols-outlined">description</span> Mis Reportes Emitidos</h2>
     <p>Historial completo de las alertas de emergencia que has publicado.</p>
   </div>
 
   <div class="loading-state" *ngIf="isLoading">Cargando reportes...</div>
 
   <div class="empty-state" *ngIf="!isLoading && reportes.length === 0">
-    <span class="empty-icon">📭</span>
+    <span class="material-symbols-outlined empty-icon">inbox</span>
     <p>Aún no has emitido ninguna alerta.</p>
   </div>
 

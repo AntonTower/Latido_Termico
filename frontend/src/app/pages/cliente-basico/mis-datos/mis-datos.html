@@ -34,9 +34,9 @@
         </div>
         
         <div class="data-item">
-          <span class="data-label">Rol en LATIDO</span>
+          <span class="data-label">Rol</span>
           <p class="data-value">
-            <span class="badge">{{ userData.nombre_rol || (userData.rol_id === 1 ? 'Administrador' : 'Operador') }}</span>
+            <span class="badge">{{ userData.nombre_rol || (userData.rol_id === 1 ? 'Administrador' : 'Voluntario') }}</span>
           </p>
         </div>
         
@@ -47,7 +47,7 @@
       </div>
 
       <div class="card-actions">
-        <button class="btn-secondary" (click)="toggleEdit()">✏️ Editar información</button>
+        <button class="btn-secondary" (click)="toggleEdit()">Editar información</button>
       </div>
     </ng-container>
 
@@ -77,9 +77,9 @@
 
         <div class="card-actions">
           <button class="btn-primary" (click)="saveProfile()" [disabled]="isSaving">
-            {{ isSaving ? 'Guardando...' : '💾 Guardar Cambios' }}
+            {{ isSaving ? 'Guardando...' : 'Guardar Cambios' }}
           </button>
-          <button class="btn-secondary" (click)="toggleEdit()" [disabled]="isSaving">❌ Cancelar</button>
+          <button class="btn-secondary" (click)="toggleEdit()" [disabled]="isSaving">Cancelar</button>
         </div>
       </div>
     </ng-container>
