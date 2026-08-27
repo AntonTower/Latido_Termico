@@ -522,3 +522,13 @@ section {
     padding: 22px 18px;
   }
 }
+
+.comunidad-icon {
+  font-size: 130px;
+  display: block;
+  text-align: center;
+}
+
+.error-msg, .success-msg { font-size: 12px; font-weight: 600; text-align: center; margin: 0; }
+.error-msg { color: var(--red); }
+.success-msg { color: var(--green); }

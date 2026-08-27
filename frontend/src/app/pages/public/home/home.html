@@ -6,7 +6,7 @@
 
   <div class="hero-card animate-up delay-2" id="rescueCard">
     <div class="card-view" [class.active]="currentStep === 'intro'">
-      <div class="pet-img">🤝</div>
+      <span class="material-symbols-outlined comunidad-icon">handshake</span>
       <span class="card-badge">Únete a la comunidad</span>
       <p class="card-pet-name">Comunidad RescueNet</p>
       <p class="card-meta">Salva vidas reportando animales callejeros o apoyando a refugios.</p>
@@ -20,16 +20,16 @@
       <p class="card-pet-name">¿Cómo deseas ayudar?</p>
 
       <div class="role-options">
-        <button class="role-btn" type="button" (click)="showStep('rescuer')">
-          <span class="role-icon">🚨</span>
+        <button class="role-btn" type="button" (click)="selectRole(2)">
+          <span class="role-icon material-symbols-outlined">crisis_alert</span>
           <div>
             <strong>Rescatista / Reportero</strong>
             <small>Reporta y ayuda en rescates activos</small>
           </div>
         </button>
 
-        <button class="role-btn" type="button" (click)="showStep('sponsor')">
-          <span class="role-icon">💛</span>
+        <button class="role-btn" type="button" (click)="selectRole(3)">
+          <span class="role-icon material-symbols-outlined">license</span>
           <div>
             <strong>Patrocinador</strong>
             <small>Refugios y aliados independientes</small>
@@ -40,43 +40,43 @@
       <button class="btn-back" type="button" (click)="showStep('intro')">← Volver</button>
     </div>
 
-    <div class="card-view" [class.active]="currentStep === 'rescuer'">
-      <span class="card-badge urgent">⚡ Acceso Rescatistas</span>
-      <p class="card-pet-name">Escanea el código QR</p>
-      <p class="card-meta">Únete al canal oficial de alertas inmediatas en tu zona.</p>
+    <div class="card-view" [class.active]="currentStep === 'register'">
+      <span class="card-badge">{{ selectedRoleId === 3 ? 'Registro de Aliado' : 'Registro de Rescatista' }}</span>
+      <p class="card-pet-name">Únete a Rescuenet</p>
+      <p class="card-meta">Crea tu cuenta de acceso para colaborar en las operaciones.</p>
 
-      <div class="qr-box">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=RescueNet" alt="Código QR RescueNet" class="qr-img">
-      </div>
-
-      <button class="btn-back" type="button" (click)="showStep('roles')">← Cambiar de opción</button>
-    </div>
-
-    <div class="card-view" [class.active]="currentStep === 'sponsor'">
-      <span class="card-badge">Registro de Aliado</span>
-      <p class="card-pet-name">Únete como Patrocinador</p>
-
-      <form class="sponsor-form" (ngSubmit)="submitSponsor()">
+      <form class="sponsor-form" (ngSubmit)="doRegister()">
         <div class="form-group">
-          <label>Tipo de patrocinio</label>
-          <select name="tipoPatrocinio" [(ngModel)]="sponsorData.tipoPatrocinio" required>
-            <option value="" disabled selected>Selecciona una opción</option>
-            <option value="refugio">Refugio de perros / AC</option>
-            <option value="independiente">Patrocinador independiente</option>
-          </select>
+          <label>Nombre Completo</label>
+          <input type="text" name="nombre_completo" [(ngModel)]="registerData.nombre_completo" placeholder="Ej. Juan Pérez García" required>
         </div>
 
         <div class="form-group">
-          <label>Nombre / Refugio</label>
-          <input type="text" name="nombre" [(ngModel)]="sponsorData.nombre" placeholder="Ej. Refugio Huellitas o Juan Pérez" required>
+          <label>Teléfono</label>
+          <input type="text" name="telefono" [(ngModel)]="registerData.telefono" placeholder="10 dígitos" required>
         </div>
 
         <div class="form-group">
-          <label>Correo o Teléfono</label>
-          <input type="text" name="contacto" [(ngModel)]="sponsorData.contacto" placeholder="contacto@ejemplo.com" required>
+          <label>CURP (Opcional)</label>
+          <input type="text" name="curp" [(ngModel)]="registerData.curp" placeholder="18 caracteres">
         </div>
 
-        <button type="submit" class="card-cta submit-btn">Enviar solicitud</button>
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" name="email" [(ngModel)]="registerData.email" placeholder="usuario@rescuenet.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" name="password" [(ngModel)]="registerData.password" placeholder="••••••••" required (keyup.enter)="doRegister()">
+        </div>
+
+        <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <p class="success-msg" *ngIf="successMessage">{{ successMessage }}</p>
+
+        <button type="submit" class="card-cta submit-btn" [disabled]="isLoading">
+          {{ isLoading ? 'Procesando...' : 'Crear Cuenta Operativa' }}
+        </button>
         <button type="button" class="btn-back" (click)="showStep('roles')">← Cambiar de opción</button>
       </form>
     </div>
@@ -110,17 +110,17 @@
   <h2>¿Cómo funciona?</h2>
   <div class="how-grid">
     <div class="how-step animate-up delay-1">
-      <div class="how-icon">📢</div>
+      <div class="how-icon"><span class="material-symbols-outlined">campaign</span></div>
       <h3>1. Publica el aviso</h3>
       <p>Sube una foto desde nuestra app, llena el formulario, y espera.</p>
     </div>
     <div class="how-step animate-up delay-2">
-      <div class="how-icon">🔔</div>
+      <div class="how-icon"><span class="material-symbols-outlined">notifications</span></div>
       <h3>2. La comunidad actúa</h3>
       <p>Los rescatistas voluntarios harán lo posible para hacer el rescate</p>
     </div>
     <div class="how-step animate-up delay-3">
-      <div class="how-icon">🤝</div>
+      <div class="how-icon"><span class="material-symbols-outlined">handshake</span></div>
       <h3>3. Vida Feliz</h3>
       <p>Los rescatistas llevaran los perros a refugios para que tengan una vida digna</p>
     </div>
@@ -143,17 +143,17 @@
   <h2>Sobre nosotros</h2>
   <div class="us-grid">
     <div class="us-card animate-up delay-1">
-      <div class="us-icon">💡</div>
+      <div class="us-icon"><span class="material-symbols-outlined">lightbulb</span></div>
       <h3>Innovación</h3>
       <p>Implementamos soluciones tecnológicas para agilizar el rescate de nuestros animales en riesgo.</p>
     </div>
     <div class="us-card animate-up delay-2">
-      <div class="us-icon">🤝</div>
+      <div class="us-icon"><span class="material-symbols-outlined">handshake</span></div>
       <h3>Colaboración</h3>
       <p>Trabajamos en conjunto con refugios, voluntarios y patrocinadores para maximizar nuestro impacto.</p>
     </div>
     <div class="us-card animate-up delay-3">
-      <div class="us-icon">💖</div>
+      <div class="us-icon"><span class="material-symbols-outlined">partner_heart</span></div>
       <h3>Compromiso</h3>
       <p>Nos dedicamos a mejorar la vida de las mascotas y a crear conciencia sobre la tenencia responsable.</p>
     </div>

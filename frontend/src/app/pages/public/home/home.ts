@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/services/auth';
 
 @Component({
   selector: 'app-home',
@@ -10,15 +12,25 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./home.css']
 })
 export class HomeComponent implements AfterViewInit {
-  currentStep: 'intro' | 'roles' | 'rescuer' | 'sponsor' = 'intro';
+  currentStep: 'intro' | 'roles' | 'register' = 'intro';
 
-  sponsorData = {
-    tipoPatrocinio: '',
-    nombre: '',
-    contacto: ''
+  // Rol elegido en el paso "roles" exclusiivo para voluntario y patrocinador
+  selectedRoleId: number = 2;
+
+  isLoading = false;
+  errorMessage = '';
+  successMessage = '';
+
+  registerData = {
+    nombre_completo: '',
+    telefono: '',
+    email: '',
+    password: '',
+    rol_id: 2,
+    curp: null as string | null
   };
 
-  // Estado inicial de las estadísticas (en 0 para la animación)
+  // Estado inicial de las estadísticas 
   stats = {
     mascotas: 0,
     rescates: 0,
@@ -28,43 +40,69 @@ export class HomeComponent implements AfterViewInit {
 
   @ViewChild('statsSection') statsSection!: ElementRef;
 
+  constructor(private authService: AuthService, private router: Router) {}
+
   ngAfterViewInit(): void {
     if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             this.animarContadores();
-            observer.unobserve(entry.target); // Solo se anima la primera vez que se ve
+            observer.unobserve(entry.target); 
           }
         });
-      }, { threshold: 0.5 }); // Se activa cuando el 50% de la sección es visible
+      }, { threshold: 0.5 }); 
 
       if (this.statsSection) {
         observer.observe(this.statsSection.nativeElement);
       }
     } else {
-      // Fallback si el navegador no soporta IntersectionObserver
       this.animarContadores();
     }
   }
 
-  showStep(step: 'intro' | 'roles' | 'rescuer' | 'sponsor'): void {
+  showStep(step: 'intro' | 'roles' | 'register'): void {
     this.currentStep = step;
   }
 
-  submitSponsor(): void {
-    if (!this.sponsorData.tipoPatrocinio || !this.sponsorData.nombre || !this.sponsorData.contacto) {
-      window.alert('Completa todos los campos para enviar tu solicitud.');
+  // Se llama al elegir voluntario (2) o Patrocinador (3) en el paso de roles
+  selectRole(rolId: number): void {
+    this.selectedRoleId = rolId;
+    this.registerData.rol_id = rolId;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.showStep('register');
+  }
+
+  doRegister(): void {
+    if (!this.registerData.nombre_completo || !this.registerData.telefono || !this.registerData.email || !this.registerData.password) {
+      this.errorMessage = 'Todos los campos obligatorios deben llenarse.';
       return;
     }
 
-    window.alert('¡Solicitud enviada! Gracias por apoyar a RescueNet.');
-    this.sponsorData = {
-      tipoPatrocinio: '',
-      nombre: '',
-      contacto: ''
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.registerData.rol_id = Number(this.registerData.rol_id);
+
+    const payload = {
+      ...this.registerData,
+      curp: this.registerData.curp && this.registerData.curp.trim() !== '' ? this.registerData.curp : null
     };
-    this.showStep('intro');
+
+    this.authService.register(payload).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.successMessage = '¡Cuenta creada! Ya puedes iniciar sesión.';
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
+      },
+      error: (err: any) => {
+        this.isLoading = false;
+        this.errorMessage = err.error?.error || 'Error al registrar el usuario';
+      }
+    });
   }
 
   animarContadores(): void {
