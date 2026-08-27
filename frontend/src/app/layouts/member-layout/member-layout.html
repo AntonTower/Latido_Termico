@@ -42,7 +42,7 @@
     <div class="sidebar-menu">
       <p class="sidebar-label">Principal</p>
       <a routerLink="/operaciones" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="closeSidebar()">
-        <span class="icon">📊</span> <span class="link-text">Dashboard Operativo</span>
+        <span class="material-symbols-outlined">dashboard</span> <span class="link-text">Panel Principal</span>
       </a>
 
       <!-- Sección exclusiva para el rol Patrocinador -->
@@ -50,44 +50,41 @@
         <p class="sidebar-label mt-3">Patrocinio</p>
         
         <a routerLink="/operaciones/patrocinador/dashboard" routerLinkActive="active-link" (click)="closeSidebar()">
-          <span class="icon"></span> <span class="link-text">Dashboard</span>
+          <span class="material-symbols-outlined">bar_chart</span> <span class="link-text">Dashboard</span>
         </a>
         
         <a routerLink="/operaciones/patrocinador/catalogo" routerLinkActive="active-link" (click)="closeSidebar()">
-          <span class="icon"></span> <span class="link-text">Mi Catálogo</span>
+          <span class="material-symbols-outlined">list</span> <span class="link-text">Mi Catálogo</span>
         </a>
 
         <a routerLink="/operaciones/patrocinador/configuracion" routerLinkActive="active-link" (click)="closeSidebar()">
-          <span class="icon"></span> <span class="link-text">Configuración</span>
+          <span class="material-symbols-outlined">settings</span> <span class="link-text">Configuración</span>
         </a>
       </ng-container>
 
-      <p class="sidebar-label mt-3">Mi Actividad</p>
+      <!--<p class="sidebar-label mt-3">Mi Actividad</p>
       <a routerLink="/operaciones/mis-datos" routerLinkActive="active-link" (click)="closeSidebar()">
-        <span class="icon">🧾</span> <span class="link-text">Mi Información</span>
-      </a>
+        <span class="material-symbols-outlined">account_circle</span><span class="link-text">Mi Información</span>
+      </a>-->
 
       <!-- Estos solo aplican a Reportante/Voluntario -->
       <ng-container *ngIf="roleClass !== 'role-patrocinador'">
         <a routerLink="/operaciones/mis-reportes" routerLinkActive="active-link" (click)="closeSidebar()">
-          <span class="icon">📄</span> <span class="link-text">Mis Reportes</span>
+          <span class="material-symbols-outlined">description</span> <span class="link-text">Mis Reportes</span>
         </a>
         <a routerLink="/operaciones/mis-casos" routerLinkActive="active-link" (click)="closeSidebar()">
-          <span class="icon">🗂️</span> <span class="link-text">Mis Casos</span>
+          <span class="material-symbols-outlined">files</span> <span class="link-text">Mis Casos</span>
         </a>
 
         <p class="sidebar-label mt-3">Comunidad</p>
         <a routerLink="/operaciones/catalogo-patrocinadores" routerLinkActive="active-link" (click)="closeSidebar()">
-          <span class="icon">🤝</span> <span class="link-text">Patrocinadores</span>
+          <span class="material-symbols-outlined">license</span> <span class="link-text">Patrocinadores</span>
         </a>
       </ng-container>
 
-      <p class="sidebar-label mt-3">Operaciones</p>
+      <p class="sidebar-label mt-3">Mi actividad</p>
       <a routerLink="/mapa" routerLinkActive="active-link" (click)="closeSidebar()">
-        <span class="icon">🗺️</span> <span class="link-text">Mapa de Rescates</span>
-      </a>
-      <a class="disabled-link" title="Próximamente">
-        <span class="icon">📢</span> <span class="link-text">Emitir Alerta</span>
+        <span class="material-symbols-outlined">map_search</span> <span class="link-text">Mapa de Rescates</span>
       </a>
     </div>
 
@@ -112,9 +109,9 @@
       </div>
     </div>
     <div class="dropdown-divider"></div>
-    <a (click)="goHome()"><span class="dropdown-icon">🏠</span> Página principal</a>
-    <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu($event)"><span class="dropdown-icon">⚙️</span> Mi Información</a>
-    <a (click)="doLogout()" class="logout-action"><span class="dropdown-icon">🚪</span> Cerrar Sesión</a>
+    <a (click)="goHome()"><span class="material-symbols-outlined">home</span> Página principal</a>
+    <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu($event)"><span class="material-symbols-outlined">account_circle</span> Mi Información</a>
+    <a (click)="doLogout()" class="logout-action"><span class="material-symbols-outlined">logout</span> Cerrar Sesión</a>
   </div>
 
 </div>

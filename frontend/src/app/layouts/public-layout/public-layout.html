@@ -1,8 +1,8 @@
 <nav class="public-nav">
   <div class="nav-left">
-    <button class="hamburger-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menú">
+    <!--<button class="hamburger-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menú">
       <span></span><span></span><span></span>
-    </button>
+    </button>-->
   </div>
 
   <div class="nav-center">
@@ -38,14 +38,14 @@
   </div>
 </nav>
 
-<div class="dropdown main-menu" [class.open]="isMenuOpen" (click)="$event.stopPropagation()">
+<!--<div class="dropdown main-menu" [class.open]="isMenuOpen" (click)="$event.stopPropagation()">
   <div class="dropdown-section">
     <p class="dropdown-label">Explorar</p>
     <a><span class="dropdown-icon">🔍</span> <span class="link-text">Buscar mascota</span></a>
     <a><span class="dropdown-icon">🚨</span> <span class="link-text">Casos urgentes</span></a>
     <a><span class="dropdown-icon">🏡</span> <span class="link-text">Adopción</span></a>
   </div>
-</div>
+</div>-->
 
 <div class="dropdown user-dropdown" [class.open]="isUserMenuOpen" (click)="$event.stopPropagation()">
   <div class="dropdown-header">
@@ -55,9 +55,9 @@
     </div>
   </div>
   <div class="dropdown-divider"></div>
-  <a routerLink="/operaciones" (click)="toggleUserMenu()"><span class="dropdown-icon">📊</span> Panel Operativo</a>
-  <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu()"><span class="dropdown-icon">⚙️</span> Mis datos</a>
-  <a (click)="doLogout()" class="logout-action"><span class="dropdown-icon">🚪</span> Cerrar Sesión</a>
+  <a routerLink="/operaciones" (click)="toggleUserMenu()"><span class="material-symbols-outlined">dashboard</span><span class="dropdown-icon"></span>Panel Principal</a>
+  <a routerLink="/operaciones/mis-datos" (click)="toggleUserMenu()"><span class="material-symbols-outlined">account_circle</span><span class="dropdown-icon"></span> Mi información</a>
+  <a (click)="doLogout()" class="logout-action"><span class="material-symbols-outlined">logout</span> Cerrar Sesión</a>
 </div>
 
 <main class="layout-content">
@@ -73,7 +73,7 @@
       </svg>
     </button>
     
-    <h2 style="font-family: 'DM Serif Display', serif; color: var(--red); margin-bottom: 8px;">🐾 LATIDO Térmico</h2>
+    <h2 style="font-family: 'DM Serif Display', serif; color: var(--red); margin-bottom: 8px;">🐾 Latido Térmico</h2>
     <p style="color: var(--charcoal); margin-bottom: 24px; font-size: 14px;">Ingresa tus credenciales para acceder al centro de operaciones.</p>
 
     <div class="form-ui">
