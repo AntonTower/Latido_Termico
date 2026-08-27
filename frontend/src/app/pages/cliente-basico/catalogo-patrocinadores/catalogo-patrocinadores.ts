@@ -75,4 +75,32 @@ export class CatalogoPatrocinadoresComponent implements OnInit {
       .map(p => p[0].toUpperCase())
       .join('');
   }
+
+  // Detecta qué tipo de enlace es, para mostrar el ícono correcto sin depender
+  // de que el usuario haya llenado un campo aparte para elegirlo.
+  getTipoEnlace(url?: string): 'whatsapp' | 'instagram' | 'web' | null {
+    if (!url) return null;
+    const lower = url.toLowerCase();
+    if (lower.includes('wa.me') || lower.includes('whatsapp')) return 'whatsapp';
+    if (lower.includes('instagram.com')) return 'instagram';
+    return 'web';
+  }
+
+  getIconoEnlace(url?: string): string {
+    switch (this.getTipoEnlace(url)) {
+      case 'whatsapp': return 'chat';      // O 'forum'
+      case 'instagram': return 'photo_camera'; // O 'photo_library'
+      case 'web': return 'language';     // Icono de sitio web de Google
+      default: return 'link';            // Icono genérico por defecto
+    }
+  }
+
+  getEtiquetaEnlace(url?: string): string {
+    switch (this.getTipoEnlace(url)) {
+      case 'whatsapp': return 'WhatsApp';
+      case 'instagram': return 'Instagram';
+      case 'web': return 'Sitio web';
+      default: return '';
+    }
+  }
 }

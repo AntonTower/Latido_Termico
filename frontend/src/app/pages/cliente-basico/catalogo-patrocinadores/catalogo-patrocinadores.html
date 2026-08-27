@@ -1,18 +1,38 @@
 <div class="dashboard-wrapper animate-fade-in">
 
   <div class="workspace-card">
-    <h3 class="card-title-section"><span class="indicator-dot vino"></span> 🤝 Patrocinadores de la Red</h3>
+    <h3 class="card-title-section"><span class="indicator-dot vino"></span> Patrocinadores de la Red</h3>
     <p class="section-desc">
       Estos son los negocios que apoyan activamente a la comunidad. Consulta lo que ofrecen y contáctalos directamente.
     </p>
 
     <div class="patrocinadores-grid" *ngIf="!cargando; else cargandoLista">
       <div class="patrocinador-card" *ngFor="let p of patrocinadores" (click)="verCatalogo(p)">
-        <div class="patrocinador-avatar">{{ getIniciales(p.nombre) }}</div>
+        <div class="patrocinador-avatar">
+          <img *ngIf="p.logo_url" [src]="p.logo_url" [alt]="p.nombre" class="patrocinador-logo-img" />
+          <span *ngIf="!p.logo_url">{{ getIniciales(p.nombre) }}</span>
+        </div>
         <div class="patrocinador-info">
           <h4>{{ p.nombre }}</h4>
-          <p class="patrocinador-direccion" *ngIf="p.direccion">📍 {{ p.direccion }}</p>
-          <p class="patrocinador-telefono" *ngIf="p.telefono">📞 {{ p.telefono }}</p>
+          <span class="badge-tipo-patrocinio" *ngIf="p.tipo_patrocinio">{{ p.tipo_patrocinio }}</span>
+          <p class="patrocinador-bio" *ngIf="p.bio">{{ p.bio }}</p>
+          <p class="patrocinador-direccion" *ngIf="p.direccion">
+            <span class="material-symbols-outlined">location_on</span> {{ p.direccion }}
+          </p>
+          <p class="patrocinador-telefono" *ngIf="p.telefono">
+            <span class="material-symbols-outlined">call</span> {{ p.telefono }}
+          </p>
+            <a
+              *ngIf="p.enlace_contacto"
+              [href]="p.enlace_contacto"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-enlace-contacto"
+              (click)="$event.stopPropagation()"
+            >
+              <span class="material-symbols-outlined">{{ getIconoEnlace(p.enlace_contacto) }}</span>
+              <span>{{ getEtiquetaEnlace(p.enlace_contacto) }}</span>
+            </a>
         </div>
         <span class="ver-catalogo-hint">Ver catálogo →</span>
       </div>
@@ -33,16 +53,39 @@
 <div class="modal-backdrop" *ngIf="mostrarModal">
   <div class="modal-card animate-fade-in">
     <div class="modal-header">
-      <h3>🤝 {{ patrocinadorSeleccionado?.nombre }}</h3>
+      <div class="modal-header-titulo">
+        <img *ngIf="patrocinadorSeleccionado?.logo_url" [src]="patrocinadorSeleccionado?.logo_url"
+             [alt]="patrocinadorSeleccionado?.nombre" class="patrocinador-logo-modal" />
+        <h3> {{ patrocinadorSeleccionado?.nombre }}</h3>
+      </div>
       <button class="btn-close" (click)="cerrarModal()">&times;</button>
     </div>
 
     <!-- Datos de contacto arriba, igual que en la tarjeta -->
     <div class="contacto-box" *ngIf="patrocinadorSeleccionado">
-      <p *ngIf="patrocinadorSeleccionado.direccion">📍 {{ patrocinadorSeleccionado.direccion }}</p>
-      <p *ngIf="patrocinadorSeleccionado.telefono">
-        📞 <a [href]="'tel:' + patrocinadorSeleccionado.telefono">{{ patrocinadorSeleccionado.telefono }}</a>
+      <span class="badge-tipo-patrocinio" *ngIf="patrocinadorSeleccionado.tipo_patrocinio">
+        {{ patrocinadorSeleccionado.tipo_patrocinio }}
+      </span>
+      <p class="patrocinador-bio" *ngIf="patrocinadorSeleccionado.bio">{{ patrocinadorSeleccionado.bio }}</p>
+      <p class="patrocinador-direccion" *ngIf="patrocinadorSeleccionado.direccion">
+        <span class="material-symbols-outlined">location_on</span> 
+        {{ patrocinadorSeleccionado.direccion }}
       </p>
+
+      <p class="patrocinador-telefono" *ngIf="patrocinadorSeleccionado.telefono">
+        <span class="material-symbols-outlined">call</span> 
+        <a [href]="'tel:' + patrocinadorSeleccionado.telefono">{{ patrocinadorSeleccionado.telefono }}</a>
+      </p>
+      <a
+        *ngIf="patrocinadorSeleccionado.enlace_contacto"
+        [href]="patrocinadorSeleccionado.enlace_contacto"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-enlace-contacto"
+      >
+        <span class="material-symbols-outlined">{{ getIconoEnlace(patrocinadorSeleccionado.enlace_contacto) }}</span>
+        <span>{{ getEtiquetaEnlace(patrocinadorSeleccionado.enlace_contacto) }}</span>
+      </a>
       <p *ngIf="!patrocinadorSeleccionado.direccion && !patrocinadorSeleccionado.telefono" class="text-muted">
         Este patrocinador aún no ha agregado datos de contacto.
       </p>
