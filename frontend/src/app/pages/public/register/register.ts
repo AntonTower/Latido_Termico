@@ -20,7 +20,7 @@ export class RegisterComponent {
 
   // Modelos de datos
   loginData = { email: '', password: '' };
-  registerData = { nombre_completo: '', telefono: '', email: '', password: '', rol_id: 2 };
+  registerData = { nombre_completo: '', telefono: '', email: '', password: '', rol_id: 2, curp: null as string | null };
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -43,9 +43,6 @@ export class RegisterComponent {
       next: (res: any) => {
         this.isLoading = false;
 
-        // 
-        alert("Respuesta del servidor: " + JSON.stringify(res));
-
         let rolId: number | null = null;
 
         if (res) {
@@ -55,9 +52,6 @@ export class RegisterComponent {
           else if (res.usuario && res.usuario.id_rol) rolId = Number(res.usuario.id_rol);
           else if (res.user && res.user.rol_id) rolId = Number(res.user.rol_id);
         }
-
-        // Alerta secundaria para ver qué rol procesó Angular
-        alert("Rol detectado por Angular: " + rolId);
 
         if (rolId === 3) {
           window.location.href = '/patrocinador';
@@ -71,9 +65,10 @@ export class RegisterComponent {
       }
     });
   }
+
   doRegister(): void {
     if (!this.registerData.nombre_completo || !this.registerData.telefono || !this.registerData.email || !this.registerData.password) {
-      this.errorMessage = 'Todos los campos son obligatorios.';
+      this.errorMessage = 'Todos los campos obligatorios deben llenarse.';
       return;
     }
 
@@ -82,12 +77,17 @@ export class RegisterComponent {
     this.successMessage = '';
     this.registerData.rol_id = Number(this.registerData.rol_id);
 
-    this.authService.register(this.registerData).subscribe({
+    // Preparamos el payload manejando la curp si viene vacía
+    const payload = {
+      ...this.registerData,
+      curp: this.registerData.curp && this.registerData.curp.trim() !== '' ? this.registerData.curp : null
+    };
+
+    this.authService.register(payload).subscribe({
       next: (res: any) => {
         this.isLoading = false;
         this.successMessage = '¡Cuenta creada! Cambiando a inicio de sesión...';
         
-        // Transición automática al login después de registrarse
         setTimeout(() => {
           this.loginData.email = this.registerData.email;
           this.toggleMode();

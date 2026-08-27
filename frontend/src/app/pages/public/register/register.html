@@ -7,7 +7,7 @@
       <div class="form-wrapper animate-slide-up">
         
         <h1 class="auth-title">
-          {{ isLoginMode ? 'Bienvenido de vuelta' : 'Únete a LATIDO' }}
+          {{ isLoginMode ? 'Bienvenido de vuelta' : 'Únete a Rescuenet' }}
         </h1>
         <p class="auth-subtitle">
           {{ isLoginMode ? 'Accede al centro de operaciones para gestionar reportes.' : 'Crea tu cuenta de acceso para colaborar en las operaciones.' }}
@@ -29,12 +29,17 @@
               
               <div class="input-group flex-1">
                 <label>Rol solicitado</label>
-                <select [(ngModel)]="registerData.rol_id" class="input-field select-field">
-                  <option value="2">Operador</option>
-                  <option value="1">Administrador</option>
-                  <option value="3">Patrocinador</option>
+                <select [(ngModel)]="registerData.rol_id" name="rol_id" class="input-field select-field">
+                  <option [value]="2">Voluntario</option>
+                  <!--<option [value]="1">Administrador</option>-->
+                  <option [value]="3">Patrocinador</option>
                 </select>
               </div>
+            </div>
+
+            <div class="input-group">
+              <label>CURP (Opcional)</label>
+              <input type="text" [(ngModel)]="registerData.curp" placeholder="18 caracteres">
             </div>
           </ng-container>
 
