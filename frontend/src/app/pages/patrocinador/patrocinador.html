@@ -15,80 +15,64 @@
       <div class="main-workspace-side">
 
         <div class="workspace-card">
-          <h3 class="card-title-section"><span class="indicator-dot vino"></span> 🍲 Alimento para Animales</h3>
+          <h3 class="card-title-section">
+            <span class="indicator-dot vino"></span>
+            <span class="material-symbols-outlined">inventory_2</span> Tu Catálogo
+          </h3>
 
-          <div class="table-responsive">
-            <table class="resource-table">
-              <thead>
-                <tr>
-                  <th>Tipo de Alimento</th>
-                  <th>Marcas de Referencia</th>
-                  <th style="text-align: right;">Cantidad Disponible</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of alimentos">
-                  <td><strong>{{ item.tipo }}</strong></td>
-                  <td class="text-muted">{{ item.marcaSugerida || 'Cualquiera' }}</td>
-                  <td style="text-align: right;">
-                    <span class="quantity-badge">{{ item.cantidadKg }}</span>
-                    <span class="unit-label">KG</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="catalogo-resumen-layout" *ngIf="totalItemsCatalogo > 0">
+            <div class="catalogo-stats-list">
+              <div class="stat-mini-box stat-mini-box--lista">
+                <span class="stat-box-num text-vino">{{ totalItemsCatalogo }}</span>
+                <span class="stat-box-lbl">Total publicado</span>
+              </div>
+              <div class="stat-mini-box stat-mini-box--lista" *ngFor="let grupo of desgloseCatalogoPorTipo">
+                <span class="stat-dot" [style.background]="colorParaTipo(grupo.tipo)"></span>
+                <span class="stat-box-num text-amber">{{ grupo.cantidad }}</span>
+                <span class="stat-box-lbl">{{ grupo.tipo }}</span>
+              </div>
+            </div>
+
+            <div class="catalogo-chart-box">
+              <div class="catalogo-donut" [style.background]="catalogoChartGradient">
+                <div class="catalogo-donut-hole">
+                  <span class="catalogo-donut-total">{{ totalItemsCatalogo }}</span>
+                  <span class="catalogo-donut-label">items</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="workspace-card">
-          <h3 class="card-title-section"><span class="indicator-dot orange"></span> 🛠️ Materiales y Equipamiento de Rescate</h3>
-
-          <div class="table-responsive">
-            <table class="resource-table">
-              <thead>
-                <tr>
-                  <th>Recurso</th>
-                  <th>Categoría</th>
-                  <th>Especificaciones / Tamaños</th>
-                  <th style="text-align: right;">Disponibles</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let mat of materiales">
-                  <td><strong>{{ mat.nombre }}</strong></td>
-                  <td>
-                    <span class="badge-category" [ngClass]="mat.categoria.toLowerCase()">{{ mat.categoria }}</span>
-                  </td>
-                  <td class="text-muted">{{ mat.detalles }}</td>
-                  <td style="text-align: right;">
-                    <span class="quantity-badge">{{ mat.cantidad }}</span>
-                    <span class="unit-label">UDS</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <p class="empty-msg" *ngIf="totalItemsCatalogo === 0">
+            Aún no tienes productos publicados.
+            <a (click)="changeView('catalogo')" style="cursor:pointer; color:#9a6c0c; font-weight:700;">Agrega el primero →</a>
+          </p>
         </div>
 
       </div>
 
       <div class="sidebar-stats-side">
         <div class="stats-sticky-card">
-          <h3 class="stats-card-title">Resumen de Apoyo</h3>
+          <h3 class="stats-card-title">Tu Perfil Público</h3>
 
-          <div class="stat-box-container">
-            <div class="stat-mini-box">
-              <span class="stat-box-num text-vino">{{ totalAlimento }}</span>
-              <span class="stat-box-lbl">Kilos Totales</span>
+          <div class="perfil-progreso">
+            <div class="perfil-progreso-bar">
+              <div class="perfil-progreso-fill" [style.width.%]="porcentajePerfilCompleto"></div>
             </div>
-            <div class="stat-mini-box">
-              <span class="stat-box-num text-amber">{{ totalMateriales }}</span>
-              <span class="stat-box-lbl">Materiales</span>
-            </div>
+            <span class="perfil-progreso-label">{{ porcentajePerfilCompleto }}% completo</span>
           </div>
 
+          <ul class="perfil-checklist">
+            <li *ngFor="let item of itemsChecklistPerfil" [class.completo]="item.completo">
+              <span class="material-symbols-outlined">
+                {{ item.completo ? 'check_circle' : 'radio_button_unchecked' }}
+              </span>
+              {{ item.label }}
+            </li>
+          </ul>
+
           <div class="achievement-message">
-            <strong>Logística de Rescate:</strong> Este inventario abastece activamente a los voluntarios autorizados de la zona para asegurar rescates seguros y traslados óptimos.
+            Completa tu perfil para que los usuarios confíen más en tu negocio.
           </div>
         </div>
       </div>
@@ -98,45 +82,163 @@
 
   <div *ngIf="currentView === 'configuracion'">
     <div class="workspace-card">
-      <h3 class="card-title-section"><span class="indicator-dot vino"></span> ⚙️ Configuración de los Datos del Negocio</h3>
+      <h3 class="card-title-section"><span class="material-symbols-outlined">settings</span>Configuración de los Datos del Negocio</h3>
       <p class="section-desc">Actualiza la información comercial que aparecerá visible para los rescatistas y voluntarios de la red.</p>
 
-      <form class="config-form" (ngSubmit)="guardarConfiguracion()">
-        <div class="form-field">
-          <label for="nombreNegocio">Nombre del Emprendimiento / Local</label>
-          <input 
-            id="nombreNegocio" 
-            type="text" 
-            [(ngModel)]="negocio.nombre" 
-            name="nombreNegocio" 
-            placeholder="Ej. Veterinaria San Francisco" 
+      <!-- Mientras no llega la respuesta del backend -->
+      <div *ngIf="cargandoNegocio" class="loading-state-box">
+        <p class="empty-msg">Cargando datos del negocio...</p>
+      </div>
+
+      <div *ngIf="!cargandoNegocio" class="config-layout">
+
+        <!-- Columna izquierda: solo el logo -->
+        <div class="config-logo-col">
+          <h4 class="config-logo-title">Logo / Imagen del Negocio</h4>
+
+          <img
+            *ngIf="logoPreviewUrl || negocio.logo_url"
+            [src]="logoPreviewUrl || negocio.logo_url"
+            alt="Logo del negocio"
+            class="logo-preview-img"
           />
-        </div>
-        <div class="form-field">
-          <label for="direccionNegocio">Ubicación Física (Dirección)</label>
-          <input 
-            id="direccionNegocio" 
-            type="text" 
-            [(ngModel)]="negocio.direccion" 
-            name="direccionNegocio" 
-            placeholder="Ej. Av. Juárez #405, Centro" 
-          />
-        </div>
-        <div class="form-field">
-          <label for="telefonoNegocio">Teléfono de Contacto</label>
-          <input 
-            id="telefonoNegocio" 
-            type="text" 
-            [(ngModel)]="negocio.telefono" 
-            name="telefonoNegocio" 
-            placeholder="10 dígitos" 
-          />
+          <div *ngIf="!logoPreviewUrl && !negocio.logo_url" class="logo-preview-placeholder">
+            Sin imagen
+          </div>
         </div>
 
-        <button type="submit" class="btn-action" [disabled]="cargando">
-          {{ cargando ? 'Guardando...' : 'Guardar Cambios' }}
-        </button>
-      </form>
+        <!-- Columna derecha: el form completo, partido en 2 sub-columnas -->
+        <div class="config-fields-col">
+          <form class="config-form" (ngSubmit)="guardarConfiguracion()">
+
+            <div class="config-form-columns">
+
+              <!-- Sub-columna A: datos básicos + logo -->
+              <div class="config-form-col">
+                <div class="form-field">
+                  <label for="nombreNegocio">Nombre del Emprendimiento / Local</label>
+                  <input 
+                    id="nombreNegocio" 
+                    type="text" 
+                    [(ngModel)]="negocio.nombre" 
+                    name="nombreNegocio" 
+                    placeholder="Ej. Veterinaria San Francisco" 
+                  />
+                </div>
+                <div class="form-field">
+                  <label for="direccionNegocio">Ubicación Física (Dirección)</label>
+                  <input 
+                    id="direccionNegocio" 
+                    type="text" 
+                    [(ngModel)]="negocio.direccion" 
+                    name="direccionNegocio" 
+                    placeholder="Ej. Av. Juárez #405, Centro" 
+                  />
+                </div>
+                <div class="form-field">
+                  <label for="telefonoNegocio">Teléfono de Contacto</label>
+                  <input 
+                    id="telefonoNegocio" 
+                    type="text" 
+                    [(ngModel)]="negocio.telefono" 
+                    name="telefonoNegocio" 
+                    placeholder="10 dígitos" 
+                  />
+                </div>
+
+                <div class="form-field">
+                  <label for="logoInput">Cambiar Logo</label>
+                  <label for="logoInput" class="file-input-label">
+                    <span class="file-input-btn">Seleccionar archivo</span>
+                    <span class="file-input-filename">
+                      {{ archivoLogoSeleccionado?.name || 'Ningún archivo seleccionado' }}
+                    </span>
+                  </label>
+                  <input
+                    type="file"
+                    id="logoInput"
+                    class="file-input-hidden"
+                    accept="image/png,image/jpeg,image/webp"
+                    (change)="onLogoSeleccionado($event)"
+                    [disabled]="subiendoLogo"
+                  />
+
+                  <div class="logo-upload-actions" *ngIf="archivoLogoSeleccionado">
+                    <button
+                      type="button"
+                      class="btn-action btn-sm"
+                      [disabled]="subiendoLogo"
+                      (click)="subirLogo()"
+                    >
+                      {{ subiendoLogo ? 'Subiendo...' : 'Subir Logo' }}
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn-secondary btn-sm"
+                      [disabled]="subiendoLogo"
+                      (click)="cancelarSeleccionLogo()"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+
+                  <p *ngIf="errorLogo" class="text-danger">{{ errorLogo }}</p>
+                </div>
+              </div>
+
+              <!-- Sub-columna B: perfil público -->
+              <div class="config-form-col">
+                <div class="form-field">
+                  <label for="enlaceContacto">Canal de Contacto (Redes Sociales / Web)</label>
+                  <input 
+                    id="enlaceContacto" 
+                    type="text" 
+                    [(ngModel)]="negocio.enlace_contacto" 
+                    name="enlaceContacto" 
+                    placeholder="Ej. https://wa.me/521234567890 o https://instagram.com/tu_negocio" 
+                  />
+
+                  <!-- Vista previa en tiempo real con el icono de Google correcto -->
+                  <div class="enlace-preview-chip" *ngIf="negocio.enlace_contacto">
+                    <span class="material-symbols-outlined">{{ getIconoEnlace(negocio.enlace_contacto) }}</span>
+                    <span class="enlace-preview-text">{{ getTipoEnlace(negocio.enlace_contacto) }}</span>
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label for="tipoPatrocinio">Clasificación del Patrocinador</label>
+                  <select id="tipoPatrocinio" [(ngModel)]="negocio.tipo_patrocinio" name="tipoPatrocinio">
+                    <option [ngValue]="null" disabled>Selecciona una opción</option>
+                    <option *ngFor="let tipo of tiposPatrocinio" [value]="tipo">{{ tipo }}</option>
+                  </select>
+                </div>
+
+                <div class="form-field">
+                  <label for="bioNegocio">
+                    Descripción Breve
+                    <span class="char-counter">{{ (negocio.bio || '').length }}/{{ bioMaxLength }}</span>
+                  </label>
+                  <textarea
+                    id="bioNegocio"
+                    [(ngModel)]="negocio.bio"
+                    name="bioNegocio"
+                    [maxlength]="bioMaxLength"
+                    rows="3"
+                    placeholder="Ej. Apoyamos con alimento y transporte a rescatistas de la zona centro."
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="btn-action" [disabled]="cargando">
+                {{ cargando ? 'Guardando...' : 'Guardar Cambios' }}
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -147,7 +249,7 @@
       <div class="card-header-row">
         <div>
           <h3 class="card-title-section mb-1">
-            <span class="indicator-dot vino"></span> 📦 Gestión de Mi Catálogo de Servicios
+            <span class="material-symbols-outlined">box</span><span class="indicator-dot vino"></span>Gestión de Mi Catálogo de Servicios
           </h3>
           <p class="section-desc mb-0">
             Administra los productos y servicios específicos que ofreces como patrocinador activo en la plataforma.
@@ -160,8 +262,13 @@
         </button>
       </div>
 
-      <!-- CASO 1: Si SÍ hay items en el catálogo -->
-      <div *ngIf="catalogo.length > 0; else estadoVacio" class="table-responsive">
+      <!-- CASO 0: Todavía no llegó la respuesta del backend -->
+      <div *ngIf="cargandoCatalogo" class="loading-state-box">
+        <p class="empty-msg">Cargando catálogo...</p>
+      </div>
+
+      <!-- CASO 1: Ya cargó y SÍ hay items en el catálogo -->
+      <div *ngIf="!cargandoCatalogo && catalogo.length > 0" class="table-responsive">
         <table class="resource-table">
           <thead>
             <tr>
@@ -189,23 +296,45 @@
         </table>
       </div>
 
-      <!-- CASO 2: Estado Vacío (Empty State) -->
-      <ng-template #estadoVacio>
-        <div class="empty-state-box">
-          <div class="empty-state-icon">📦</div>
-          <h4 class="empty-state-title">Aún no has agregado nada a tu catálogo</h4>
-          <p class="empty-state-desc">
-            Empieza publicando los servicios o productos que tu emprendimiento ofrece a la comunidad.
-          </p>
-          <button class="btn-action" (click)="abrirModalCrear()">
-            + Añadir mi primer Producto
-          </button>
-        </div>
-      </ng-template>
+      <!-- CASO 2: Ya cargó y de verdad está vacío -->
+      <div *ngIf="!cargandoCatalogo && catalogo.length === 0" class="empty-state-box">
+        <!--<div class="empty-state-icon">📦</div>-->
+        <h4 class="empty-state-title">Aún no has agregado nada a tu catálogo</h4>
+        <p class="empty-state-desc">
+          Empieza publicando los servicios o productos que tu emprendimiento ofrece a la comunidad.
+        </p>
+        <button class="btn-action" (click)="abrirModalCrear()">
+          + Añadir mi primer Producto
+        </button>
+      </div>
 
     </div>
   </div>
 
+</div>
+
+<!-- MODAL: RECORTE DEL LOGO -->
+<div class="modal-backdrop" *ngIf="mostrarModalRecorte">
+  <div class="modal-card animate-fade-in modal-cropper">
+    <div class="modal-header">
+      <h3>Ajusta tu Logo</h3>
+      <button class="btn-close" (click)="cancelarRecorte()">&times;</button>
+    </div>
+
+    <image-cropper
+      [imageChangedEvent]="imagenParaRecortar"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1"
+      [roundCropper]="true"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+    ></image-cropper>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" (click)="cancelarRecorte()">Cancelar</button>
+      <button type="button" class="btn-action" (click)="confirmarRecorte()">OK</button>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL PARA CREAR / EDITAR ÍTEM DEL CATÁLOGO -->
@@ -257,7 +386,7 @@
       <div class="modal-actions">
         <button type="button" class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
         <button type="submit" class="btn-action" [disabled]="formCatalogo.invalid || cargando">
-          {{ cargando ? 'Guardando...' : (editando ? 'Actualizar' : 'Guardar Ítem') }}
+          {{ cargando ? 'Guardando...' : (editando ? 'Actualizar' : 'Guardar Producto') }}
         </button>
       </div>
     </form>
