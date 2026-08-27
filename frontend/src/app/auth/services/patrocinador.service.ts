@@ -7,6 +7,10 @@ export interface NegocioConfig {
   nombre: string;
   direccion: string;
   telefono: string;
+  logo_url?: string | null;
+  enlace_contacto?: string | null;
+  tipo_patrocinio?: string | null;
+  bio?: string | null;
 }
 
 export interface CatalogoItem {
@@ -38,6 +42,16 @@ export class PatrocinadorService {
 
   guardarDatosNegocio(datos: NegocioConfig): Observable<any> {
     return this.http.put(`${this.apiUrl}/configuracion`, datos, { headers: this.getAuthHeaders() });
+  }
+
+  subirLogo(archivo: File): Observable<{ mensaje: string; logo_url: string }> {
+    const formData = new FormData();
+    formData.append('logo', archivo);
+    return this.http.put<{ mensaje: string; logo_url: string }>(
+      `${this.apiUrl}/configuracion/logo`,
+      formData,
+      { headers: this.getAuthHeaders() }
+    );
   }
 
   getCatalogo(): Observable<CatalogoItem[]> {

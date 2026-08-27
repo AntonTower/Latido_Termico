@@ -8,6 +8,10 @@ export interface PatrocinadorPublico {
   nombre: string;
   direccion?: string;
   telefono?: string;
+  logo_url?: string;
+  enlace_contacto?: string;
+  tipo_patrocinio?: string;
+  bio?: string;
 }
 
 export interface CatalogoItemPublico {
