@@ -69,4 +69,11 @@ export class PatrocinadorService {
   eliminarItemCatalogo(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/catalogo/${id}`, { headers: this.getAuthHeaders() });
   }
+
+  eliminarLogo(): Observable<any> {
+    return this.http.delete(
+      `${this.apiUrl}/configuracion/logo`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
 }
