@@ -146,45 +146,62 @@
                   />
                 </div>
 
-                <div class="form-field">
-                  <label for="logoInput">Cambiar Logo</label>
-                  <label for="logoInput" class="file-input-label">
-                    <span class="file-input-btn">Seleccionar archivo</span>
-                    <span class="file-input-filename">
-                      {{ archivoLogoSeleccionado?.name || 'Ningún archivo seleccionado' }}
-                    </span>
-                  </label>
-                  <input
-                    type="file"
-                    id="logoInput"
-                    class="file-input-hidden"
-                    accept="image/png,image/jpeg,image/webp"
-                    (change)="onLogoSeleccionado($event)"
-                    [disabled]="subiendoLogo"
-                  />
+                  <div class="form-field">
+                    <label for="logoInput">Cambiar Logo</label>
 
-                  <div class="logo-upload-actions" *ngIf="archivoLogoSeleccionado">
-                    <button
-                      type="button"
-                      class="btn-action btn-sm"
-                      [disabled]="subiendoLogo"
-                      (click)="subirLogo()"
-                    >
-                      {{ subiendoLogo ? 'Subiendo...' : 'Subir Logo' }}
-                    </button>
+                    <!-- Si ya hay logo en BD y no se ha seleccionado uno nuevo -->
+                    <div class="logo-existente-container" *ngIf="negocio.logo_url && !archivoLogoSeleccionado">
+                      <button
+                        type="button"
+                        class="btn-secondary btn-sm"
+                        [disabled]="subiendoLogo"
+                        (click)="eliminarLogo()"
+                      >
+                        Eliminar Logo Actual
+                      </button>
+                    </div>
 
-                    <button
-                      type="button"
-                      class="btn-secondary btn-sm"
-                      [disabled]="subiendoLogo"
-                      (click)="cancelarSeleccionLogo()"
-                    >
-                      Cancelar
-                    </button>
+                    <!-- Si no hay logo o se seleccionó uno nuevo -->
+                    <ng-container *ngIf="!negocio.logo_url || archivoLogoSeleccionado">
+                      <label for="logoInput" class="file-input-label">
+                        <span class="file-input-btn">Seleccionar archivo</span>
+                        <span class="file-input-filename">
+                          {{ archivoLogoSeleccionado?.name || 'Ningún archivo seleccionado' }}
+                        </span>
+                      </label>
+                      <input
+                        type="file"
+                        id="logoInput"
+                        class="file-input-hidden"
+                        accept="image/png,image/jpeg,image/webp"
+                        (change)="onLogoSeleccionado($event)"
+                        [disabled]="subiendoLogo"
+                      />
+                    </ng-container>
+
+                    <!-- Acciones para archivo nuevo -->
+                    <div class="logo-upload-actions" *ngIf="archivoLogoSeleccionado">
+                      <button
+                        type="button"
+                        class="btn-action btn-sm"
+                        [disabled]="subiendoLogo"
+                        (click)="subirLogo()"
+                      >
+                        {{ subiendoLogo ? 'Subiendo...' : 'Subir Logo' }}
+                      </button>
+
+                      <button
+                        type="button"
+                        class="btn-secondary btn-sm"
+                        [disabled]="subiendoLogo"
+                        (click)="cancelarSeleccionLogo()"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+
+                    <p *ngIf="errorLogo" class="text-danger">{{ errorLogo }}</p>
                   </div>
-
-                  <p *ngIf="errorLogo" class="text-danger">{{ errorLogo }}</p>
-                </div>
               </div>
 
               <!-- Sub-columna B: perfil público -->

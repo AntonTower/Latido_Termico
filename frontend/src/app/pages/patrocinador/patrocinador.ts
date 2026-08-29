@@ -390,4 +390,23 @@ export class PatrocinadorComponent implements OnInit {
       }
     });
   }
+
+  eliminarLogo(): void {
+    const confirmado = confirm('¿Estás seguro de que deseas eliminar el logo actual?');
+    if (!confirmado) return;
+
+    this.subiendoLogo = true;
+    this.patrocinadorService.eliminarLogo().subscribe({
+      next: (res: any) => {
+        this.negocio.logo_url = null;
+        this.subiendoLogo = false;
+        alert('Logo eliminado correctamente');
+      },
+      error: (err: any) => {
+        console.error('Error al eliminar el logo:', err);
+        alert(err.error?.error || 'Ocurrió un error al eliminar el logo.');
+        this.subiendoLogo = false;
+      }
+    });
+  }
 }
