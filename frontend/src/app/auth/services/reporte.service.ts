@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment'; // Ajusta la ru
 @Injectable({
   providedIn: 'root'
 })
+
 export class ReporteService {
   private apiUrl = `${environment.apiUrl}/reportes`;
 
