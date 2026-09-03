@@ -3,13 +3,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* 🔒 CANDADO DE RESPONSIVIDAD ESTRICTA */
 html, body {
   max-width: 100%;
-  overflow-x: hidden; /* Elimina de tajo cualquier scroll horizontal */
+  overflow-x: hidden; 
 }
 
-/* Regla de oro para evitar que las imágenes rompan el layout */
 img, video, svg {
   max-width: 100%;
   height: auto;
