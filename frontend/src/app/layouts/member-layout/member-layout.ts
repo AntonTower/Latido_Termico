@@ -14,7 +14,7 @@ type RolUsuario = 'REPORTANTE' | 'VOLUNTARIO' | 'PATROCINADOR' | 'SUPERADMIN';
 })
 export class MemberLayoutComponent implements OnInit {
   isUserMenuOpen: boolean = false;
-  isSidebarOpen: boolean = false; // 🌟 único estado: panel desplegable, igual en PC y móvil
+  isSidebarOpen: boolean = false; 
 
   userName: string = 'Usuario';
   userInitials: string = 'US';
@@ -40,27 +40,23 @@ export class MemberLayoutComponent implements OnInit {
     }
   }
 
-  // 🌟 EXTRAE NOMBRE, INICIALES Y ROL CON SOPORTE UTF-8 Y RED DE SEGURIDAD
   extractUserData(token: string): void {
     try {
       const payloadBase64 = token.split('.')[1];
       
-      // Decodificación segura para caracteres latinos (UTF-8)
       const base64Decoded = atob(payloadBase64);
       const safePayload = decodeURIComponent(
         base64Decoded.split('').map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
       );
       const payload = JSON.parse(safePayload);
 
-      // 1. Extraer el Nombre
       if (payload.usuario && payload.usuario.nombre_completo) {
         this.userName = payload.usuario.nombre_completo;
       } else {
         this.userName = localStorage.getItem('nombre_usuario') || 'Usuario';
       }
 
-      // 2. Extraer el Rol (El backend manda rol_id: 1=Reportante, 2=Voluntario)
-      let rolName: RolUsuario = 'REPORTANTE'; // Por defecto
+      let rolName: RolUsuario = 'REPORTANTE'; 
       const rolId = payload.usuario?.rol_id;
 
       if (rolId === 1) rolName = 'REPORTANTE';
@@ -98,7 +94,7 @@ export class MemberLayoutComponent implements OnInit {
   toggleUserMenu(event: Event): void {
     event.stopPropagation();
     this.isUserMenuOpen = !this.isUserMenuOpen;
-    this.isSidebarOpen = false; // 🌟 sólo un panel abierto a la vez
+    this.isSidebarOpen = false; 
   }
 
   toggleSidebar(event: Event): void {
@@ -130,7 +126,7 @@ export class MemberLayoutComponent implements OnInit {
 
   doLogout(): void {
     this.authService.logout();
-    localStorage.removeItem('nombre_usuario'); // 🧹 Limpiamos la red de seguridad al salir
+    localStorage.removeItem('nombre_usuario'); 
     window.location.href = '/';
   }
 }
