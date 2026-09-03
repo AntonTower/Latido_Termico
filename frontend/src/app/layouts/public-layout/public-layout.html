@@ -1,8 +1,5 @@
 <nav class="public-nav">
   <div class="nav-left">
-    <!--<button class="hamburger-btn" [class.active]="isMenuOpen" (click)="toggleMenu($event)" aria-label="Abrir menú">
-      <span></span><span></span><span></span>
-    </button>-->
   </div>
 
   <div class="nav-center">
@@ -37,15 +34,6 @@
     </ng-container>
   </div>
 </nav>
-
-<!--<div class="dropdown main-menu" [class.open]="isMenuOpen" (click)="$event.stopPropagation()">
-  <div class="dropdown-section">
-    <p class="dropdown-label">Explorar</p>
-    <a><span class="dropdown-icon">🔍</span> <span class="link-text">Buscar mascota</span></a>
-    <a><span class="dropdown-icon">🚨</span> <span class="link-text">Casos urgentes</span></a>
-    <a><span class="dropdown-icon">🏡</span> <span class="link-text">Adopción</span></a>
-  </div>
-</div>-->
 
 <div class="dropdown user-dropdown" [class.open]="isUserMenuOpen" (click)="$event.stopPropagation()">
   <div class="dropdown-header">

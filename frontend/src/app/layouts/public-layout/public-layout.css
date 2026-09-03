@@ -1,6 +1,3 @@
-/* =========================================
-   NAVEGACIÓN PRINCIPAL
-   ========================================= */
 .public-nav { 
   background: var(--white); 
   border-bottom: 1px solid #eaeaea; 
@@ -20,9 +17,6 @@
 .nav-left, .nav-right { display: flex; align-items: center; gap: 14px; flex: 1; }
 .nav-right { justify-content: flex-end; }
 
-/* =========================================
-   CENTRO: MARCA + LATIDO PERFECTAMENTE CENTRADO
-   ========================================= */
 .nav-center { 
   position: absolute;
   left: 50%;
@@ -32,10 +26,10 @@
   flex-direction: column; 
   align-items: center; 
   justify-content: center; 
-  pointer-events: none; /* Permite que los clics pasen a través del contenedor invisible */
+  pointer-events: none; 
 }
 .nav-center > * { 
-  pointer-events: all; /* Reactiva los clics solo para el logo y el latido */
+  pointer-events: all; 
 }
 
 /* Hamburger Menu */
@@ -59,14 +53,11 @@
 @keyframes draw-heartbeat { 0% { stroke-dashoffset: 230; opacity: 0.3; } 10% { opacity: 1; } 55% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -230; opacity: 0.3; } }
 @keyframes pulse-dot { 0%, 45% { opacity: 0; transform: scale(0.6); } 55% { opacity: 1; transform: scale(1.3); } 70%, 100% { opacity: 0; transform: scale(0.6); } }
 
-/* =========================================
-   BOTONES DE USUARIO Y PERFIL
-   ========================================= */
+/* Botondes del usuario y perfil */
 .btn-login { background: transparent; border: 1.5px solid #eaeaea; border-radius: 20px; padding: 6px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--charcoal); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all .2s; white-space: nowrap; }
 .btn-login:hover { border-color: var(--coral); color: var(--coral); background: var(--bg); }
 .login-icon { display: none; font-size: 16px; }
 
-/* Botón de perfil logueado idéntico al member-layout */
 .quick-profile-btn { display: flex; align-items: center; gap: 10px; background: transparent; border: 1px solid transparent; border-radius: 10px; padding: 4px 8px 4px 4px; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
 .quick-profile-btn:hover { background: var(--bg); border-color: #eaeaea; }
 .avatar-circle { position: relative; width: 38px; height: 38px; background: linear-gradient(135deg, var(--red) 0%, var(--coral) 100%); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13.5px; letter-spacing: 0.05em; box-shadow: 0 4px 12px rgba(192, 57, 43, 0.25); flex-shrink: 0; transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -79,9 +70,6 @@
 
 @keyframes status-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(46,204,113,0.5); } 50% { box-shadow: 0 0 0 4px rgba(46,204,113,0); } }
 
-/* =========================================
-   MENÚS DESPLEGABLES (DROPDOWNS)
-   ========================================= */
 .dropdown { position: absolute; top: 64px; width: 260px; background: var(--white); border: 1px solid #eaeaea; box-shadow: 0 12px 40px rgba(0,0,0,0.08); padding: 12px 0; z-index: 1001; opacity: 0; pointer-events: none; transform: translateY(-10px); transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); }
 .dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0); }
 .main-menu { left: max(1rem, 2vw); border-radius: 14px; }
@@ -98,9 +86,6 @@
 .dropdown-section { padding: 6px 0; }
 .dropdown-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #bbb; padding: 4px 20px 6px; }
 
-/* =========================================
-   MODAL DE LOGIN (RESTAURADO)
-   ========================================= */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(74, 74, 74, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 1rem; box-sizing: border-box; }
 .modal-content { border-radius: 20px; padding: 32px 28px; width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15); transition: all 0.4s ease; }
 .modal-content::-webkit-scrollbar { width: 5px; }
@@ -122,23 +107,16 @@
 .eye-btn:hover { opacity: 1; color: var(--red); }
 .error-msg { color: var(--red); font-size: 13px; font-weight: 600; margin: 0; text-align: center; }
 
-/* Animaciones del modal */
 .animate-fade-in { animation: fadeIn 0.3s ease-out; }
 .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-/* =========================================
-   FOOTER & ESTRUCTURA
-   ========================================= */
 .layout-content { min-height: calc(100vh - 64px - 150px); width: 100%; box-sizing: border-box; }
 footer { background: var(--charcoal); color: rgba(255,255,255,.65); padding: 40px 2rem; text-align: center; font-size: 13px; width: 100%; box-sizing: border-box; }
 footer .footer-logo { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--white); margin-bottom: 12px; }
 footer a { color: var(--peach); text-decoration: none; cursor: pointer; }
 
-/* =========================================
-   RESPONSIVIDAD ABSOLUTA
-   ========================================= */
 @media (max-width: 768px) {
   .dropdown { width: calc(100% - 2rem); }
   .main-menu { left: 1rem; }
@@ -150,7 +128,6 @@ footer a { color: var(--peach); text-decoration: none; cursor: pointer; }
   .heartbeat-svg { width: 60px; }
   .btn-login { padding: 6px 12px; font-size: 13px; }
   
-  /* Perfil: Ocultamos el nombre, dejamos el Avatar visible siempre */
   .quick-profile-info { display: none; }
   .qp-chevron { display: none; }
   .quick-profile-btn { padding: 0; border: none; }
@@ -158,7 +135,6 @@ footer a { color: var(--peach); text-decoration: none; cursor: pointer; }
 }
 
 @media (max-width: 400px) {
-  /* En pantallas extremadamente pequeñas, el login se vuelve un ícono circular */
   .btn-login { padding: 8px; border-radius: 50%; width: 36px; height: 36px; justify-content: center; border-color: transparent; }
   .btn-login .btn-text { display: none; }
   .btn-login .login-icon { display: block; font-size: 18px; margin: 0; }

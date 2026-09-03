@@ -4,7 +4,6 @@ import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; 
 import { AuthService } from '../../auth/services/auth';
 
-// Definición de tipos para los roles de usuario
 type RolUsuario = 'REPORTANTE' | 'VOLUNTARIO' | 'PATROCINADOR' | 'SUPERADMIN';
 
 @Component({
