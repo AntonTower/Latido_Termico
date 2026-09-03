@@ -24,6 +24,7 @@ export class ReporteService {
     return this.http.get<any[]>(`${this.apiUrl}/mis-reportes`, { headers: this.getAuthHeaders() });
   }
 
+
   getMisRescatesTomados(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/mis-reportes`, { headers: this.getAuthHeaders() }); 
   }
