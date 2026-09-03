@@ -3,7 +3,6 @@ import { MisReportesComponent } from './pages/cliente-basico/mis-reportes/mis-re
 import { MisCasosComponent } from './pages/cliente-basico/mis-casos/mis-casos';
 
 export const routes: Routes = [
-  // 1. ENTORNO PÚBLICO (Visitantes)
   {
     path: '',
     loadComponent: () => import('./layouts/public-layout/public-layout').then(m => m.PublicLayoutComponent),
@@ -19,7 +18,6 @@ export const routes: Routes = [
     ]
   },
 
-  // 2. ENTORNO PRIVADO EXCLUSIVO (Miembros Registrados)
   {
     path: 'operaciones',
     loadComponent: () => import('./layouts/member-layout/member-layout').then(m => m.MemberLayoutComponent),
