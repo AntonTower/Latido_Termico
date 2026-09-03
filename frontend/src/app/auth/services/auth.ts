@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// 👇 Importamos HttpHeaders
 import { HttpClient, HttpHeaders } from '@angular/common/http'; 
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -12,7 +11,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // Generador de cabeceras seguras
   private getAuthHeaders(): HttpHeaders {
     let token = '';
     if (typeof window !== 'undefined' && localStorage) {
@@ -21,7 +19,6 @@ export class AuthService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  // --- MÉTODOS EXISTENTES ---
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(respuesta => {
@@ -46,7 +43,6 @@ export class AuthService {
     }
   }
 
-  // 🌟 NUEVOS MÉTODOS PARA EL PERFIL 🌟
   getPerfil(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/perfil`, { headers: this.getAuthHeaders() });
   }
