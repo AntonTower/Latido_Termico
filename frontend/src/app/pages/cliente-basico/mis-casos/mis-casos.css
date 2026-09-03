@@ -1,6 +1,4 @@
-/* =========================================
-   CONTENEDOR PRINCIPAL
-   ========================================= */
+/* CONTENEDOR PRINCIPAL */
 .page-wrapper {
   padding: 32px max(1.5rem, 3vw);
   max-width: 1300px;
@@ -30,9 +28,6 @@
   margin: 0;
 }
 
-/* =========================================
-   ESTADOS (CARGANDO / VACÍO)
-   ========================================= */
 .loading-state, .empty-state {
   display: flex;
   flex-direction: column;
@@ -54,31 +49,27 @@
   opacity: 0.8;
 }
 
-/* =========================================
-   GRID DE CASOS ACTIVOS
-   ========================================= */
 .reportes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
 }
 
-/* Tarjeta Activa */
 .report-card {
   background-color: var(--white);
-  border: 2px solid transparent; /* Preparado para hover */
+  border: 2px solid transparent; 
   border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.05); /* Sombra base un poco más fuerte */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05); 
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   height: 100%;
 }
 
 .report-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(232, 115, 90, 0.15); /* Sombra coral para "Casos" */
+  box-shadow: 0 12px 30px rgba(232, 115, 90, 0.15); 
   border-color: var(--peach);
 }
 
@@ -153,7 +144,7 @@
 
 .report-id {
   font-size: 12px;
-  color: var(--coral); /* ID resaltado para seguimiento */
+  color: var(--coral);
   font-weight: 700;
   background: var(--bg);
   padding: 2px 8px;
@@ -177,13 +168,12 @@
 
 .report-footer {
   display: flex;
-  justify-content: center; /* Centramos el botón de acción principal */
+  justify-content: center; 
   align-items: center;
   padding-top: 16px;
   border-top: 1px solid var(--cream);
 }
 
-/* Botón principal de acción */
 .btn-action-sm {
   width: 100%;
   padding: 10px 16px;
@@ -207,9 +197,7 @@
 .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* =========================================
-   📱 RESPONSIVIDAD
-   ========================================= */
+/* RESPONSIVIDAD */
 @media (max-width: 768px) {
   .page-header h2 { font-size: 1.6rem; }
   .reportes-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }

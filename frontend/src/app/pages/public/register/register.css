@@ -1,16 +1,13 @@
-/* =========================================
-   CONTENEDOR A PANTALLA COMPLETA (EDGE-TO-EDGE)
-   ========================================= */
+
 .auth-page-container {
   position: relative;
   width: 100%;
-  /* Ocupa el espacio restante exacto para matar el scroll */
   height: calc(100vh - 64px); 
   min-height: 540px; 
   display: flex;
   background-color: var(--white);
   overflow: hidden;
-  padding: 0; /* 🌟 Cero márgenes para que la división toque los bordes */
+  padding: 0; 
   box-sizing: border-box;
 }
 
@@ -26,13 +23,10 @@
   display: flex;
   width: 100%;
   height: 100%;
-  align-items: stretch; /* Ambos lados se estiran de arriba a abajo */
+  align-items: stretch; 
   z-index: 2;
 }
 
-/* =========================================
-   LADO IZQUIERDO: FORMULARIO COMPACTO
-   ========================================= */
 .form-side {
   flex: 1 1 50%;
   background-color: var(--cream);
@@ -41,7 +35,7 @@
   justify-content: center;
   padding: 2rem clamp(1.5rem, 5vw, 4rem);
   box-sizing: border-box;
-  overflow-y: auto; /* Solo por seguridad si la pantalla es microscópica */
+  overflow-y: auto;
 }
 
 .form-wrapper {
@@ -49,7 +43,6 @@
   max-width: 400px;
 }
 
-/* Tipografía Minimizada para Laptops */
 .auth-title {
   font-family: 'DM Serif Display', serif;
   font-size: clamp(1.6rem, 2.5vw, 2.2rem);
@@ -65,7 +58,6 @@
   margin-bottom: 16px;
 }
 
-/* UI Compacta (Cero Scroll) */
 .form-ui { display: flex; flex-direction: column; gap: 8px; }
 .input-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .flex-1 { flex: 1 1 min(100%, 140px); }
@@ -74,7 +66,7 @@
 .input-group label { font-size: 12px; font-weight: 600; color: var(--charcoal); }
 
 .input-group input, .select-field {
-  padding: 9px 14px; /* 🌟 Inputs delgados */
+  padding: 9px 14px; 
   border: 1.5px solid #d8cdc5;
   border-radius: 8px;
   font-size: 13.5px;
@@ -130,31 +122,21 @@
 }
 .override-btn-secondary:hover { border-color: var(--coral); background-color: var(--white); }
 
-/* =========================================
-   LADO DERECHO: FONDO DE SECCIÓN (4:5)
-   ========================================= */
 .image-side {
   flex: 1 1 50%;
-  /* 🌟 LA IMAGEN SE CONVIERTE EN EL FONDO DEL DIV */
   background-image: url('/fondo_registro.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-left: 1px solid #e8e0d8;
-  /* Cero bordes redondeados, sangrado total hasta el límite derecho */
 }
 
-/* =========================================
-   ✨ ANIMACIONES SUAVES
-   ========================================= */
+
 .animate-fade-in { opacity: 0; animation: fadeIn 0.4s ease-out forwards; }
 .animate-slide-up { opacity: 0; transform: translateY(10px); animation: slideUp 0.3s ease-out forwards; }
 @keyframes fadeIn { to { opacity: 1; } }
 @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
 
-/* =========================================
-   📱 RESPONSIVIDAD: MÓVILES (FONDO INMERSIVO)
-   ========================================= */
 @media (max-width: 900px) {
   /* Habilitamos la imagen como fondo global */
   .auth-page-container {
@@ -170,10 +152,8 @@
   /* Encendemos el filtro oscuro global */
   .mobile-overlay { display: block; }
   
-  /* Apagamos el lado derecho para que no estorbe */
   .image-side { display: none; }
 
-  /* El lado izquierdo (formulario) se vuelve transparente */
   .form-side {
     flex: 1 1 100%;
     background-color: transparent;

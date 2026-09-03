@@ -17,13 +17,12 @@ export interface ReporteMascota {
   notas_adicionales?: string;
   referencias?: string;
   direccion?: string; 
-  latitud: number; // 🌟 Cambiado a latitud (Base de Datos)
-  longitud: number; // 🌟 Cambiado a longitud (Base de Datos)
+  latitud: number; 
+  longitud: number; 
   hora_avistamiento?: string; 
-  foto_url?: string; // 🌟 Cambiado a foto_url (Base de Datos)
+  foto_url?: string; 
 }
 
-// 🌟 Pipe puro: arma la URL del mapa embebido (OSM, sin API key) y la sanitiza
 @Pipe({ name: 'mapEmbed', standalone: true, pure: true })
 export class MapEmbedPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
@@ -47,7 +46,6 @@ export class MapEmbedPipe implements PipeTransform {
 export class DashboardComponent implements OnInit {
   stats = { reportes_realizados: 0, reportes_resueltos: 0 };
 
-  // 🌟 Arreglos vacíos listos para recibir datos de PostgreSQL
   reportesTomados: ReporteMascota[] = []; 
   reportesRealizados: ReporteMascota[] = [];
 
@@ -65,7 +63,7 @@ export class DashboardComponent implements OnInit {
         this.stats.reportes_realizados = data.length;
         this.stats.reportes_resueltos = data.filter(r => r.estado === 'Resuelto' || r.estado === 'Completado').length;
       },
-      error: (err: any) => { // 🌟 AQUÍ ESTÁ LA CORRECCIÓN
+      error: (err: any) => { 
         console.error('Error al cargar mis reportes:', err);
       }
     });

@@ -1,6 +1,3 @@
-/* =========================================
-   CONTENEDOR PRINCIPAL
-   ========================================= */
 .page-wrapper {
   padding: 32px max(1.5rem, 3vw);
   max-width: 1300px;
@@ -30,9 +27,6 @@
   margin: 0;
 }
 
-/* =========================================
-   ESTADOS (CARGANDO / VACÍO)
-   ========================================= */
 .loading-state, .empty-state {
   display: flex;
   flex-direction: column;
@@ -54,9 +48,7 @@
   opacity: 0.8;
 }
 
-/* =========================================
-   GRID DE REPORTES
-   ========================================= */
+
 .reportes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -212,9 +204,6 @@
 .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* =========================================
-   📱 RESPONSIVIDAD
-   ========================================= */
 @media (max-width: 768px) {
   .page-header h2 { font-size: 1.6rem; }
   .reportes-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }

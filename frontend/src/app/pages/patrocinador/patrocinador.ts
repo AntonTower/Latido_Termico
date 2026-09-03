@@ -239,7 +239,6 @@ export class PatrocinadorComponent implements OnInit {
     });
   }
 
-  // --- Lógica del logo ---
 
   onLogoSeleccionado(event: Event): void {
     this.errorLogo = '';
@@ -247,7 +246,6 @@ export class PatrocinadorComponent implements OnInit {
     const archivo = input.files && input.files.length > 0 ? input.files[0] : null;
     if (!archivo) return;
 
-    // Validaciones básicas antes de subir: tipo y tamaño (2MB máx)
     const tiposPermitidos = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
     if (!tiposPermitidos.includes(archivo.type)) {
       this.errorLogo = 'Formato no soportado. Usa PNG, JPG o WEBP.';

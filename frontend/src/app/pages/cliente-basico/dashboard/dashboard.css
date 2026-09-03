@@ -80,9 +80,6 @@
 .indicator-dot.orange { background-color: var(--amber); }
 .indicator-dot.red { background-color: var(--red); }
 
-/* =========================================
-   🌟 GRID DE CARDS DE REPORTE
-   ========================================= */
 .reportes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

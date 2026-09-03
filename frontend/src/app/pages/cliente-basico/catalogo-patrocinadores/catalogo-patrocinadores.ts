@@ -66,7 +66,6 @@ export class CatalogoPatrocinadoresComponent implements OnInit {
     this.catalogoSeleccionado = [];
   }
 
-  // Placeholder de imagen: iniciales del nombre del negocio, ya que aún no hay foto real
   getIniciales(nombre: string): string {
     return nombre
       .split(' ')
@@ -76,8 +75,6 @@ export class CatalogoPatrocinadoresComponent implements OnInit {
       .join('');
   }
 
-  // Detecta qué tipo de enlace es, para mostrar el ícono correcto sin depender
-  // de que el usuario haya llenado un campo aparte para elegirlo.
   getTipoEnlace(url?: string): 'whatsapp' | 'instagram' | 'web' | null {
     if (!url) return null;
     const lower = url.toLowerCase();

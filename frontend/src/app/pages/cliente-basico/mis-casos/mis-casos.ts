@@ -8,7 +8,7 @@ import { MapEmbedPipe, ReporteMascota } from '../dashboard/dashboard';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './mis-casos.html',
-  styleUrls: ['./mis-casos.css'] // Comparte el mismo CSS
+  styleUrls: ['./mis-casos.css'] 
 })
 export class MisCasosComponent implements OnInit {
   casos: ReporteMascota[] = [];
@@ -17,7 +17,6 @@ export class MisCasosComponent implements OnInit {
   constructor(private reporteService: ReporteService) {}
 
   ngOnInit(): void {
-    // 🌟 Nota: Usaremos getMisRescatesTomados() cuando el backend esté listo
     this.reporteService.getMisRescatesTomados().subscribe({
       next: (data) => {
         this.casos = data;

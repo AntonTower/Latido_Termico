@@ -5,7 +5,7 @@ import { PatrocinadorService, CatalogoItem, NegocioConfig } from '../../auth/ser
 
 @Component({
   selector: 'app-patrocinador',
-  standalone: true, // 👈 Marca el componente como standalone
+  standalone: true, 
   imports: [CommonModule, FormsModule],
   templateUrl: './patrocinador.component.html',
   styleUrls: ['./patrocinador.css']
@@ -35,7 +35,6 @@ export class PatrocinadorComponent implements OnInit {
 
   cargarCatalogo(): void {
     this.patrocinadorService.getCatalogo().subscribe({
-      /* Tipado explícito agregado a 'data' y 'err' */
       next: (data: CatalogoItem[]) => {
         this.catalogoItems = data;
       },
@@ -69,7 +68,6 @@ export class PatrocinadorComponent implements OnInit {
     }
 
     this.patrocinadorService.guardarItemCatalogo(this.nuevoItem).subscribe({
-      /* Tipado explícito agregado a 'itemGuardado' y 'err' */
       next: (itemGuardado: CatalogoItem) => {
         this.catalogoItems.push(itemGuardado);
         this.cerrarModal();

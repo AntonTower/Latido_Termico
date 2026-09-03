@@ -85,14 +85,12 @@
       <h3 class="card-title-section"><span class="material-symbols-outlined">settings</span>Configuración de los Datos del Negocio</h3>
       <p class="section-desc">Actualiza la información comercial que aparecerá visible para los rescatistas y voluntarios de la red.</p>
 
-      <!-- Mientras no llega la respuesta del backend -->
       <div *ngIf="cargandoNegocio" class="loading-state-box">
         <p class="empty-msg">Cargando datos del negocio...</p>
       </div>
 
       <div *ngIf="!cargandoNegocio" class="config-layout">
 
-        <!-- Columna izquierda: solo el logo -->
         <div class="config-logo-col">
           <h4 class="config-logo-title">Logo / Imagen del Negocio</h4>
 
@@ -107,13 +105,11 @@
           </div>
         </div>
 
-        <!-- Columna derecha: el form completo, partido en 2 sub-columnas -->
         <div class="config-fields-col">
           <form class="config-form" (ngSubmit)="guardarConfiguracion()">
 
             <div class="config-form-columns">
 
-              <!-- Sub-columna A: datos básicos + logo -->
               <div class="config-form-col">
                 <div class="form-field">
                   <label for="nombreNegocio">Nombre del Emprendimiento / Local</label>
@@ -149,7 +145,6 @@
                   <div class="form-field">
                     <label for="logoInput">Cambiar Logo</label>
 
-                    <!-- Si ya hay logo en BD y no se ha seleccionado uno nuevo -->
                     <div class="logo-existente-container" *ngIf="negocio.logo_url && !archivoLogoSeleccionado">
                       <button
                         type="button"
@@ -161,7 +156,6 @@
                       </button>
                     </div>
 
-                    <!-- Si no hay logo o se seleccionó uno nuevo -->
                     <ng-container *ngIf="!negocio.logo_url || archivoLogoSeleccionado">
                       <label for="logoInput" class="file-input-label">
                         <span class="file-input-btn">Seleccionar archivo</span>
@@ -179,7 +173,6 @@
                       />
                     </ng-container>
 
-                    <!-- Acciones para archivo nuevo -->
                     <div class="logo-upload-actions" *ngIf="archivoLogoSeleccionado">
                       <button
                         type="button"
@@ -204,7 +197,6 @@
                   </div>
               </div>
 
-              <!-- Sub-columna B: perfil público -->
               <div class="config-form-col">
                 <div class="form-field">
                   <label for="enlaceContacto">Canal de Contacto (Redes Sociales / Web)</label>
@@ -279,12 +271,10 @@
         </button>
       </div>
 
-      <!-- CASO 0: Todavía no llegó la respuesta del backend -->
       <div *ngIf="cargandoCatalogo" class="loading-state-box">
         <p class="empty-msg">Cargando catálogo...</p>
       </div>
 
-      <!-- CASO 1: Ya cargó y SÍ hay items en el catálogo -->
       <div *ngIf="!cargandoCatalogo && catalogo.length > 0" class="table-responsive">
         <table class="resource-table">
           <thead>
@@ -313,9 +303,7 @@
         </table>
       </div>
 
-      <!-- CASO 2: Ya cargó y de verdad está vacío -->
       <div *ngIf="!cargandoCatalogo && catalogo.length === 0" class="empty-state-box">
-        <!--<div class="empty-state-icon">📦</div>-->
         <h4 class="empty-state-title">Aún no has agregado nada a tu catálogo</h4>
         <p class="empty-state-desc">
           Empieza publicando los servicios o productos que tu emprendimiento ofrece a la comunidad.
@@ -330,7 +318,6 @@
 
 </div>
 
-<!-- MODAL: RECORTE DEL LOGO -->
 <div class="modal-backdrop" *ngIf="mostrarModalRecorte">
   <div class="modal-card animate-fade-in modal-cropper">
     <div class="modal-header">
@@ -354,11 +341,10 @@
   </div>
 </div>
 
-<!-- MODAL PARA CREAR / EDITAR ÍTEM DEL CATÁLOGO -->
 <div class="modal-backdrop" *ngIf="mostrarModal">
   <div class="modal-card animate-fade-in">
     <div class="modal-header">
-      <h3>📦 {{ editando ? 'Editar Ítem' : 'Añadir Nuevo Ítem al Catálogo' }}</h3>
+      <h3> {{ editando ? 'Editar Ítem' : 'Añadir Nuevo Ítem al Catálogo' }}</h3>
       <button class="btn-close" (click)="cerrarModal()">&times;</button>
     </div>
 

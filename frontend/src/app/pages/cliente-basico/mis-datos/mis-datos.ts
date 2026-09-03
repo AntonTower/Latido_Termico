@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Necesario para el ngModel en modo edición
-// 🌟 CORRECCIÓN: Eran 3 saltos hacia atrás, no 4
+import { FormsModule } from '@angular/forms'; 
 import { AuthService } from '../../../auth/services/auth';
 
 @Component({
@@ -51,7 +50,6 @@ export class MisDatosComponent implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
     
-    // Al entrar a editar, copiamos los datos actuales a las variables temporales
     if (this.isEditing && this.userData) {
       this.editData.telefono = this.userData.telefono || '';
       this.editData.role = this.userData.rol_id || 2;
@@ -73,12 +71,10 @@ export class MisDatosComponent implements OnInit {
         this.isSaving = false;
         this.successMessage = '¡Datos actualizados correctamente!';
         
-        // Actualizamos la vista con los nuevos datos
         this.userData.telefono = payload.telefono;
         this.userData.rol_id = payload.role;
         this.userData.nombre_rol = payload.role === 1 ? 'Administrador' : 'Operador'; // Reflejo visual
         
-        // Salimos del modo edición después de 1.5s
         setTimeout(() => this.isEditing = false, 1500);
       },
       error: (err: any) => {

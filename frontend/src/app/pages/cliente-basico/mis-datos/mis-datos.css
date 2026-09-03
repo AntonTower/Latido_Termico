@@ -1,6 +1,3 @@
-/* =========================================
-   CONTENEDOR PRINCIPAL
-   ========================================= */
 .mis-datos-section {
   width: 100%;
   max-width: 1200px;
@@ -12,9 +9,7 @@
   gap: 40px;
 }
 
-/* =========================================
-   CABECERA INMENSA
-   ========================================= */
+
 .header-container {
   max-width: 800px;
 }
@@ -48,9 +43,6 @@
   max-width: 600px;
 }
 
-/* =========================================
-   TARJETA DE DATOS (CARD)
-   ========================================= */
 .data-card {
   background: var(--white);
   border: 1px solid var(--cream);
@@ -61,7 +53,6 @@
   box-sizing: border-box;
 }
 
-/* 🌟 CANDADO DE RESPONSIVIDAD: min(100%, 250px) */
 .data-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
@@ -102,9 +93,6 @@
   letter-spacing: 0.03em;
 }
 
-/* =========================================
-   ESTILOS PARA MODO EDICIÓN Y ESTADOS
-   ========================================= */
 .loading-state {
   padding: 40px;
   text-align: center;
@@ -171,9 +159,6 @@
 .error-msg { color: var(--red); font-size: 13px; font-weight: 600; margin: 0; }
 .success-msg { color: var(--green); font-size: 13px; font-weight: 600; margin: 0; }
 
-/* =========================================
-   BOTONES Y ACCIONES
-   ========================================= */
 .card-actions {
   display: flex;
   flex-wrap: wrap;
@@ -230,17 +215,11 @@
   background: var(--cream);
 }
 
-/* =========================================
-   ✨ ANIMACIONES SUAVES
-   ========================================= */
 .animate-fade-in { opacity: 0; animation: fadeIn 0.4s ease-out forwards; }
 .animate-slide-up { opacity: 0; transform: translateY(20px); animation: slideUp 0.5s ease-out forwards 0.1s; }
 @keyframes fadeIn { to { opacity: 1; } }
 @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
 
-/* =========================================
-   📱 MEDIA QUERIES OBLIGATORIOS (MOBILE)
-   ========================================= */
 @media (max-width: 480px) {
   .mis-datos-section {
     padding: 32px 1rem;

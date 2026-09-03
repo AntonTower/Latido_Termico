@@ -13,7 +13,7 @@ import { AuthService } from '../../../auth/services/auth';
 })
 export class RegisterComponent {
   // Estado de la interfaz
-  isLoginMode: boolean = false; // Comienza en registro porque la ruta es /registro
+  isLoginMode: boolean = false; 
   isLoading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
@@ -77,7 +77,6 @@ export class RegisterComponent {
     this.successMessage = '';
     this.registerData.rol_id = Number(this.registerData.rol_id);
 
-    // Preparamos el payload manejando la curp si viene vacía
     const payload = {
       ...this.registerData,
       curp: this.registerData.curp && this.registerData.curp.trim() !== '' ? this.registerData.curp : null
